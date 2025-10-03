@@ -3,391 +3,315 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crispy Chicken UAE - Special Offer</title>
+    <title>Crispy Chicken Offer</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        :root {
-            --primary-color: #ff6b35;
-            --secondary-color: #f7931e;
-            --accent-color: #ff4757;
-            --dark-color: #2c3e50;
-            --light-color: #f8f9fa;
-            --text-color: #333;
-            --white: #fff;
-            --shadow: 0 10px 30px rgba(0,0,0,0.15);
-            --transition: all 0.4s ease;
         }
         
         body {
-            background-color: var(--white);
-            color: var(--text-color);
-            line-height: 1.6;
-            transition: var(--transition);
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ff6b6b 0%, #feca57 50%, #ff9ff3 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
             overflow-x: hidden;
         }
         
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        /* Header */
-        header {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            color: var(--white);
-            padding: 15px 0;
-            box-shadow: var(--shadow);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            max-width: 500px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-        }
-        
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            font-size: 1.8rem;
-            font-weight: bold;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-        
-        .logo img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            border: 2px solid var(--white);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            transition: var(--transition);
-        }
-        
-        .logo:hover img {
-            transform: rotate(15deg) scale(1.1);
-        }
-        
-        .contact-info {
-            display: flex;
-            gap: 20px;
-        }
-        
-        .contact-info a {
-            color: var(--white);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: var(--transition);
-            background: rgba(255,255,255,0.2);
-            padding: 10px 18px;
-            border-radius: 30px;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        
-        .contact-info a:hover {
-            background: rgba(255,255,255,0.3);
-            transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
-        }
-        
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, rgba(255,107,53,0.05) 0%, rgba(247,147,30,0.05) 100%);
-            padding: 60px 0;
-            text-align: center;
-            position: relative;
+            border-radius: 25px;
             overflow: hidden;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            position: relative;
+            transform: scale(1);
+            animation: float 6s ease-in-out infinite;
         }
         
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ff6b35" fill-opacity="0.05" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,144C960,149,1056,139,1152,122.7C1248,107,1344,85,1392,74.7L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
-            background-size: cover;
-            z-index: -1;
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
         }
         
-        /* Animated background elements */
-        .bg-animation {
+        .header {
+            position: relative;
+            height: 280px;
+            overflow: hidden;
+        }
+        
+        .header-image {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            overflow: hidden;
-            z-index: -1;
-        }
-        
-        .bg-animation span {
-            position: absolute;
-            display: block;
-            width: 20px;
-            height: 20px;
-            background: rgba(255, 107, 53, 0.1);
-            border-radius: 50%;
-            animation: move 25s linear infinite;
-            bottom: -150px;
-        }
-        
-        .bg-animation span:nth-child(1) {
-            left: 25%;
-            width: 80px;
-            height: 80px;
-            animation-delay: 0s;
-        }
-        
-        .bg-animation span:nth-child(2) {
-            left: 10%;
-            width: 20px;
-            height: 20px;
-            animation-delay: 2s;
-            animation-duration: 12s;
-        }
-        
-        .bg-animation span:nth-child(3) {
-            left: 70%;
-            width: 20px;
-            height: 20px;
-            animation-delay: 4s;
-        }
-        
-        .bg-animation span:nth-child(4) {
-            left: 40%;
-            width: 60px;
-            height: 60px;
-            animation-delay: 0s;
-            animation-duration: 18s;
-        }
-        
-        .bg-animation span:nth-child(5) {
-            left: 65%;
-            width: 20px;
-            height: 20px;
-            animation-delay: 0s;
-        }
-        
-        .bg-animation span:nth-child(6) {
-            left: 75%;
-            width: 110px;
-            height: 110px;
-            animation-delay: 3s;
-        }
-        
-        @keyframes move {
-            0% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 1;
-                border-radius: 50%;
-            }
-            100% {
-                transform: translateY(-1000px) rotate(720deg);
-                opacity: 0;
-                border-radius: 50%;
-            }
-        }
-        
-        .hero-content {
-            position: relative;
+            object-fit: cover;
             z-index: 1;
-            width: 100%;
         }
         
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 40px;
-            color: var(--primary-color);
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        .header-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,107,107,0.8) 0%, rgba(238,90,111,0.7) 100%);
+            z-index: 2;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 3;
+            padding: 30px 20px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+        }
+        
+        .emoji {
+            font-size: 48px;
+            margin: 10px 0;
+            display: inline-block;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        .title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            letter-spacing: 1px;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+        
+        .content {
+            padding: 30px 20px;
+            background: linear-gradient(135deg, #fff9f0 0%, #ffe8d6 100%);
+        }
+        
+        .image-showcase {
+            position: relative;
+            margin: 20px 0;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .showcase-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .image-showcase:hover .showcase-image {
+            transform: scale(1.05);
+        }
+        
+        .image-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+            padding: 20px 15px 15px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 8px;
+            height: 100%;
+            background: linear-gradient(to bottom, #ff6b6b, #feca57);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #ff6b6b, #feca57);
+            border-radius: 15px;
+            margin-right: 15px;
+            color: white;
+            font-size: 24px;
+        }
+        
+        .card-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+        }
+        
+        .food-details {
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+            color: #333;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255, 107, 107, 0.1);
+            border-radius: 15px;
+        }
+        
+        .price-container {
+            text-align: center;
+            margin: 30px 0;
+            position: relative;
+        }
+        
+        .price-label {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .price {
+            font-size: 48px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ff6b6b, #feca57);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             position: relative;
             display: inline-block;
         }
         
-        .hero h1::after {
-            content: '';
+        .price::after {
+            content: 'AED';
+            font-size: 24px;
             position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            border-radius: 2px;
+            top: 5px;
+            right: -60px;
+            color: #ff6b6b;
         }
         
-        .special-offer {
-            background: linear-gradient(rgba(255, 107, 53, 0.85), rgba(247, 147, 30, 0.85)), 
-                        url('https://z-cdn-media.chatglm.cn/files/0bf7838b-84f8-4591-8f28-525bbbfabf35_WhatsApp%20Image%202025-09-09%20at%2012.50.16_156b9a2e.jpg?auth_key=1791045264-3368cbe69bc54d5b995736ef5359202a-0-e1dcde7531347122c28028d71abdbf53') center/cover;
-            border-radius: 25px;
-            padding: 50px;
-            max-width: 900px;
-            margin: 0 auto;
-            box-shadow: var(--shadow);
-            transform: scale(1);
-            transition: var(--transition);
+        .countdown {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 25px 0;
+            text-align: center;
+            color: white;
             position: relative;
             overflow: hidden;
-            border: 2px solid rgba(255,255,255,0.2);
         }
         
-        .special-offer::before {
+        .countdown::before {
             content: '';
             position: absolute;
             top: -50%;
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
-            transform: rotate(45deg);
-            z-index: 0;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+            animation: pulse 3s infinite;
         }
         
-        .special-offer:hover {
-            transform: scale(1.03);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        .countdown-content {
+            position: relative;
+            z-index: 1;
         }
         
-        .offer-header {
-            font-size: 2.8rem;
-            margin-bottom: 40px;
+        .countdown-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .countdown-timer {
             display: flex;
-            align-items: center;
             justify-content: center;
             gap: 15px;
-            color: var(--white);
-            position: relative;
-            z-index: 1;
+            margin-top: 15px;
         }
         
-        .offer-header i {
-            font-size: 2.5rem;
-            animation: pulse 2s infinite;
+        .time-unit {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 10px;
+            min-width: 60px;
         }
         
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.1);
-            }
-            100% {
-                transform: scale(1);
-            }
+        .time-value {
+            font-size: 24px;
+            font-weight: 700;
         }
         
-        .offer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
-            margin-bottom: 40px;
-            position: relative;
-            z-index: 1;
+        .time-label {
+            font-size: 12px;
+            opacity: 0.8;
         }
         
-        .offer-item {
-            background: rgba(255,255,255,0.25);
-            padding: 30px;
-            border-radius: 20px;
-            text-align: center;
-            backdrop-filter: blur(5px);
-            transition: var(--transition);
-            border: 1px solid rgba(255,255,255,0.3);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-        }
-        
-        .offer-item:hover {
-            background: rgba(255,255,255,0.35);
-            transform: translateY(-8px);
-            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
-        }
-        
-        .offer-item i {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            color: var(--white);
-        }
-        
-        .offer-item h3 {
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
-        
-        .offer-price {
-            font-size: 4rem;
-            font-weight: bold;
-            margin: 40px 0;
-            color: var(--white);
-            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            position: relative;
-            z-index: 1;
-            animation: priceGlow 3s infinite alternate;
-        }
-        
-        @keyframes priceGlow {
-            from {
-                text-shadow: 0 0 10px rgba(255,255,255,0.5);
-            }
-            to {
-                text-shadow: 0 0 20px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.5);
-            }
-        }
-        
-        .offer-days {
-            font-size: 1.3rem;
-            margin-bottom: 40px;
-            background: rgba(0,0,0,0.2);
-            padding: 18px;
-            border-radius: 15px;
-            color: var(--white);
-            position: relative;
-            z-index: 1;
-            box-shadow: inset 0 2px 10px rgba(0,0,0,0.2);
-        }
-        
-        .order-buttons {
-            display: flex;
-            gap: 25px;
-            justify-content: center;
-            flex-wrap: wrap;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .order-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            padding: 18px 35px;
-            border-radius: 50px;
-            font-size: 1.3rem;
-            font-weight: bold;
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+            color: white;
             text-decoration: none;
-            transition: var(--transition);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+            padding: 20px 40px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 20px;
+            margin: 30px 0;
+            text-align: center;
+            width: 100%;
+            box-shadow: 0 10px 25px rgba(238,90,111,0.4);
+            transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
         }
         
-        .order-btn::before {
+        .cta-button::before {
             content: '';
             position: absolute;
             top: 0;
@@ -395,324 +319,307 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.7s;
+            transition: left 0.5s;
         }
         
-        .order-btn:hover::before {
+        .cta-button:hover::before {
             left: 100%;
         }
         
-        .whatsapp-btn {
-            background: #25d366;
-            color: var(--white);
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(238,90,111,0.5);
         }
         
-        .whatsapp-btn:hover {
-            background: #128c7e;
-            transform: translateY(-5px);
-            box-shadow: 0 12px 25px rgba(37, 211, 102, 0.4);
+        .social-share {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 25px 0;
         }
         
-        .call-btn {
-            background: var(--white);
-            color: var(--primary-color);
+        .social-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            transition: transform 0.3s ease;
         }
         
-        .call-btn:hover {
-            background: var(--light-color);
-            transform: translateY(-5px);
-            box-shadow: 0 12px 25px rgba(0,0,0,0.25);
+        .social-btn:hover {
+            transform: scale(1.1);
         }
         
-        /* Chicken decoration */
-        .chicken-decoration {
-            position: absolute;
-            font-size: 8rem;
-            opacity: 0.1;
-            color: var(--white);
-            z-index: 0;
-        }
+        .facebook { background: #3b5998; }
+        .whatsapp { background: #25d366; }
+        .instagram { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+        .twitter { background: #1da1f2; }
         
-        .chicken-1 {
-            top: 10%;
-            left: 5%;
-            transform: rotate(-15deg);
-        }
-        
-        .chicken-2 {
-            bottom: 10%;
-            right: 5%;
-            transform: rotate(15deg);
-        }
-        
-        /* Notification */
-        .notification {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: var(--primary-color);
-            color: var(--white);
-            padding: 18px 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            transform: translateY(100px);
-            opacity: 0;
-            transition: var(--transition);
-            z-index: 1000;
-            max-width: 350px;
+        .footer {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            padding: 20px;
             text-align: center;
-            font-weight: 500;
-            border-left: 5px solid var(--white);
+            color: white;
+            font-size: 14px;
         }
         
-        .notification.show {
-            transform: translateY(0);
-            opacity: 1;
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
         }
         
-        /* Responsive Design */
-        @media (max-width: 992px) {
-            .hero h1 {
-                font-size: 3rem;
-            }
-            
-            .special-offer {
-                padding: 40px;
-            }
-            
-            .offer-header {
-                font-size: 2.4rem;
-            }
-            
-            .offer-price {
-                font-size: 3.5rem;
-            }
+        .contact-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            
-            .special-offer {
-                padding: 30px;
-            }
-            
-            .offer-header {
-                font-size: 2rem;
-            }
-            
-            .offer-price {
-                font-size: 3rem;
-            }
-            
-            .order-buttons {
-                flex-direction: column;
-                width: 100%;
-            }
-            
-            .order-btn {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .chicken-decoration {
-                display: none;
-            }
+        .hashtags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        
+        .hashtag {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+        
+        .ribbon {
+            position: absolute;
+            top: 20px;
+            right: -35px;
+            background: #feca57;
+            color: #333;
+            padding: 5px 40px;
+            font-weight: 700;
+            transform: rotate(45deg);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
         }
         
         @media (max-width: 480px) {
-            .header-content {
-                flex-direction: column;
-                gap: 15px;
+            .container {
+                border-radius: 20px;
             }
             
-            .hero h1 {
-                font-size: 2rem;
+            .title {
+                font-size: 24px;
             }
             
-            .offer-content {
-                grid-template-columns: 1fr;
-                gap: 20px;
+            .price {
+                font-size: 40px;
             }
             
-            .offer-item {
-                padding: 20px;
-            }
-            
-            .offer-header {
-                font-size: 1.8rem;
-            }
-            
-            .offer-price {
-                font-size: 2.8rem;
+            .price::after {
+                font-size: 18px;
+                right: -50px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="container">
+    <div class="container">
+        <div class="ribbon">LIMITED</div>
+        
+        <div class="header">
+            <img src="https://z-cdn-media.chatglm.cn/files/71333df5-9f67-432b-95c1-038e6930ff7b_offer%20.jpg?auth_key=1791067999-3a345b70318f4ba4abb4680acc984e32-0-d11dbb1c1922cf6226b8b75401e42547" alt="Crispy Chicken Offer" class="header-image">
+            <div class="header-overlay"></div>
             <div class="header-content">
-                <div class="logo">
-                    <img src="https://z-cdn-media.chatglm.cn/files/62ea2e7c-5176-49f8-beb5-a595e5a8e999_og-crispy-chicken-1200x630.png?auth_key=1788014076-07196b0aa13e421daa20308b195819a2-0-31d545146ae621503c7faa060c61f4cb" alt="Crispy Chicken Logo">
-                    Crispy Chicken UAE
+                <div class="emoji">🔥</div>
+                <div class="title">CRISPY CHICKEN</div>
+                <div class="subtitle">ULTIMATE MEAL DEAL</div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="image-showcase">
+                <img src="https://z-cdn-media.chatglm.cn/files/71333df5-9f67-432b-95c1-038e6930ff7b_offer%20.jpg?auth_key=1791067999-3a345b70318f4ba4abb4680acc984e32-0-d11dbb1c1922cf6226b8b75401e42547" alt="Crispy Chicken Offer" class="showcase-image">
+                <div class="image-caption">12 PCS CHICKEN • HOME DELIVERY</div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-drumstick-bite"></i>
+                    </div>
+                    <div class="card-title">Special Deal</div>
+                </div>
+                <div class="food-details">
+                    🍗 12 Crispy Chicken Pieces + 3 Garlic Sauces
+                </div>
+            </div>
+            
+            <div class="price-container">
+                <div class="price-label">Special Price</div>
+                <div class="price">30</div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="card-title">Validity</div>
+                </div>
+                <p style="margin: 0; font-weight: 600; text-align: center;">⏰ Monday & Tuesday Only</p>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-gift"></i>
+                    </div>
+                    <div class="card-title">Special Bonus</div>
+                </div>
+                <p style="margin: 5px 0; font-weight: 600; color: #f39c12;">🎁 Get a FREE drink with every order above 50 AED!</p>
+            </div>
+            
+            <div class="countdown">
+                <div class="countdown-content">
+                    <div class="countdown-title">⏳ Offer Expires In</div>
+                    <div class="countdown-timer">
+                        <div class="time-unit">
+                            <div class="time-value" id="hours">02</div>
+                            <div class="time-label">Hours</div>
+                        </div>
+                        <div class="time-unit">
+                            <div class="time-value" id="minutes">00</div>
+                            <div class="time-label">Minutes</div>
+                        </div>
+                        <div class="time-unit">
+                            <div class="time-value" id="seconds">00</div>
+                            <div class="time-label">Seconds</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <div class="card-title">Order Directly</div>
+                </div>
+                <p style="margin: 0; font-size: 22px; font-weight: 700; color: #3498db;">📞 600527488</p>
+            </div>
+            
+            <a href="#" class="cta-button">
+                <i class="fas fa-shopping-cart"></i> Order Now!
+            </a>
+            
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-share-alt"></i>
+                    </div>
+                    <div class="card-title">Share with Friends</div>
+                </div>
+                <p style="margin: 5px 0; font-weight: 600; text-align: center;">👉 Share this offer & get extra discount!</p>
+                
+                <div class="social-share">
+                    <a href="#" class="social-btn facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="social-btn whatsapp">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="#" class="social-btn instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="social-btn twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div class="footer-content">
+                <div class="contact-info">
+                    <i class="fas fa-store"></i>
+                    <span>Crispy Chicken Restaurant</span>
                 </div>
                 <div class="contact-info">
-                    <a href="tel:600527488">
-                        <i class="fas fa-phone"></i>
-                        600 527488
-                    </a>
-                    <a href="tel:0501882206">
-                        <i class="fas fa-mobile-alt"></i>
-                        050 188 2206
-                    </a>
+                    <i class="fas fa-phone"></i>
+                    <span>600527488</span>
                 </div>
             </div>
-        </div>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <!-- Animated background elements -->
-        <div class="bg-animation">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-        
-        <div class="container">
-            <div class="hero-content">
-                <h1>Best Fried Chicken in UAE</h1>
-                
-                <div class="special-offer">
-                    <!-- Chicken decorations -->
-                    <div class="chicken-decoration chicken-1">
-                        <i class="fas fa-drumstick-bite"></i>
-                    </div>
-                    <div class="chicken-decoration chicken-2">
-                        <i class="fas fa-drumstick-bite"></i>
-                    </div>
-                    
-                    <div class="offer-header">
-                        <i class="fas fa-fire"></i>
-                        <span>Ultimate Chicken Deal</span>
-                    </div>
-                    
-                    <div class="offer-content">
-                        <div class="offer-item">
-                            <i class="fas fa-drumstick-bite"></i>
-                            <h3>12 Chicken Pieces</h3>
-                        </div>
-                        <div class="offer-item">
-                            <i class="fas fa-pepper-hot"></i>
-                            <h3>3 Garlic Sauces</h3>
-                        </div>
-                    </div>
-                    
-                    <div class="offer-price">30 AED</div>
-                    
-                    <div class="offer-days">
-                        <i class="fas fa-calendar-alt"></i> Valid: Mon-Tue
-                    </div>
-                    
-                    <div class="order-buttons">
-                        <a href="https://wa.me/971501882206?text=مرحباً، أود طلب العرض التالي:%0A%0A*Ultimate Chicken Deal*%0Aالسعر: 30 AED%0A%0Aمحتويات العرض:%0A- 12 Chicken Pieces%0A- 3 Garlic Sauces%0A%0Aأرقام التواصل:%0A- هاتف: 600527488%0A- موبايل: 0501882206%0A%0Aشكراً لكم!" 
-                           class="order-btn whatsapp-btn" target="_blank">
-                            <i class="fab fa-whatsapp"></i>
-                            Order via WhatsApp
-                        </a>
-                        <a href="tel:600527488" class="order-btn call-btn">
-                            <i class="fas fa-phone-alt"></i>
-                            Call Now
-                        </a>
-                    </div>
-                </div>
+            <div class="hashtags">
+                <span class="hashtag">#CrispyChicken</span>
+                <span class="hashtag">#SpecialOffer</span>
+                <span class="hashtag">#CrispyChickenDeal</span>
+                <span class="hashtag">#FoodDeal</span>
             </div>
         </div>
-    </section>
-
-    <!-- Notification -->
-    <div class="notification" id="notification"></div>
+    </div>
 
     <script>
-        // Notification Function
-        function showNotification(message, type) {
-            const notification = document.getElementById('notification');
-            notification.textContent = message;
-            notification.classList.add('show');
+        // Countdown Timer
+        function updateCountdown() {
+            const now = new Date();
+            const endTime = new Date(now.getTime() + 2 * 60 * 60 * 1000); // 2 hours from now
             
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
+            const timeLeft = endTime - now;
+            
+            const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+            
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
         }
         
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            // Show welcome notification
-            setTimeout(() => {
-                showNotification('Welcome to Crispy Chicken UAE!', 'success');
-            }, 1000);
+        // Update countdown every second
+        setInterval(updateCountdown, 1000);
+        updateCountdown(); // Initial call
+        
+        // Add click animation to CTA button
+        document.querySelector('.cta-button').addEventListener('click', function(e) {
+            e.preventDefault();
             
-            // Add interactive animations
-            const offerItems = document.querySelectorAll('.offer-item');
-            offerItems.forEach((item, index) => {
-                item.style.animationDelay = `${index * 0.2}s`;
-                item.style.animation = 'fadeInUp 0.6s ease forwards';
-            });
+            // Create ripple effect
+            const ripple = document.createElement('span');
+            const rect = this.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = e.clientX - rect.left - size / 2;
+            const y = e.clientY - rect.top - size / 2;
             
-            // Add click effect to order buttons
-            const orderButtons = document.querySelectorAll('.order-btn');
-            orderButtons.forEach(button => {
-                button.addEventListener('click', function(e) {
-                    // Create ripple effect
-                    const ripple = document.createElement('span');
-                    const rect = this.getBoundingClientRect();
-                    const size = Math.max(rect.width, rect.height);
-                    const x = e.clientX - rect.left - size / 2;
-                    const y = e.clientY - rect.top - size / 2;
-                    
-                    ripple.style.width = ripple.style.height = size + 'px';
-                    ripple.style.left = x + 'px';
-                    ripple.style.top = y + 'px';
-                    ripple.classList.add('ripple');
-                    
-                    this.appendChild(ripple);
-                    
-                    setTimeout(() => {
-                        ripple.remove();
-                    }, 600);
-                });
-            });
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            ripple.classList.add('ripple');
+            
+            this.appendChild(ripple);
+            
+            setTimeout(() => ripple.remove(), 600);
         });
         
-        // Add fadeInUp animation
+        // Add ripple effect styles
         const style = document.createElement('style');
         style.textContent = `
-            @keyframes fadeInUp {
-                from {
-                    opacity: 0;
-                    transform: translateY(30px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
+            .cta-button {
+                position: relative;
+                overflow: hidden;
             }
-            
             .ripple {
                 position: absolute;
                 border-radius: 50%;
-                background: rgba(255, 255, 255, 0.5);
+                background: rgba(255, 255, 255, 0.7);
                 transform: scale(0);
                 animation: ripple-animation 0.6s ease-out;
-                pointer-events: none;
             }
-            
             @keyframes ripple-animation {
                 to {
                     transform: scale(4);
