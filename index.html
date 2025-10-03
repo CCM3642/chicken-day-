@@ -35,11 +35,17 @@
             position: relative;
             transform: scale(1);
             animation: float 6s ease-in-out infinite;
+            opacity: 0;
+            animation: fadeIn 1s forwards, float 6s ease-in-out infinite 1s;
         }
         
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-15px); }
+        }
+        
+        @keyframes fadeIn {
+            to { opacity: 1; }
         }
         
         .header {
@@ -56,6 +62,11 @@
             height: 100%;
             object-fit: cover;
             z-index: 1;
+            transition: transform 0.5s ease;
+        }
+        
+        .header:hover .header-image {
+            transform: scale(1.05);
         }
         
         .header-overlay {
@@ -118,6 +129,12 @@
             border-radius: 20px;
             overflow: hidden;
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .image-showcase:hover {
+            transform: scale(1.02);
         }
         
         .showcase-image {
@@ -203,6 +220,11 @@
             padding: 15px;
             background: rgba(255, 107, 107, 0.1);
             border-radius: 15px;
+            transition: background 0.3s ease;
+        }
+        
+        .food-details:hover {
+            background: rgba(255, 107, 107, 0.2);
         }
         
         .price-container {
@@ -225,6 +247,12 @@
             -webkit-text-fill-color: transparent;
             position: relative;
             display: inline-block;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .price:hover {
+            transform: scale(1.1);
         }
         
         .price::after {
@@ -245,6 +273,12 @@
             color: white;
             position: relative;
             overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .countdown:hover {
+            transform: scale(1.02);
         }
         
         .countdown::before {
@@ -256,6 +290,11 @@
             height: 200%;
             background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
             animation: pulse 3s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
         }
         
         .countdown-content {
@@ -281,6 +320,12 @@
             border-radius: 10px;
             padding: 10px;
             min-width: 60px;
+            transition: transform 0.3s ease;
+        }
+        
+        .time-unit:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.3);
         }
         
         .time-value {
@@ -309,6 +354,7 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            cursor: pointer;
         }
         
         .cta-button::before {
@@ -331,6 +377,72 @@
             box-shadow: 0 15px 30px rgba(238,90,111,0.5);
         }
         
+        .order-form {
+            display: none;
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            animation: slideDown 0.5s ease;
+        }
+        
+        @keyframes slideDown {
+            from { 
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #ff6b6b;
+        }
+        
+        .form-button {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .form-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(238,90,111,0.4);
+        }
+        
         .social-share {
             display: flex;
             justify-content: center;
@@ -347,11 +459,31 @@
             justify-content: center;
             color: white;
             font-size: 20px;
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
         
         .social-btn:hover {
-            transform: scale(1.1);
+            transform: scale(1.1) rotate(5deg);
+        }
+        
+        .social-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .social-btn:hover::after {
+            width: 100px;
+            height: 100px;
         }
         
         .facebook { background: #3b5998; }
@@ -393,6 +525,11 @@
             padding: 5px 10px;
             border-radius: 20px;
             font-size: 12px;
+            transition: background 0.3s ease;
+        }
+        
+        .hashtag:hover {
+            background: rgba(255, 255, 255, 0.3);
         }
         
         .ribbon {
@@ -405,6 +542,32 @@
             font-weight: 700;
             transform: rotate(45deg);
             box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+            animation: pulse 2s infinite;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            border-left: 5px solid #4caf50;
+        }
+        
+        .notification.error {
+            border-left: 5px solid #f44336;
         }
         
         @media (max-width: 480px) {
@@ -428,6 +591,8 @@
     </style>
 </head>
 <body>
+    <div class="notification" id="notification"></div>
+    
     <div class="container">
         <div class="ribbon">LIMITED</div>
         
@@ -442,7 +607,7 @@
         </div>
         
         <div class="content">
-            <div class="image-showcase">
+            <div class="image-showcase" onclick="showNotification('Image clicked! Check out our delicious crispy chicken!', 'success')">
                 <img src="https://z-cdn-media.chatglm.cn/files/71333df5-9f67-432b-95c1-038e6930ff7b_offer%20.jpg?auth_key=1791067999-3a345b70318f4ba4abb4680acc984e32-0-d11dbb1c1922cf6226b8b75401e42547" alt="Crispy Chicken Offer" class="showcase-image">
                 <div class="image-caption">12 PCS CHICKEN • HOME DELIVERY</div>
             </div>
@@ -454,14 +619,14 @@
                     </div>
                     <div class="card-title">Special Deal</div>
                 </div>
-                <div class="food-details">
+                <div class="food-details" onclick="showNotification('12 crispy chicken pieces with 3 garlic sauces - our most popular combo!', 'success')">
                     🍗 12 Crispy Chicken Pieces + 3 Garlic Sauces
                 </div>
             </div>
             
             <div class="price-container">
                 <div class="price-label">Special Price</div>
-                <div class="price">30</div>
+                <div class="price" onclick="showNotification('Amazing deal! Only 30 AED for this delicious meal!', 'success')">30</div>
             </div>
             
             <div class="card">
@@ -471,7 +636,7 @@
                     </div>
                     <div class="card-title">Validity</div>
                 </div>
-                <p style="margin: 0; font-weight: 600; text-align: center;">⏰ Monday & Tuesday Only</p>
+                <p style="margin: 0; font-weight: 600; text-align: center;" onclick="showNotification('Offer valid every Monday and Tuesday. Don\'t miss out!', 'success')">⏰ Monday & Tuesday Only</p>
             </div>
             
             <div class="card">
@@ -481,10 +646,10 @@
                     </div>
                     <div class="card-title">Special Bonus</div>
                 </div>
-                <p style="margin: 5px 0; font-weight: 600; color: #f39c12;">🎁 Get a FREE drink with every order above 50 AED!</p>
+                <p style="margin: 5px 0; font-weight: 600; color: #f39c12;" onclick="showNotification('Free drink with orders above 50 AED. Extra value for you!', 'success')">🎁 Get a FREE drink with every order above 50 AED!</p>
             </div>
             
-            <div class="countdown">
+            <div class="countdown" onclick="showNotification('Limited time offer! Order now before it expires!', 'success')">
                 <div class="countdown-content">
                     <div class="countdown-title">⏳ Offer Expires In</div>
                     <div class="countdown-timer">
@@ -511,12 +676,29 @@
                     </div>
                     <div class="card-title">Order Directly</div>
                 </div>
-                <p style="margin: 0; font-size: 22px; font-weight: 700; color: #3498db;">📞 600527488</p>
+                <p style="margin: 0; font-size: 22px; font-weight: 700; color: #3498db;" onclick="showNotification('Call us now at 600527488 to place your order!', 'success')">📞 600527488</p>
             </div>
             
-            <a href="#" class="cta-button">
+            <a href="#" class="cta-button" onclick="toggleOrderForm(); return false;">
                 <i class="fas fa-shopping-cart"></i> Order Now!
             </a>
+            
+            <div class="order-form" id="orderForm">
+                <h3 style="text-align: center; margin-bottom: 20px; color: #333;">Place Your Order</h3>
+                <div class="form-group">
+                    <label class="form-label">Your Name</label>
+                    <input type="text" class="form-input" placeholder="Enter your name" id="customerName">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    <input type="tel" class="form-input" placeholder="Enter your phone number" id="customerPhone">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Delivery Address</label>
+                    <input type="text" class="form-input" placeholder="Enter your address" id="customerAddress">
+                </div>
+                <button class="form-button" onclick="submitOrder()">Submit Order</button>
+            </div>
             
             <div class="card">
                 <div class="card-header">
@@ -528,16 +710,16 @@
                 <p style="margin: 5px 0; font-weight: 600; text-align: center;">👉 Share this offer & get extra discount!</p>
                 
                 <div class="social-share">
-                    <a href="#" class="social-btn facebook">
+                    <a href="#" class="social-btn facebook" onclick="shareOnSocial('facebook'); return false;">
                         <i class="fab fa-facebook-f"></i>
                     </a>
-                    <a href="#" class="social-btn whatsapp">
+                    <a href="#" class="social-btn whatsapp" onclick="shareOnSocial('whatsapp'); return false;">
                         <i class="fab fa-whatsapp"></i>
                     </a>
-                    <a href="#" class="social-btn instagram">
+                    <a href="#" class="social-btn instagram" onclick="shareOnSocial('instagram'); return false;">
                         <i class="fab fa-instagram"></i>
                     </a>
-                    <a href="#" class="social-btn twitter">
+                    <a href="#" class="social-btn twitter" onclick="shareOnSocial('twitter'); return false;">
                         <i class="fab fa-twitter"></i>
                     </a>
                 </div>
@@ -585,7 +767,7 @@
         setInterval(updateCountdown, 1000);
         updateCountdown(); // Initial call
         
-        // Add click animation to CTA button
+        // Ripple effect for CTA button
         document.querySelector('.cta-button').addEventListener('click', function(e) {
             e.preventDefault();
             
@@ -628,6 +810,92 @@
             }
         `;
         document.head.appendChild(style);
+        
+        // Toggle order form
+        function toggleOrderForm() {
+            const form = document.getElementById('orderForm');
+            if (form.style.display === 'none' || form.style.display === '') {
+                form.style.display = 'block';
+                form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } else {
+                form.style.display = 'none';
+            }
+        }
+        
+        // Submit order
+        function submitOrder() {
+            const name = document.getElementById('customerName').value;
+            const phone = document.getElementById('customerPhone').value;
+            const address = document.getElementById('customerAddress').value;
+            
+            if (!name || !phone || !address) {
+                showNotification('Please fill in all fields!', 'error');
+                return;
+            }
+            
+            // Simulate order submission
+            showNotification(`Thank you ${name}! Your order has been placed. We'll call you at ${phone} to confirm.`, 'success');
+            
+            // Reset form
+            document.getElementById('customerName').value = '';
+            document.getElementById('customerPhone').value = '';
+            document.getElementById('customerAddress').value = '';
+            
+            // Hide form
+            document.getElementById('orderForm').style.display = 'none';
+        }
+        
+        // Show notification
+        function showNotification(message, type) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type} show`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
+        }
+        
+        // Social sharing
+        function shareOnSocial(platform) {
+            const shareText = "Check out this amazing Crispy Chicken deal! 12 pieces for only 30 AED!";
+            const shareUrl = window.location.href;
+            
+            switch(platform) {
+                case 'facebook':
+                    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, '_blank', 'width=600,height=400');
+                    break;
+                case 'whatsapp':
+                    window.open(`https://wa.me/?text=${encodeURIComponent(shareText + ' ' + shareUrl)}`, '_blank');
+                    break;
+                case 'instagram':
+                    showNotification('Copy this link to share on Instagram: ' + shareUrl, 'success');
+                    navigator.clipboard.writeText(shareUrl);
+                    break;
+                case 'twitter':
+                    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`, '_blank', 'width=600,height=400');
+                    break;
+            }
+            
+            showNotification(`Shared on ${platform} successfully!`, 'success');
+        }
+        
+        // Add click animation to all interactive elements
+        document.querySelectorAll('.card, .price, .countdown, .food-details, .hashtag').forEach(element => {
+            element.addEventListener('click', function() {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            });
+        });
+        
+        // Add hover effect to hashtags
+        document.querySelectorAll('.hashtag').forEach(hashtag => {
+            hashtag.addEventListener('click', function() {
+                showNotification(`Searching for ${this.textContent}...`, 'success');
+            });
+        });
     </script>
 </body>
 </html>
