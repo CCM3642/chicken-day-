@@ -7,6 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         :root {
             --primary-color: #e63946;
@@ -14,6 +15,7 @@
             --accent-color: #a8dadc;
             --dark-color: #1d3557;
             --light-color: #f8f9fa;
+            --whatsapp-color: #25D366;
         }
         
         body {
@@ -61,6 +63,18 @@
         .btn-primary:hover {
             background-color: #d62828;
             border-color: #d62828;
+        }
+        
+        .btn-whatsapp {
+            background-color: var(--whatsapp-color);
+            border-color: var(--whatsapp-color);
+            color: white;
+        }
+        
+        .btn-whatsapp:hover {
+            background-color: #128C7E;
+            border-color: #128C7E;
+            color: white;
         }
         
         .table-container {
@@ -113,6 +127,11 @@
             color: white;
         }
         
+        .status-manager-review {
+            background-color: #6f42c1;
+            color: white;
+        }
+        
         .logo {
             font-size: 1.5rem;
             margin-right: 10px;
@@ -158,6 +177,67 @@
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
+        }
+        
+        .upload-area {
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+        
+        .upload-area:hover {
+            border-color: var(--primary-color);
+            background-color: rgba(230, 57, 70, 0.05);
+        }
+        
+        .upload-area.dragover {
+            border-color: var(--primary-color);
+            background-color: rgba(230, 57, 70, 0.1);
+        }
+        
+        .whatsapp-preview {
+            background-color: #e5ddd5;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .whatsapp-preview::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: -10px;
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-right: 10px solid #e5ddd5;
+        }
+        
+        .whatsapp-message {
+            background-color: white;
+            padding: 10px 15px;
+            border-radius: 7.5px;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 0.5px rgba(0,0,0,0.13);
+        }
+        
+        .whatsapp-timestamp {
+            font-size: 0.75rem;
+            color: #667781;
+            text-align: right;
+            margin-top: 5px;
+        }
+        
+        .manager-settings {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
         }
         
         @media (max-width: 768px) {
@@ -221,6 +301,16 @@
                 </button>
             </li>
             <li class="nav-item" role="presentation">
+                <button class="nav-link" id="import-tab" data-bs-toggle="tab" data-bs-target="#import" type="button" role="tab">
+                    <i class="bi bi-upload"></i> Import/Export
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="whatsapp-tab" data-bs-toggle="tab" data-bs-target="#whatsapp" type="button" role="tab">
+                    <i class="bi bi-whatsapp"></i> WhatsApp
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
                 <button class="nav-link" id="reports-tab" data-bs-toggle="tab" data-bs-target="#reports" type="button" role="tab">
                     <i class="bi bi-file-earmark-bar-graph"></i> Reports
                 </button>
@@ -237,7 +327,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">Total Cases (Month)</h5>
                                 <h2 class="text-primary" id="totalCasesMonth">0</h2>
-                                <small class="text-muted">This month</small>
+                                <small class="text-muted" id="currentMonthLabel">This month</small>
                             </div>
                         </div>
                     </div>
@@ -449,6 +539,7 @@
                                     <select class="form-select" id="status" required>
                                         <option value="Open">Open</option>
                                         <option value="Pending">Pending</option>
+                                        <option value="Manager Review">Manager Review</option>
                                         <option value="Approved">Approved</option>
                                         <option value="Rejected">Rejected</option>
                                         <option value="Closed">Closed</option>
@@ -521,6 +612,7 @@
                                 <option value="">All Statuses</option>
                                 <option value="Open">Open</option>
                                 <option value="Pending">Pending</option>
+                                <option value="Manager Review">Manager Review</option>
                                 <option value="Approved">Approved</option>
                                 <option value="Rejected">Rejected</option>
                                 <option value="Closed">Closed</option>
@@ -575,6 +667,197 @@
                                 <tbody id="casesTableBody">
                                     <tr>
                                         <td colspan="11" class="text-center">No cases found</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Import/Export Tab -->
+            <div class="tab-pane fade" id="import" role="tabpanel">
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h5>Import Data from Excel</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="upload-area" id="uploadArea">
+                            <i class="bi bi-cloud-upload" style="font-size: 3rem; color: var(--primary-color);"></i>
+                            <h5 class="mt-3">Drag & Drop Excel File Here</h5>
+                            <p class="text-muted">or</p>
+                            <input type="file" id="fileInput" accept=".xlsx, .xls" style="display: none;">
+                            <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">Browse Files</button>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <h6>Instructions:</h6>
+                            <ol>
+                                <li>Download the template below to see the required format</li>
+                                <li>Fill in your data following the template structure</li>
+                                <li>Upload the completed Excel file</li>
+                                <li>Review and confirm the import</li>
+                            </ol>
+                            
+                            <button class="btn btn-outline-primary mt-3" id="downloadTemplate">
+                                <i class="bi bi-download"></i> Download Template
+                            </button>
+                        </div>
+                        
+                        <div id="importPreview" style="display: none;">
+                            <h6 class="mt-4">Import Preview</h6>
+                            <div class="table-container">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Case ID</th>
+                                            <th>Date</th>
+                                            <th>Platform</th>
+                                            <th>Branch</th>
+                                            <th>Order #</th>
+                                            <th>Customer</th>
+                                            <th>Issue Type</th>
+                                            <th>Compensation</th>
+                                            <th>Status</th>
+                                            <th>Agent</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="importPreviewBody">
+                                        <!-- Preview data will be inserted here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="mt-3">
+                                <button class="btn btn-success" id="confirmImport">Confirm Import</button>
+                                <button class="btn btn-secondary" id="cancelImport">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h5>Export Data</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>Export all compensation cases to Excel for backup or analysis:</p>
+                        <button class="btn btn-success" id="exportAllData">
+                            <i class="bi bi-file-earmark-excel"></i> Export All Data to Excel
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- WhatsApp Tab -->
+            <div class="tab-pane fade" id="whatsapp" role="tabpanel">
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h5>WhatsApp Manager Settings</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="manager-settings">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="managerName" class="form-label">Manager Name</label>
+                                    <input type="text" class="form-control" id="managerName" placeholder="Enter manager name" value="Operations Manager">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="managerPhone" class="form-label">Manager WhatsApp Number</label>
+                                    <input type="tel" class="form-control" id="managerPhone" placeholder="With country code (e.g., +971501234567)" value="+971501234567">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <label for="customMessage" class="form-label">Custom Message Template</label>
+                                    <textarea class="form-control" id="customMessage" rows="4" placeholder="Custom message template (optional)">Dear Manager,
+
+Please review and approve the following compensation case:
+
+📋 Case Details:
+• Case ID: {caseId}
+• Date: {date}
+• Platform: {platform}
+• Branch: {branch}
+• Order #: {orderNumber}
+• Customer: {customerName}
+• Issue: {issueType}
+• Order Value: AED {orderValue}
+• Compensation: AED {compensationValue}
+• Responsible: {responsibleParty}
+
+Action Taken: {actionTaken}
+
+Please reply with APPROVED or REJECTED
+
+Thank you</textarea>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" id="saveManagerSettings">Save Settings</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h5>Send Case to Manager</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="whatsappCaseSelect" class="form-label">Select Case</label>
+                                <select class="form-select" id="whatsappCaseSelect">
+                                    <option value="">Select a case to send</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="urgencyLevel" class="form-label">Urgency Level</label>
+                                <select class="form-select" id="urgencyLevel">
+                                    <option value="Normal">Normal</option>
+                                    <option value="High">High</option>
+                                    <option value="Urgent">Urgent</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="whatsapp-preview" id="whatsappPreview" style="display: none;">
+                            <div class="whatsapp-message" id="whatsappMessageContent">
+                                <!-- Message preview will be shown here -->
+                            </div>
+                            <div class="whatsapp-timestamp" id="whatsappTimestamp"></div>
+                        </div>
+                        
+                        <div class="mt-3">
+                            <button class="btn btn-whatsapp" id="previewWhatsAppMessage">
+                                <i class="bi bi-eye"></i> Preview Message
+                            </button>
+                            <button class="btn btn-success" id="sendWhatsAppMessage" style="display: none;">
+                                <i class="bi bi-whatsapp"></i> Send via WhatsApp
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h5>WhatsApp History</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-container">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Case ID</th>
+                                        <th>Sent To</th>
+                                        <th>Message</th>
+                                        <th>Urgency</th>
+                                        <th>Status</th>
+                                        <th>Sent Time</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="whatsappHistoryBody">
+                                    <tr>
+                                        <td colspan="7" class="text-center">No WhatsApp messages sent yet</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -659,6 +942,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" id="editCaseBtn">Edit Case</button>
+                    <button type="button" class="btn btn-whatsapp" id="sendWhatsAppBtn">Send via WhatsApp</button>
                 </div>
             </div>
         </div>
@@ -715,6 +999,33 @@
             status: null,
             issueType: null
         };
+        let importData = [];
+        let whatsappHistory = JSON.parse(localStorage.getItem('whatsappHistory')) || [];
+        let managerSettings = JSON.parse(localStorage.getItem('managerSettings')) || {
+            name: 'Operations Manager',
+            phone: '+971501234567',
+            customMessage: `Dear Manager,
+
+Please review and approve the following compensation case:
+
+📋 Case Details:
+• Case ID: {caseId}
+• Date: {date}
+• Platform: {platform}
+• Branch: {branch}
+• Order #: {orderNumber}
+• Customer: {customerName}
+• Issue: {issueType}
+• Order Value: AED {orderValue}
+• Compensation: AED {compensationValue}
+• Responsible: {responsibleParty}
+
+Action Taken: {actionTaken}
+
+Please reply with APPROVED or REJECTED
+
+Thank you`
+        };
 
         // Initialize app
         document.addEventListener('DOMContentLoaded', function() {
@@ -728,6 +1039,9 @@
             loadCases();
             updateDashboard();
             updateLastUpdated();
+            loadManagerSettings();
+            loadWhatsAppHistory();
+            updateWhatsAppCaseSelect();
             
             // Set up event listeners
             setupEventListeners();
@@ -736,14 +1050,29 @@
             if (compensationCases.length === 0) {
                 addSampleData();
             }
+            
+            // Set current month label
+            updateCurrentMonthLabel();
         });
+
+        // Update current month label
+        function updateCurrentMonthLabel() {
+            const now = new Date();
+            const monthNames = ["January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"];
+            document.getElementById('currentMonthLabel').textContent = monthNames[now.getMonth()] + " " + now.getFullYear();
+        }
 
         // Add sample data for testing
         function addSampleData() {
+            const now = new Date();
+            const currentMonth = now.getMonth();
+            const currentYear = now.getFullYear();
+            
             const sampleCases = [
                 {
                     id: 'CC-20231201-001',
-                    date: '2023-12-01',
+                    date: new Date(currentYear, currentMonth, 5).toISOString().split('T')[0],
                     platform: 'Noon',
                     branch: 'Hamdan',
                     orderNumber: 'ORD123456',
@@ -755,14 +1084,14 @@
                     status: 'Closed',
                     actionTaken: 'Refund processed via platform',
                     agentName: 'Agent A',
-                    dateClosed: '2023-12-02T10:30:00Z',
+                    dateClosed: new Date(currentYear, currentMonth, 6).toISOString(),
                     supportingFile: '',
                     remarks: 'Customer satisfied with resolution',
-                    createdAt: '2023-12-01T14:20:00Z'
+                    createdAt: new Date(currentYear, currentMonth, 5).toISOString()
                 },
                 {
                     id: 'CC-20231201-002',
-                    date: '2023-12-01',
+                    date: new Date(currentYear, currentMonth, 10).toISOString().split('T')[0],
                     platform: 'Careem',
                     branch: 'Khaldia',
                     orderNumber: 'ORD789012',
@@ -777,11 +1106,11 @@
                     dateClosed: null,
                     supportingFile: '',
                     remarks: 'Waiting for customer feedback',
-                    createdAt: '2023-12-01T16:45:00Z'
+                    createdAt: new Date(currentYear, currentMonth, 10).toISOString()
                 },
                 {
-                    id: 'CC-20231202-003',
-                    date: '2023-12-02',
+                    id: 'CC-20231201-003',
+                    date: new Date(currentYear, currentMonth, 15).toISOString().split('T')[0],
                     platform: 'Deliveroo',
                     branch: 'Muroor',
                     orderNumber: 'ORD345678',
@@ -796,7 +1125,45 @@
                     dateClosed: null,
                     supportingFile: '',
                     remarks: 'Customer notified about replacement',
-                    createdAt: '2023-12-02T11:30:00Z'
+                    createdAt: new Date(currentYear, currentMonth, 15).toISOString()
+                },
+                {
+                    id: 'CC-20231101-004',
+                    date: new Date(currentYear, currentMonth - 1, 20).toISOString().split('T')[0],
+                    platform: 'Smile',
+                    branch: 'Electra',
+                    orderNumber: 'ORD901234',
+                    customerName: 'Sarah Williams',
+                    issueType: 'Double Charge',
+                    orderValue: 65.00,
+                    compensationValue: 65.00,
+                    responsibleParty: 'Platform',
+                    status: 'Closed',
+                    actionTaken: 'Refund processed',
+                    agentName: 'Agent C',
+                    dateClosed: new Date(currentYear, currentMonth - 1, 21).toISOString(),
+                    supportingFile: '',
+                    remarks: 'Platform issue resolved',
+                    createdAt: new Date(currentYear, currentMonth - 1, 20).toISOString()
+                },
+                {
+                    id: 'CC-20231101-005',
+                    date: new Date(currentYear, currentMonth - 1, 25).toISOString().split('T')[0],
+                    platform: 'Keita',
+                    branch: 'Barsha',
+                    orderNumber: 'ORD567890',
+                    customerName: 'Robert Brown',
+                    issueType: 'Food Quality',
+                    orderValue: 110.00,
+                    compensationValue: 40.00,
+                    responsibleParty: 'Restaurant',
+                    status: 'Closed',
+                    actionTaken: 'Replacement order sent',
+                    agentName: 'Agent B',
+                    dateClosed: new Date(currentYear, currentMonth - 1, 26).toISOString(),
+                    supportingFile: '',
+                    remarks: 'Customer accepted replacement',
+                    createdAt: new Date(currentYear, currentMonth - 1, 25).toISOString()
                 }
             ];
             
@@ -866,6 +1233,536 @@
             document.getElementById('dashboard-tab').addEventListener('shown.bs.tab', function() {
                 updateDashboard();
             });
+            
+            // File input change
+            document.getElementById('fileInput').addEventListener('change', function(e) {
+                handleFileSelect(e.target.files[0]);
+            });
+            
+            // Download template
+            document.getElementById('downloadTemplate').addEventListener('click', function() {
+                downloadTemplate();
+            });
+            
+            // Confirm import
+            document.getElementById('confirmImport').addEventListener('click', function() {
+                confirmImport();
+            });
+            
+            // Cancel import
+            document.getElementById('cancelImport').addEventListener('click', function() {
+                cancelImport();
+            });
+            
+            // Export all data
+            document.getElementById('exportAllData').addEventListener('click', function() {
+                exportAllData();
+            });
+            
+            // Drag and drop events
+            const uploadArea = document.getElementById('uploadArea');
+            
+            uploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                uploadArea.classList.add('dragover');
+            });
+            
+            uploadArea.addEventListener('dragleave', function(e) {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+            });
+            
+            uploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+                
+                if (e.dataTransfer.files.length) {
+                    handleFileSelect(e.dataTransfer.files[0]);
+                }
+            });
+            
+            // WhatsApp settings
+            document.getElementById('saveManagerSettings').addEventListener('click', function() {
+                saveManagerSettings();
+            });
+            
+            // WhatsApp message
+            document.getElementById('previewWhatsAppMessage').addEventListener('click', function() {
+                previewWhatsAppMessage();
+            });
+            
+            document.getElementById('sendWhatsAppMessage').addEventListener('click', function() {
+                sendWhatsAppMessage();
+            });
+            
+            document.getElementById('whatsappCaseSelect').addEventListener('change', function() {
+                document.getElementById('sendWhatsAppMessage').style.display = 'none';
+                document.getElementById('whatsappPreview').style.display = 'none';
+            });
+            
+            // Send WhatsApp from modal
+            document.getElementById('sendWhatsAppBtn').addEventListener('click', function() {
+                if (currentEditingCaseId) {
+                    sendCaseWhatsApp(currentEditingCaseId);
+                }
+            });
+        }
+
+        // Load manager settings
+        function loadManagerSettings() {
+            document.getElementById('managerName').value = managerSettings.name;
+            document.getElementById('managerPhone').value = managerSettings.phone;
+            document.getElementById('customMessage').value = managerSettings.customMessage;
+        }
+
+        // Save manager settings
+        function saveManagerSettings() {
+            managerSettings = {
+                name: document.getElementById('managerName').value,
+                phone: document.getElementById('managerPhone').value,
+                customMessage: document.getElementById('customMessage').value
+            };
+            
+            localStorage.setItem('managerSettings', JSON.stringify(managerSettings));
+            showToast('Manager settings saved successfully!', 'success');
+        }
+
+        // Update WhatsApp case select
+        function updateWhatsAppCaseSelect() {
+            const select = document.getElementById('whatsappCaseSelect');
+            select.innerHTML = '<option value="">Select a case to send</option>';
+            
+            compensationCases.forEach(caseItem => {
+                const option = document.createElement('option');
+                option.value = caseItem.id;
+                option.textContent = `${caseItem.id} - ${caseItem.customerName} (${caseItem.platform})`;
+                select.appendChild(option);
+            });
+        }
+
+        // Preview WhatsApp message
+        function previewWhatsAppMessage() {
+            const caseId = document.getElementById('whatsappCaseSelect').value;
+            const urgency = document.getElementById('urgencyLevel').value;
+            
+            if (!caseId) {
+                showToast('Please select a case first', 'warning');
+                return;
+            }
+            
+            const caseItem = compensationCases.find(c => c.id === caseId);
+            if (!caseItem) return;
+            
+            const message = generateWhatsAppMessage(caseItem, urgency);
+            
+            document.getElementById('whatsappMessageContent').innerHTML = message.replace(/\n/g, '<br>');
+            document.getElementById('whatsappTimestamp').textContent = new Date().toLocaleTimeString();
+            document.getElementById('whatsappPreview').style.display = 'block';
+            document.getElementById('sendWhatsAppMessage').style.display = 'inline-block';
+        }
+
+        // Generate WhatsApp message
+        function generateWhatsAppMessage(caseItem, urgency) {
+            let message = managerSettings.customMessage;
+            
+            // Replace placeholders
+            message = message.replace(/{caseId}/g, caseItem.id);
+            message = message.replace(/{date}/g, formatDate(caseItem.date));
+            message = message.replace(/{platform}/g, caseItem.platform);
+            message = message.replace(/{branch}/g, caseItem.branch);
+            message = message.replace(/{orderNumber}/g, caseItem.orderNumber);
+            message = message.replace(/{customerName}/g, caseItem.customerName);
+            message = message.replace(/{issueType}/g, caseItem.issueType);
+            message = message.replace(/{orderValue}/g, caseItem.orderValue.toFixed(2));
+            message = message.replace(/{compensationValue}/g, caseItem.compensationValue.toFixed(2));
+            message = message.replace(/{responsibleParty}/g, caseItem.responsibleParty);
+            message = message.replace(/{actionTaken}/g, caseItem.actionTaken || 'No action taken yet');
+            
+            // Add urgency prefix
+            if (urgency === 'High') {
+                message = '🔴 HIGH PRIORITY\n\n' + message;
+            } else if (urgency === 'Urgent') {
+                message = '🚨 URGENT\n\n' + message;
+            }
+            
+            return message;
+        }
+
+        // Send WhatsApp message
+        function sendWhatsAppMessage() {
+            const caseId = document.getElementById('whatsappCaseSelect').value;
+            const urgency = document.getElementById('urgencyLevel').value;
+            
+            if (!caseId) {
+                showToast('Please select a case first', 'warning');
+                return;
+            }
+            
+            sendCaseWhatsApp(caseId, urgency);
+        }
+
+        // Send case via WhatsApp
+        function sendCaseWhatsApp(caseId, urgency = 'Normal') {
+            const caseItem = compensationCases.find(c => c.id === caseId);
+            if (!caseItem) return;
+            
+            const message = generateWhatsAppMessage(caseItem, urgency);
+            const phoneNumber = managerSettings.phone.replace(/[^\d+]/g, '');
+            
+            // Create WhatsApp URL
+            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+            
+            // Save to history
+            const historyItem = {
+                caseId: caseId,
+                sentTo: managerSettings.name,
+                message: message.substring(0, 100) + '...',
+                urgency: urgency,
+                status: 'Sent',
+                sentTime: new Date().toISOString()
+            };
+            
+            whatsappHistory.unshift(historyItem);
+            localStorage.setItem('whatsappHistory', JSON.stringify(whatsappHistory));
+            loadWhatsAppHistory();
+            
+            // Update case status
+            const caseIndex = compensationCases.findIndex(c => c.id === caseId);
+            if (caseIndex !== -1) {
+                compensationCases[caseIndex].status = 'Manager Review';
+                localStorage.setItem('compensationCases', JSON.stringify(compensationCases));
+                loadCases();
+                updateDashboard();
+            }
+            
+            // Open WhatsApp
+            window.open(whatsappUrl, '_blank');
+            
+            showToast('Message sent via WhatsApp successfully!', 'success');
+            
+            // Close modal if open
+            const modal = bootstrap.Modal.getInstance(document.getElementById('caseDetailsModal'));
+            if (modal) modal.hide();
+            
+            // Reset WhatsApp form
+            document.getElementById('whatsappCaseSelect').value = '';
+            document.getElementById('urgencyLevel').value = 'Normal';
+            document.getElementById('whatsappPreview').style.display = 'none';
+            document.getElementById('sendWhatsAppMessage').style.display = 'none';
+        }
+
+        // Load WhatsApp history
+        function loadWhatsAppHistory() {
+            const tbody = document.getElementById('whatsappHistoryBody');
+            
+            if (whatsappHistory.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center">No WhatsApp messages sent yet</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = '';
+            
+            whatsappHistory.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.caseId}</td>
+                    <td>${item.sentTo}</td>
+                    <td>${item.message}</td>
+                    <td><span class="badge bg-${item.urgency === 'Urgent' ? 'danger' : item.urgency === 'High' ? 'warning' : 'info'}">${item.urgency}</span></td>
+                    <td><span class="badge bg-success">${item.status}</span></td>
+                    <td>${formatDateTime(item.sentTime)}</td>
+                    <td>
+                        <button class="btn btn-sm btn-info" onclick="viewWhatsAppDetails('${item.caseId}', '${item.sentTime}')">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // View WhatsApp details
+        function viewWhatsAppDetails(caseId, sentTime) {
+            const historyItem = whatsappHistory.find(h => h.caseId === caseId && h.sentTime === sentTime);
+            if (!historyItem) return;
+            
+            const caseItem = compensationCases.find(c => c.id === caseId);
+            if (!caseItem) return;
+            
+            const modal = new bootstrap.Modal(document.getElementById('caseDetailsModal'));
+            const content = document.getElementById('caseDetailsContent');
+            
+            content.innerHTML = `
+                <div class="alert alert-info">
+                    <h6><i class="bi bi-whatsapp"></i> WhatsApp Message Details</h6>
+                    <p><strong>Sent To:</strong> ${historyItem.sentTo}</p>
+                    <p><strong>Phone:</strong> ${managerSettings.phone}</p>
+                    <p><strong>Sent Time:</strong> ${formatDateTime(historyItem.sentTime)}</p>
+                    <p><strong>Urgency:</strong> ${historyItem.urgency}</p>
+                </div>
+                
+                <h6>Message Content:</h6>
+                <div class="border p-3 bg-light">
+                    <pre style="white-space: pre-wrap; font-family: inherit;">${historyItem.message}</pre>
+                </div>
+                
+                <hr>
+                
+                <h6>Case Details:</h6>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Case ID:</strong> ${caseItem.id}</p>
+                        <p><strong>Date:</strong> ${formatDate(caseItem.date)}</p>
+                        <p><strong>Platform:</strong> ${caseItem.platform}</p>
+                        <p><strong>Branch:</strong> ${caseItem.branch}</p>
+                        <p><strong>Order Number:</strong> ${caseItem.orderNumber}</p>
+                        <p><strong>Customer Name:</strong> ${caseItem.customerName}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Issue Type:</strong> ${caseItem.issueType}</p>
+                        <p><strong>Order Value:</strong> AED ${caseItem.orderValue.toFixed(2)}</p>
+                        <p><strong>Compensation Value:</strong> AED ${caseItem.compensationValue.toFixed(2)}</p>
+                        <p><strong>Responsible Party:</strong> ${caseItem.responsibleParty}</p>
+                        <p><strong>Status:</strong> <span class="status-badge status-${caseItem.status.toLowerCase()}">${caseItem.status}</span></p>
+                        <p><strong>Agent Name:</strong> ${caseItem.agentName}</p>
+                    </div>
+                </div>
+            `;
+            
+            currentEditingCaseId = caseId;
+            modal.show();
+        }
+
+        // Handle file selection
+        function handleFileSelect(file) {
+            if (!file) return;
+            
+            const fileType = file.name.split('.').pop().toLowerCase();
+            if (fileType !== 'xlsx' && fileType !== 'xls') {
+                showToast('Please select a valid Excel file (.xlsx or .xls)', 'danger');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const jsonData = XLSX.utils.sheet_to_json(firstSheet);
+                    
+                    if (jsonData.length === 0) {
+                        showToast('The Excel file is empty', 'warning');
+                        return;
+                    }
+                    
+                    // Process and validate data
+                    importData = processImportData(jsonData);
+                    
+                    if (importData.length === 0) {
+                        showToast('No valid data found in the Excel file', 'warning');
+                        return;
+                    }
+                    
+                    // Show preview
+                    showImportPreview();
+                    
+                } catch (error) {
+                    console.error('Error reading Excel file:', error);
+                    showToast('Error reading Excel file. Please check the format.', 'danger');
+                }
+            };
+            
+            reader.readAsArrayBuffer(file);
+        }
+
+        // Process import data
+        function processImportData(jsonData) {
+            const processedData = [];
+            
+            jsonData.forEach(row => {
+                // Map Excel columns to our data structure
+                const caseData = {
+                    id: row['Case ID'] || generateNewCaseId(),
+                    date: formatDateForImport(row['Date']) || new Date().toISOString().split('T')[0],
+                    platform: row['Platform'] || '',
+                    branch: row['Branch'] || '',
+                    orderNumber: row['Order Number'] || '',
+                    customerName: row['Customer Name'] || '',
+                    issueType: row['Issue Type'] || '',
+                    orderValue: parseFloat(row['Order Value']) || 0,
+                    compensationValue: parseFloat(row['Compensation Value']) || 0,
+                    responsibleParty: row['Responsible Party'] || '',
+                    status: row['Status'] || 'Open',
+                    actionTaken: row['Action Taken'] || '',
+                    agentName: row['Agent Name'] || '',
+                    dateClosed: row['Date Closed'] || null,
+                    supportingFile: row['Supporting File'] || '',
+                    remarks: row['Remarks'] || '',
+                    createdAt: new Date().toISOString()
+                };
+                
+                // Validate required fields
+                if (caseData.platform && caseData.branch && caseData.orderNumber && caseData.customerName) {
+                    processedData.push(caseData);
+                }
+            });
+            
+            return processedData;
+        }
+
+        // Format date for import
+        function formatDateForImport(dateValue) {
+            if (!dateValue) return null;
+            
+            // Handle Excel date numbers
+            if (typeof dateValue === 'number') {
+                const excelDate = new Date((dateValue - 25569) * 86400 * 1000);
+                return excelDate.toISOString().split('T')[0];
+            }
+            
+            // Handle string dates
+            const date = new Date(dateValue);
+            if (isNaN(date.getTime())) return null;
+            
+            return date.toISOString().split('T')[0];
+        }
+
+        // Generate new case ID for import
+        function generateNewCaseId() {
+            const date = new Date();
+            const timestamp = date.getTime();
+            const random = Math.floor(Math.random() * 1000);
+            return `CC-${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}-${String(random).padStart(3, '0')}`;
+        }
+
+        // Show import preview
+        function showImportPreview() {
+            const previewBody = document.getElementById('importPreviewBody');
+            previewBody.innerHTML = '';
+            
+            importData.slice(0, 10).forEach(caseData => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${caseData.id}</td>
+                    <td>${caseData.date}</td>
+                    <td>${caseData.platform}</td>
+                    <td>${caseData.branch}</td>
+                    <td>${caseData.orderNumber}</td>
+                    <td>${caseData.customerName}</td>
+                    <td>${caseData.issueType}</td>
+                    <td>AED ${caseData.compensationValue.toFixed(2)}</td>
+                    <td><span class="status-badge status-${caseData.status.toLowerCase()}">${caseData.status}</span></td>
+                    <td>${caseData.agentName}</td>
+                `;
+                previewBody.appendChild(row);
+            });
+            
+            if (importData.length > 10) {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td colspan="10" class="text-center">... and ${importData.length - 10} more records</td>`;
+                previewBody.appendChild(row);
+            }
+            
+            document.getElementById('importPreview').style.display = 'block';
+            showToast(`Preview loaded: ${importData.length} cases ready to import`, 'info');
+        }
+
+        // Confirm import
+        function confirmImport() {
+            showLoadingSpinner(true);
+            
+            // Add imported data to existing cases
+            compensationCases = [...compensationCases, ...importData];
+            
+            // Save to localStorage
+            localStorage.setItem('compensationCases', JSON.stringify(compensationCases));
+            
+            // Update UI
+            setTimeout(() => {
+                loadCases();
+                updateDashboard();
+                updateLastUpdated();
+                updateWhatsAppCaseSelect();
+                
+                showLoadingSpinner(false);
+                
+                // Reset import
+                cancelImport();
+                
+                // Show success message
+                showToast(`Successfully imported ${importData.length} cases!`, 'success');
+                
+                // Switch to dashboard tab
+                const dashboardTab = new bootstrap.Tab(document.getElementById('dashboard-tab'));
+                dashboardTab.show();
+            }, 500);
+        }
+
+        // Cancel import
+        function cancelImport() {
+            document.getElementById('importPreview').style.display = 'none';
+            document.getElementById('fileInput').value = '';
+            importData = [];
+        }
+
+        // Download template
+        function downloadTemplate() {
+            // Create template data
+            const templateData = [
+                {
+                    'Case ID': 'CC-20231201-001',
+                    'Date': '2023-12-01',
+                    'Platform': 'Noon',
+                    'Branch': 'Hamdan',
+                    'Order Number': 'ORD123456',
+                    'Customer Name': 'John Doe',
+                    'Issue Type': 'Missing Item',
+                    'Order Value': 85.50,
+                    'Compensation Value': 20.00,
+                    'Responsible Party': 'Restaurant',
+                    'Status': 'Closed',
+                    'Action Taken': 'Refund processed via platform',
+                    'Agent Name': 'Agent A',
+                    'Date Closed': '2023-12-02',
+                    'Supporting File': '',
+                    'Remarks': 'Customer satisfied with resolution'
+                }
+            ];
+            
+            // Create workbook
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.json_to_sheet(templateData);
+            XLSX.utils.book_append_sheet(wb, ws, 'Compensation Cases');
+            
+            // Generate file name
+            const fileName = `Compensation_Cases_Template_${new Date().toISOString().split('T')[0]}.xlsx`;
+            
+            // Download file
+            XLSX.writeFile(wb, fileName);
+            
+            showToast('Template downloaded successfully!', 'success');
+        }
+
+        // Export all data
+        function exportAllData() {
+            showLoadingSpinner(true);
+            
+            setTimeout(() => {
+                // Create workbook
+                const wb = XLSX.utils.book_new();
+                const ws = XLSX.utils.json_to_sheet(compensationCases);
+                XLSX.utils.book_append_sheet(wb, ws, 'Compensation Cases');
+                
+                // Generate file name
+                const fileName = `Compensation_Cases_All_Data_${new Date().toISOString().split('T')[0]}.xlsx`;
+                
+                // Download file
+                XLSX.writeFile(wb, fileName);
+                
+                showLoadingSpinner(false);
+                showToast('All data exported successfully!', 'success');
+            }, 500);
         }
 
         // Save new case
@@ -908,6 +1805,7 @@
                 loadCases();
                 updateDashboard();
                 updateLastUpdated();
+                updateWhatsAppCaseSelect();
                 
                 showLoadingSpinner(false);
                 
@@ -947,7 +1845,7 @@
                     <td>${caseItem.customerName}</td>
                     <td>${caseItem.issueType}</td>
                     <td>AED ${caseItem.compensationValue.toFixed(2)}</td>
-                    <td><span class="status-badge status-${caseItem.status.toLowerCase()}">${caseItem.status}</span></td>
+                    <td><span class="status-badge status-${caseItem.status.toLowerCase().replace(' ', '-')}">${caseItem.status}</span></td>
                     <td>${caseItem.agentName}</td>
                     <td>
                         <button class="btn btn-sm btn-info" onclick="viewCaseDetails('${caseItem.id}')">
@@ -955,6 +1853,9 @@
                         </button>
                         <button class="btn btn-sm btn-warning" onclick="editCase('${caseItem.id}')">
                             <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-sm btn-success" onclick="sendCaseWhatsApp('${caseItem.id}')">
+                            <i class="bi bi-whatsapp"></i>
                         </button>
                         <button class="btn btn-sm btn-danger" onclick="deleteCase('${caseItem.id}')">
                             <i class="bi bi-trash"></i>
@@ -1162,6 +2063,7 @@
                         backgroundColor: [
                             'rgba(255, 193, 7, 0.7)',
                             'rgba(23, 162, 184, 0.7)',
+                            'rgba(111, 66, 193, 0.7)',
                             'rgba(40, 167, 69, 0.7)',
                             'rgba(220, 53, 69, 0.7)',
                             'rgba(108, 117, 125, 0.7)'
@@ -1169,6 +2071,7 @@
                         borderColor: [
                             'rgba(255, 193, 7, 1)',
                             'rgba(23, 162, 184, 1)',
+                            'rgba(111, 66, 193, 1)',
                             'rgba(40, 167, 69, 1)',
                             'rgba(220, 53, 69, 1)',
                             'rgba(108, 117, 125, 1)'
@@ -1317,7 +2220,7 @@
                         <p><strong>Order Value:</strong> AED ${caseItem.orderValue.toFixed(2)}</p>
                         <p><strong>Compensation Value:</strong> AED ${caseItem.compensationValue.toFixed(2)}</p>
                         <p><strong>Responsible Party:</strong> ${caseItem.responsibleParty}</p>
-                        <p><strong>Status:</strong> <span class="status-badge status-${caseItem.status.toLowerCase()}">${caseItem.status}</span></p>
+                        <p><strong>Status:</strong> <span class="status-badge status-${caseItem.status.toLowerCase().replace(' ', '-')}">${caseItem.status}</span></p>
                         <p><strong>Agent Name:</strong> ${caseItem.agentName}</p>
                     </div>
                 </div>
@@ -1439,6 +2342,7 @@
                         <select class="form-select" id="editStatus" required>
                             <option value="Open" ${caseItem.status === 'Open' ? 'selected' : ''}>Open</option>
                             <option value="Pending" ${caseItem.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                            <option value="Manager Review" ${caseItem.status === 'Manager Review' ? 'selected' : ''}>Manager Review</option>
                             <option value="Approved" ${caseItem.status === 'Approved' ? 'selected' : ''}>Approved</option>
                             <option value="Rejected" ${caseItem.status === 'Rejected' ? 'selected' : ''}>Rejected</option>
                             <option value="Closed" ${caseItem.status === 'Closed' ? 'selected' : ''}>Closed</option>
@@ -1510,6 +2414,7 @@
             loadCases();
             updateDashboard();
             updateLastUpdated();
+            updateWhatsAppCaseSelect();
             
             // Show success message
             showToast('Case updated successfully!', 'success');
@@ -1526,6 +2431,7 @@
             loadCases();
             updateDashboard();
             updateLastUpdated();
+            updateWhatsAppCaseSelect();
             
             // Show success message
             showToast('Case deleted successfully!', 'success');
@@ -1790,7 +2696,7 @@
                                     <td>${c.customerName}</td>
                                     <td>${c.issueType}</td>
                                     <td>AED ${c.compensationValue.toFixed(2)}</td>
-                                    <td><span class="status-badge status-${c.status.toLowerCase()}">${c.status}</span></td>
+                                    <td><span class="status-badge status-${c.status.toLowerCase().replace(' ', '-')}">${c.status}</span></td>
                                     <td>${c.agentName}</td>
                                 </tr>
                             `).join('')}
@@ -2069,6 +2975,13 @@
             if (!dateString) return 'N/A';
             const date = new Date(dateString);
             return date.toLocaleDateString();
+        }
+
+        // Format date time
+        function formatDateTime(dateString) {
+            if (!dateString) return 'N/A';
+            const date = new Date(dateString);
+            return date.toLocaleString();
         }
 
         // Update last updated timestamp
