@@ -240,6 +240,42 @@
             margin-bottom: 20px;
         }
         
+        .dynamic-input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .dynamic-input-group input {
+            flex: 1;
+        }
+        
+        .dynamic-list {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 10px;
+        }
+        
+        .dynamic-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .dynamic-list-item:last-child {
+            border-bottom: none;
+        }
+        
+        .dynamic-list-item button {
+            padding: 2px 8px;
+            font-size: 0.8rem;
+        }
+        
         @media (max-width: 768px) {
             .chart-container {
                 height: 250px;
@@ -308,6 +344,11 @@
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="whatsapp-tab" data-bs-toggle="tab" data-bs-target="#whatsapp" type="button" role="tab">
                     <i class="bi bi-whatsapp"></i> WhatsApp
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab">
+                    <i class="bi bi-gear"></i> Settings
                 </button>
             </li>
             <li class="nav-item" role="presentation">
@@ -478,14 +519,6 @@
                                     <label for="branch" class="form-label">Branch</label>
                                     <select class="form-select" id="branch" required>
                                         <option value="">Select Branch</option>
-                                        <option value="Hamdan">Hamdan</option>
-                                        <option value="Khaldia">Khaldia</option>
-                                        <option value="Shabiya 11">Shabiya 11</option>
-                                        <option value="Muroor">Muroor</option>
-                                        <option value="Electra">Electra</option>
-                                        <option value="Barsha">Barsha</option>
-                                        <option value="Satwa">Satwa</option>
-                                        <option value="New Branch">New Branch</option>
                                     </select>
                                 </div>
                             </div>
@@ -504,13 +537,6 @@
                                     <label for="issueType" class="form-label">Issue Type</label>
                                     <select class="form-select" id="issueType" required>
                                         <option value="">Select Issue Type</option>
-                                        <option value="Missing Item">Missing Item</option>
-                                        <option value="Late Delivery">Late Delivery</option>
-                                        <option value="Wrong Order">Wrong Order</option>
-                                        <option value="Refund Request">Refund Request</option>
-                                        <option value="Double Charge">Double Charge</option>
-                                        <option value="Food Quality">Food Quality</option>
-                                        <option value="Other">Other</option>
                                     </select>
                                 </div>
                                 <div class="col-md-6 mb-3">
@@ -558,8 +584,8 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12 mb-3">
-                                    <label for="remarks" class="form-label">Remarks / Notes</label>
-                                    <textarea class="form-control" id="remarks" rows="3"></textarea>
+                                    <label for="customerComment" class="form-label">Customer Comment</label>
+                                    <textarea class="form-control" id="customerComment" rows="3"></textarea>
                                 </div>
                             </div>
                             <div class="row">
@@ -596,14 +622,6 @@
                             <label for="filterBranch" class="form-label">Filter by Branch</label>
                             <select class="form-select" id="filterBranch">
                                 <option value="">All Branches</option>
-                                <option value="Hamdan">Hamdan</option>
-                                <option value="Khaldia">Khaldia</option>
-                                <option value="Shabiya 11">Shabiya 11</option>
-                                <option value="Muroor">Muroor</option>
-                                <option value="Electra">Electra</option>
-                                <option value="Barsha">Barsha</option>
-                                <option value="Satwa">Satwa</option>
-                                <option value="New Branch">New Branch</option>
                             </select>
                         </div>
                         <div class="col-md-3">
@@ -866,6 +884,43 @@ Thank you</textarea>
                 </div>
             </div>
 
+            <!-- Settings Tab -->
+            <div class="tab-pane fade" id="settings" role="tabpanel">
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h5>Manage Issue Types</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="dynamic-input-group">
+                            <input type="text" class="form-control" id="newIssueType" placeholder="Enter new issue type">
+                            <button class="btn btn-primary" id="addIssueType">
+                                <i class="bi bi-plus"></i> Add
+                            </button>
+                        </div>
+                        <div class="dynamic-list" id="issueTypesList">
+                            <!-- Issue types will be listed here -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h5>Manage Branches</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="dynamic-input-group">
+                            <input type="text" class="form-control" id="newBranch" placeholder="Enter new branch name">
+                            <button class="btn btn-primary" id="addBranch">
+                                <i class="bi bi-plus"></i> Add
+                            </button>
+                        </div>
+                        <div class="dynamic-list" id="branchesList">
+                            <!-- Branches will be listed here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Reports Tab -->
             <div class="tab-pane fade" id="reports" role="tabpanel">
                 <div class="card mt-4">
@@ -1027,6 +1082,28 @@ Please reply with APPROVED or REJECTED
 Thank you`
         };
 
+        // Initialize dynamic data
+        let issueTypes = JSON.parse(localStorage.getItem('issueTypes')) || [
+            'Missing Item',
+            'Late Delivery',
+            'Wrong Order',
+            'Refund Request',
+            'Double Charge',
+            'Food Quality',
+            'Other'
+        ];
+
+        let branches = JSON.parse(localStorage.getItem('branches')) || [
+            'Hamdan',
+            'Khaldia',
+            'Shabiya 11',
+            'Muroor',
+            'Electra',
+            'Barsha',
+            'Satwa',
+            'New Branch'
+        ];
+
         // Initialize app
         document.addEventListener('DOMContentLoaded', function() {
             // Set today's date as default
@@ -1042,6 +1119,8 @@ Thank you`
             loadManagerSettings();
             loadWhatsAppHistory();
             updateWhatsAppCaseSelect();
+            updateDynamicSelects();
+            loadSettingsData();
             
             // Set up event listeners
             setupEventListeners();
@@ -1086,7 +1165,7 @@ Thank you`
                     agentName: 'Agent A',
                     dateClosed: new Date(currentYear, currentMonth, 6).toISOString(),
                     supportingFile: '',
-                    remarks: 'Customer satisfied with resolution',
+                    customerComment: 'Customer was satisfied with the resolution',
                     createdAt: new Date(currentYear, currentMonth, 5).toISOString()
                 },
                 {
@@ -1105,7 +1184,7 @@ Thank you`
                     agentName: 'Agent B',
                     dateClosed: null,
                     supportingFile: '',
-                    remarks: 'Waiting for customer feedback',
+                    customerComment: 'Customer is very upset about the delay',
                     createdAt: new Date(currentYear, currentMonth, 10).toISOString()
                 },
                 {
@@ -1124,7 +1203,7 @@ Thank you`
                     agentName: 'Agent A',
                     dateClosed: null,
                     supportingFile: '',
-                    remarks: 'Customer notified about replacement',
+                    customerComment: 'Customer received wrong items and wants replacement',
                     createdAt: new Date(currentYear, currentMonth, 15).toISOString()
                 },
                 {
@@ -1143,7 +1222,7 @@ Thank you`
                     agentName: 'Agent C',
                     dateClosed: new Date(currentYear, currentMonth - 1, 21).toISOString(),
                     supportingFile: '',
-                    remarks: 'Platform issue resolved',
+                    customerComment: 'Customer appreciated quick refund',
                     createdAt: new Date(currentYear, currentMonth - 1, 20).toISOString()
                 },
                 {
@@ -1162,7 +1241,7 @@ Thank you`
                     agentName: 'Agent B',
                     dateClosed: new Date(currentYear, currentMonth - 1, 26).toISOString(),
                     supportingFile: '',
-                    remarks: 'Customer accepted replacement',
+                    customerComment: 'Customer accepted the replacement',
                     createdAt: new Date(currentYear, currentMonth - 1, 25).toISOString()
                 }
             ];
@@ -1306,6 +1385,188 @@ Thank you`
                     sendCaseWhatsApp(currentEditingCaseId);
                 }
             });
+            
+            // Settings - Add issue type
+            document.getElementById('addIssueType').addEventListener('click', function() {
+                addIssueType();
+            });
+            
+            document.getElementById('newIssueType').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    addIssueType();
+                }
+            });
+            
+            // Settings - Add branch
+            document.getElementById('addBranch').addEventListener('click', function() {
+                addBranch();
+            });
+            
+            document.getElementById('newBranch').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    addBranch();
+                }
+            });
+        }
+
+        // Update dynamic selects
+        function updateDynamicSelects() {
+            // Update issue type selects
+            const issueTypeSelects = ['issueType', 'filterIssueType'];
+            issueTypeSelects.forEach(selectId => {
+                const select = document.getElementById(selectId);
+                if (select) {
+                    const currentValue = select.value;
+                    select.innerHTML = '<option value="">Select Issue Type</option>';
+                    issueTypes.forEach(type => {
+                        const option = document.createElement('option');
+                        option.value = type;
+                        option.textContent = type;
+                        if (type === currentValue) option.selected = true;
+                        select.appendChild(option);
+                    });
+                }
+            });
+            
+            // Update branch selects
+            const branchSelects = ['branch', 'filterBranch'];
+            branchSelects.forEach(selectId => {
+                const select = document.getElementById(selectId);
+                if (select) {
+                    const currentValue = select.value;
+                    select.innerHTML = '<option value="">Select Branch</option>';
+                    branches.forEach(branch => {
+                        const option = document.createElement('option');
+                        option.value = branch;
+                        option.textContent = branch;
+                        if (branch === currentValue) option.selected = true;
+                        select.appendChild(option);
+                    });
+                }
+            });
+        }
+
+        // Load settings data
+        function loadSettingsData() {
+            // Load issue types
+            const issueTypesList = document.getElementById('issueTypesList');
+            issueTypesList.innerHTML = '';
+            issueTypes.forEach(type => {
+                const item = document.createElement('div');
+                item.className = 'dynamic-list-item';
+                item.innerHTML = `
+                    <span>${type}</span>
+                    <button class="btn btn-sm btn-danger" onclick="removeIssueType('${type}')">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                `;
+                issueTypesList.appendChild(item);
+            });
+            
+            // Load branches
+            const branchesList = document.getElementById('branchesList');
+            branchesList.innerHTML = '';
+            branches.forEach(branch => {
+                const item = document.createElement('div');
+                item.className = 'dynamic-list-item';
+                item.innerHTML = `
+                    <span>${branch}</span>
+                    <button class="btn btn-sm btn-danger" onclick="removeBranch('${branch}')">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                `;
+                branchesList.appendChild(item);
+            });
+        }
+
+        // Add issue type
+        function addIssueType() {
+            const input = document.getElementById('newIssueType');
+            const value = input.value.trim();
+            
+            if (!value) {
+                showToast('Please enter an issue type', 'warning');
+                return;
+            }
+            
+            if (issueTypes.includes(value)) {
+                showToast('Issue type already exists', 'warning');
+                return;
+            }
+            
+            issueTypes.push(value);
+            localStorage.setItem('issueTypes', JSON.stringify(issueTypes));
+            
+            input.value = '';
+            updateDynamicSelects();
+            loadSettingsData();
+            
+            showToast('Issue type added successfully!', 'success');
+        }
+
+        // Remove issue type
+        function removeIssueType(type) {
+            if (!confirm(`Are you sure you want to remove "${type}"?`)) return;
+            
+            // Check if any cases use this issue type
+            const casesWithIssue = compensationCases.filter(c => c.issueType === type);
+            if (casesWithIssue.length > 0) {
+                showToast(`Cannot remove: ${casesWithIssue.length} case(s) use this issue type`, 'danger');
+                return;
+            }
+            
+            issueTypes = issueTypes.filter(t => t !== type);
+            localStorage.setItem('issueTypes', JSON.stringify(issueTypes));
+            
+            updateDynamicSelects();
+            loadSettingsData();
+            
+            showToast('Issue type removed successfully!', 'success');
+        }
+
+        // Add branch
+        function addBranch() {
+            const input = document.getElementById('newBranch');
+            const value = input.value.trim();
+            
+            if (!value) {
+                showToast('Please enter a branch name', 'warning');
+                return;
+            }
+            
+            if (branches.includes(value)) {
+                showToast('Branch already exists', 'warning');
+                return;
+            }
+            
+            branches.push(value);
+            localStorage.setItem('branches', JSON.stringify(branches));
+            
+            input.value = '';
+            updateDynamicSelects();
+            loadSettingsData();
+            
+            showToast('Branch added successfully!', 'success');
+        }
+
+        // Remove branch
+        function removeBranch(branch) {
+            if (!confirm(`Are you sure you want to remove "${branch}"?`)) return;
+            
+            // Check if any cases use this branch
+            const casesWithBranch = compensationCases.filter(c => c.branch === branch);
+            if (casesWithBranch.length > 0) {
+                showToast(`Cannot remove: ${casesWithBranch.length} case(s) use this branch`, 'danger');
+                return;
+            }
+            
+            branches = branches.filter(b => b !== branch);
+            localStorage.setItem('branches', JSON.stringify(branches));
+            
+            updateDynamicSelects();
+            loadSettingsData();
+            
+            showToast('Branch removed successfully!', 'success');
         }
 
         // Load manager settings
@@ -1523,7 +1784,7 @@ Thank you`
                         <p><strong>Order Value:</strong> AED ${caseItem.orderValue.toFixed(2)}</p>
                         <p><strong>Compensation Value:</strong> AED ${caseItem.compensationValue.toFixed(2)}</p>
                         <p><strong>Responsible Party:</strong> ${caseItem.responsibleParty}</p>
-                        <p><strong>Status:</strong> <span class="status-badge status-${caseItem.status.toLowerCase()}">${caseItem.status}</span></p>
+                        <p><strong>Status:</strong> <span class="status-badge status-${caseItem.status.toLowerCase().replace(' ', '-')}">${caseItem.status}</span></p>
                         <p><strong>Agent Name:</strong> ${caseItem.agentName}</p>
                     </div>
                 </div>
@@ -1598,7 +1859,7 @@ Thank you`
                     agentName: row['Agent Name'] || '',
                     dateClosed: row['Date Closed'] || null,
                     supportingFile: row['Supporting File'] || '',
-                    remarks: row['Remarks'] || '',
+                    customerComment: row['Customer Comment'] || '',
                     createdAt: new Date().toISOString()
                 };
                 
@@ -1652,7 +1913,7 @@ Thank you`
                     <td>${caseData.customerName}</td>
                     <td>${caseData.issueType}</td>
                     <td>AED ${caseData.compensationValue.toFixed(2)}</td>
-                    <td><span class="status-badge status-${caseData.status.toLowerCase()}">${caseData.status}</span></td>
+                    <td><span class="status-badge status-${caseData.status.toLowerCase().replace(' ', '-')}">${caseData.status}</span></td>
                     <td>${caseData.agentName}</td>
                 `;
                 previewBody.appendChild(row);
@@ -1726,7 +1987,7 @@ Thank you`
                     'Agent Name': 'Agent A',
                     'Date Closed': '2023-12-02',
                     'Supporting File': '',
-                    'Remarks': 'Customer satisfied with resolution'
+                    'Customer Comment': 'Customer satisfied with resolution'
                 }
             ];
             
@@ -1785,7 +2046,7 @@ Thank you`
                 agentName: document.getElementById('agentName').value,
                 dateClosed: document.getElementById('status').value === 'Closed' ? new Date().toISOString() : null,
                 supportingFile: document.getElementById('supportingFile').value,
-                remarks: document.getElementById('remarks').value,
+                customerComment: document.getElementById('customerComment').value,
                 createdAt: new Date().toISOString()
             };
             
@@ -2232,8 +2493,8 @@ Thank you`
                 </div>
                 <div class="row mt-3">
                     <div class="col-12">
-                        <p><strong>Remarks / Notes:</strong></p>
-                        <p>${caseItem.remarks || 'No remarks'}</p>
+                        <p><strong>Customer Comment:</strong></p>
+                        <p>${caseItem.customerComment || 'No customer comment'}</p>
                     </div>
                 </div>
                 ${caseItem.supportingFile ? `
@@ -2283,14 +2544,7 @@ Thank you`
                     <div class="col-md-6 mb-3">
                         <label for="editBranch" class="form-label">Branch</label>
                         <select class="form-select" id="editBranch" required>
-                            <option value="Hamdan" ${caseItem.branch === 'Hamdan' ? 'selected' : ''}>Hamdan</option>
-                            <option value="Khaldia" ${caseItem.branch === 'Khaldia' ? 'selected' : ''}>Khaldia</option>
-                            <option value="Shabiya 11" ${caseItem.branch === 'Shabiya 11' ? 'selected' : ''}>Shabiya 11</option>
-                            <option value="Muroor" ${caseItem.branch === 'Muroor' ? 'selected' : ''}>Muroor</option>
-                            <option value="Electra" ${caseItem.branch === 'Electra' ? 'selected' : ''}>Electra</option>
-                            <option value="Barsha" ${caseItem.branch === 'Barsha' ? 'selected' : ''}>Barsha</option>
-                            <option value="Satwa" ${caseItem.branch === 'Satwa' ? 'selected' : ''}>Satwa</option>
-                            <option value="New Branch" ${caseItem.branch === 'New Branch' ? 'selected' : ''}>New Branch</option>
+                            ${branches.map(branch => `<option value="${branch}" ${caseItem.branch === branch ? 'selected' : ''}>${branch}</option>`).join('')}
                         </select>
                     </div>
                 </div>
@@ -2308,13 +2562,7 @@ Thank you`
                     <div class="col-md-6 mb-3">
                         <label for="editIssueType" class="form-label">Issue Type</label>
                         <select class="form-select" id="editIssueType" required>
-                            <option value="Missing Item" ${caseItem.issueType === 'Missing Item' ? 'selected' : ''}>Missing Item</option>
-                            <option value="Late Delivery" ${caseItem.issueType === 'Late Delivery' ? 'selected' : ''}>Late Delivery</option>
-                            <option value="Wrong Order" ${caseItem.issueType === 'Wrong Order' ? 'selected' : ''}>Wrong Order</option>
-                            <option value="Refund Request" ${caseItem.issueType === 'Refund Request' ? 'selected' : ''}>Refund Request</option>
-                            <option value="Double Charge" ${caseItem.issueType === 'Double Charge' ? 'selected' : ''}>Double Charge</option>
-                            <option value="Food Quality" ${caseItem.issueType === 'Food Quality' ? 'selected' : ''}>Food Quality</option>
-                            <option value="Other" ${caseItem.issueType === 'Other' ? 'selected' : ''}>Other</option>
+                            ${issueTypes.map(type => `<option value="${type}" ${caseItem.issueType === type ? 'selected' : ''}>${type}</option>`).join('')}
                         </select>
                     </div>
                     <div class="col-md-6 mb-3">
@@ -2361,8 +2609,8 @@ Thank you`
                 </div>
                 <div class="row">
                     <div class="col-md-12 mb-3">
-                        <label for="editRemarks" class="form-label">Remarks / Notes</label>
-                        <textarea class="form-control" id="editRemarks" rows="3">${caseItem.remarks || ''}</textarea>
+                        <label for="editCustomerComment" class="form-label">Customer Comment</label>
+                        <textarea class="form-control" id="editCustomerComment" rows="3">${caseItem.customerComment || ''}</textarea>
                     </div>
                 </div>
                 <div class="row">
@@ -2400,7 +2648,7 @@ Thank you`
                 actionTaken: document.getElementById('editActionTaken').value,
                 agentName: document.getElementById('editAgentName').value,
                 supportingFile: document.getElementById('editSupportingFile').value,
-                remarks: document.getElementById('editRemarks').value,
+                customerComment: document.getElementById('editCustomerComment').value,
                 dateClosed: (originalStatus !== 'Closed' && newStatus === 'Closed') ? new Date().toISOString() : compensationCases[caseIndex].dateClosed,
                 updatedAt: new Date().toISOString()
             };
@@ -2913,10 +3161,10 @@ Thank you`
         // Export to Excel
         function exportToExcel() {
             // Create CSV content
-            let csvContent = "Case ID,Date,Platform,Branch,Order Number,Customer Name,Issue Type,Order Value,Compensation Value,Responsible Party,Status,Action Taken,Agent Name,Date Closed,Supporting File,Remarks\n";
+            let csvContent = "Case ID,Date,Platform,Branch,Order Number,Customer Name,Issue Type,Order Value,Compensation Value,Responsible Party,Status,Action Taken,Agent Name,Date Closed,Supporting File,Customer Comment\n";
             
             compensationCases.forEach(c => {
-                csvContent += `${c.id},${c.date},${c.platform},${c.branch},${c.orderNumber},${c.customerName},${c.issueType},${c.orderValue},${c.compensationValue},${c.responsibleParty},${c.status},"${c.actionTaken}",${c.agentName},${c.dateClosed || ''},${c.supportingFile || ''},"${c.remarks}"\n`;
+                csvContent += `${c.id},${c.date},${c.platform},${c.branch},${c.orderNumber},${c.customerName},${c.issueType},${c.orderValue},${c.compensationValue},${c.responsibleParty},${c.status},"${c.actionTaken}",${c.agentName},${c.dateClosed || ''},${c.supportingFile || ''},"${c.customerComment || ''}"\n`;
             });
             
             // Create download link
