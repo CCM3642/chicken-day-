@@ -1,4 +1,3 @@
-<!-- Index.html -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -537,6 +536,66 @@
       font-weight: 500;
     }
     
+    /* Agent Performance Card */
+    .agent-performance-card {
+      background: var(--white);
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: var(--card-shadow);
+      margin-bottom: 20px;
+    }
+    
+    .agent-performance-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .agent-performance-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin: 0;
+    }
+    
+    .agent-performance-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+    }
+    
+    .agent-performance-item {
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+    }
+    
+    .agent-performance-label {
+      font-size: 0.8rem;
+      color: #666;
+      margin-bottom: 3px;
+    }
+    
+    .agent-performance-value {
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+    
+    .agent-performance-value.high {
+      color: var(--success-green);
+    }
+    
+    .agent-performance-value.medium {
+      color: var(--warning);
+    }
+    
+    .agent-performance-value.low {
+      color: var(--danger-red);
+    }
+    
     /* Responsive */
     @media (max-width: 992px) {
       .container {
@@ -648,7 +707,7 @@
           <div class="dashboard-card agents">
             <div class="icon"><i class="fas fa-user-secret"></i></div>
             <div class="content">
-              <p class="value" id="total-agents">12</p>
+              <p class="value" id="total-agents">7</p>
               <p class="label">Total Agents</p>
             </div>
           </div>
@@ -852,17 +911,80 @@
       <div class="content-body">
         <div class="section-controls">
           <input type="text" class="search-box" id="agent-search" placeholder="Search agents...">
+          <select id="month-filter" class="search-box" style="width: 200px;">
+            <option value="">All Months</option>
+            <option value="January">January</option>
+            <option value="February">February</option>
+            <option value="March">March</option>
+            <option value="April">April</option>
+            <option value="May">May</option>
+            <option value="June">June</option>
+            <option value="July">July</option>
+            <option value="August">August</option>
+            <option value="September">September</option>
+            <option value="October">October</option>
+            <option value="November">November</option>
+            <option value="December">December</option>
+          </select>
         </div>
+        
+        <!-- Agent Performance Summary Card -->
+        <div class="agent-performance-card">
+          <div class="agent-performance-header">
+            <h3 class="agent-performance-title">Agent Performance Summary</h3>
+            <span id="agent-summary-period" style="color: #666; font-size: 0.9rem;">All Months</span>
+          </div>
+          <div class="agent-performance-grid">
+            <div class="agent-performance-item">
+              <span class="agent-performance-label">Total Rings</span>
+              <span class="agent-performance-value" id="agent-total-rings">22,695</span>
+            </div>
+            <div class="agent-performance-item">
+              <span class="agent-performance-label">Answered</span>
+              <span class="agent-performance-value" id="agent-answered">11,574</span>
+            </div>
+            <div class="agent-performance-item">
+              <span class="agent-performance-label">Missed</span>
+              <span class="agent-performance-value" id="agent-missed">11,121</span>
+            </div>
+            <div class="agent-performance-item">
+              <span class="agent-performance-label">Missed Rate</span>
+              <span class="agent-performance-value medium" id="agent-missed-rate">49.0%</span>
+            </div>
+            <div class="agent-performance-item">
+              <span class="agent-performance-label">Avg. Wait Time</span>
+              <span class="agent-performance-value" id="agent-avg-wait">00:00:14</span>
+            </div>
+            <div class="agent-performance-item">
+              <span class="agent-performance-label">Max Wait Time</span>
+              <span class="agent-performance-value" id="agent-max-wait">00:04:55</span>
+            </div>
+            <div class="agent-performance-item">
+              <span class="agent-performance-label">Avg. Talk Time</span>
+              <span class="agent-performance-value" id="agent-avg-talk">00:01:46</span>
+            </div>
+            <div class="agent-performance-item">
+              <span class="agent-performance-label">Total Talk Time</span>
+              <span class="agent-performance-value" id="agent-total-talk">377:27:34</span>
+            </div>
+          </div>
+        </div>
+        
         <div class="data-table-container">
           <table class="data-table">
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>Area</th>
-                <th>Commission</th>
-                <th>Status</th>
+                <th>Agent Name</th>
+                <th>Month</th>
+                <th>Total Rings</th>
+                <th>Answered</th>
+                <th>Missed</th>
+                <th>Avg. Wait Time</th>
+                <th>Max Wait Time</th>
+                <th>Avg. Talk Time</th>
+                <th>Total Talk Time</th>
+                <th>Missed Rate</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -895,6 +1017,21 @@
             <option value="2023">2023</option>
             <option value="2024">2024</option>
             <option value="2025">2025</option>
+          </select>
+          <select id="sales-month-filter" class="search-box" style="width: 200px;">
+            <option value="">All Months</option>
+            <option value="1">January</option>
+            <option value="2">February</option>
+            <option value="3">March</option>
+            <option value="4">April</option>
+            <option value="5">May</option>
+            <option value="6">June</option>
+            <option value="7">July</option>
+            <option value="8">August</option>
+            <option value="9">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
           </select>
         </div>
         
@@ -1024,13 +1161,24 @@
     <h2 class="form-title" id="agent-form-title">Add New Agent</h2>
     <form id="agent-form">
       <input type="hidden" id="agent-edit-id">
-      <div class="form-group"><label for="agent-name">Name</label><input type="text" id="agent-name" required></div>
+      <div class="form-group"><label for="agent-name">Agent Name</label><input type="text" id="agent-name" required></div>
       <div class="form-group"><label for="agent-phone">Phone</label><input type="text" id="agent-phone" required></div>
       <div class="form-group"><label for="agent-email">Email</label><input type="email" id="agent-email"></div>
       <div class="form-group"><label for="agent-area">Area</label><input type="text" id="agent-area"></div>
       <div class="form-group"><label for="agent-commission">Commission (%)</label><input type="number" id="agent-commission" min="0" max="100" step="0.1"></div>
       <div class="form-group"><label for="agent-join-date">Join Date</label><input type="date" id="agent-join-date"></div>
       <div class="form-group"><label for="agent-status">Status</label><select id="agent-status"><option>Active</option><option>Inactive</option></select></div>
+      
+      <!-- Performance Metrics Fields -->
+      <div class="form-group"><label for="agent-month">Month</label><select id="agent-month"><option value="">Select Month</option><option value="January">January</option><option value="February">February</option><option value="March">March</option><option value="April">April</option><option value="May">May</option><option value="June">June</option><option value="July">July</option><option value="August">August</option><option value="September">September</option><option value="October">October</option><option value="November">November</option><option value="December">December</option></select></div>
+      <div class="form-group"><label for="agent-total-rings">Total Rings</label><input type="number" id="agent-total-rings" min="0"></div>
+      <div class="form-group"><label for="agent-answered">Answered</label><input type="number" id="agent-answered" min="0"></div>
+      <div class="form-group"><label for="agent-missed">Missed</label><input type="number" id="agent-missed" min="0"></div>
+      <div class="form-group"><label for="agent-avg-wait-time">Average Waiting Time</label><input type="text" id="agent-avg-wait-time" placeholder="HH:MM:SS"></div>
+      <div class="form-group"><label for="agent-max-wait-time">Max Waiting Time</label><input type="text" id="agent-max-wait-time" placeholder="HH:MM:SS"></div>
+      <div class="form-group"><label for="agent-avg-talk-time">Average Talking Time</label><input type="text" id="agent-avg-talk-time" placeholder="HH:MM:SS"></div>
+      <div class="form-group"><label for="agent-total-talk-time">Total Talking Time</label><input type="text" id="agent-total-talk-time" placeholder="HH:MM:SS"></div>
+      <div class="form-group"><label for="agent-missed-rate">Missed Rate (%)</label><input type="number" id="agent-missed-rate" min="0" max="100" step="0.01"></div>
       
       <div class="form-actions">
         <button type="submit" class="btn btn-submit" id="agent-submit-btn">Save Agent</button>
@@ -1256,7 +1404,7 @@
         'Number driver': '',
         'Talabat device': '',
         'Noon device': '',
-        'Careen device': '',
+        'Careem device': '',
         'Deliveroo device': '',
         'Smile device': '',
         'Talabana device': ''
@@ -1294,12 +1442,29 @@
       { ID: 8, Name: 'Mr. Zaid', Phone: '971 56 740 5572', Email: '', Branch: 'Crispy chicken Al Regga', JoinDate: '2022-01-08', Salary: 11000, Status: 'Active' }
     ],
     agents: [
-      { ID: 1, Name: 'Faisal Ahmed', Phone: '971 50 111 2233', Email: 'faisal@example.com', Area: 'Hamdan Street', Commission: 5, JoinDate: '2021-03-10', Status: 'Active' },
-      { ID: 2, Name: 'Rashid Abdullah', Phone: '971 55 222 3344', Email: 'rashid@example.com', Area: 'Khalidiya', Commission: 4.5, JoinDate: '2020-08-15', Status: 'Active' },
-      { ID: 3, Name: 'Omar Saeed', Phone: '971 56 333 4455', Email: 'omar@example.com', Area: 'Muroor Road', Commission: 6, JoinDate: '2021-11-20', Status: 'Active' },
-      { ID: 4, Name: 'Ahmed Khalid', Phone: '971 54 444 5566', Email: 'ahmed@example.com', Area: 'Al Barsha', Commission: 5.5, JoinDate: '2022-02-05', Status: 'Active' },
-      { ID: 5, Name: 'Mohammed Yusuf', Phone: '971 52 555 6677', Email: 'mohammed@example.com', Area: 'Al Satwa', Commission: 4, JoinDate: '2021-07-12', Status: 'Inactive' },
-      { ID: 6, Name: 'Ibrahim Omar', Phone: '971 55 666 7788', Email: 'ibrahim@example.com', Area: 'Al Reega', Commission: 7, JoinDate: '2022-05-18', Status: 'Active' }
+      { ID: 201, Name: 'Ann Areille David', Phone: '971 50 111 2233', Email: 'ann@example.com', Area: 'Hamdan Street', Commission: 5, JoinDate: '2021-03-10', Status: 'Active', Month: 'October', TotalRings: 3560, Answered: 1606, Missed: 1954, AvgWaitTime: '00:00:17', MaxWaitTime: '00:04:22', AvgTalkTime: '00:01:43', TotalTalkTime: '46:13:04', MissedRate: 54.89 },
+      { ID: 202, Name: 'SALEH EMAD 202', Phone: '971 55 222 3344', Email: 'saleh@example.com', Area: 'Khalidiya', Commission: 4.5, JoinDate: '2020-08-15', Status: 'Active', Month: 'October', TotalRings: 2853, Answered: 1422, Missed: 1431, AvgWaitTime: '00:00:14', MaxWaitTime: '00:04:36', AvgTalkTime: '00:01:49', TotalTalkTime: '43:08:30', MissedRate: 50.16 },
+      { ID: 203, Name: 'Nona Rose', Phone: '971 56 333 4455', Email: 'nona@example.com', Area: 'Muroor Road', Commission: 6, JoinDate: '2021-11-20', Status: 'Active', Month: 'October', TotalRings: 4408, Answered: 2475, Missed: 1933, AvgWaitTime: '00:00:11', MaxWaitTime: '00:03:52', AvgTalkTime: '00:02:01', TotalTalkTime: '83:23:10', MissedRate: 43.85 },
+      { ID: 204, Name: 'manju ranabhat', Phone: '971 54 444 5566', Email: 'manju@example.com', Area: 'Al Barsha', Commission: 5.5, JoinDate: '2022-02-05', Status: 'Active', Month: 'October', TotalRings: 5461, Answered: 2625, Missed: 2836, AvgWaitTime: '00:00:13', MaxWaitTime: '00:04:55', AvgTalkTime: '00:01:40', TotalTalkTime: '73:27:36', MissedRate: 51.93 },
+      { ID: 205, Name: 'Melvin compendio', Phone: '971 52 555 6677', Email: 'melvin@example.com', Area: 'Al Satwa', Commission: 4, JoinDate: '2021-07-12', Status: 'Active', Month: 'October', TotalRings: 2062, Answered: 1082, Missed: 980, AvgWaitTime: '00:00:12', MaxWaitTime: '00:03:26', AvgTalkTime: '00:01:58', TotalTalkTime: '35:34:15', MissedRate: 47.53 },
+      { ID: 206, Name: 'AGENT', Phone: '971 55 666 7788', Email: 'agent@example.com', Area: 'Al Reega', Commission: 7, JoinDate: '2022-05-18', Status: 'Active', Month: 'October', TotalRings: 2286, Answered: 1248, Missed: 1038, AvgWaitTime: '00:00:16', MaxWaitTime: '00:03:10', AvgTalkTime: '00:01:37', TotalTalkTime: '33:48:22', MissedRate: 45.41 },
+      { ID: 207, Name: 'Asmita Sapkota', Phone: '971 50 777 8899', Email: 'asmita@example.com', Area: 'Hamdan Street', Commission: 5.5, JoinDate: '2021-09-18', Status: 'Active', Month: 'October', TotalRings: 4617, Answered: 2116, Missed: 2501, AvgWaitTime: '00:00:16', MaxWaitTime: '00:04:22', AvgTalkTime: '00:01:44', TotalTalkTime: '61:42:37', MissedRate: 54.17 },
+      // November data
+      { ID: 208, Name: 'Ann Areille David', Phone: '971 50 111 2233', Email: 'ann@example.com', Area: 'Hamdan Street', Commission: 5, JoinDate: '2021-03-10', Status: 'Active', Month: 'November', TotalRings: 3780, Answered: 1750, Missed: 2030, AvgWaitTime: '00:00:15', MaxWaitTime: '00:04:30', AvgTalkTime: '00:01:40', TotalTalkTime: '48:25:12', MissedRate: 53.70 },
+      { ID: 209, Name: 'SALEH EMAD 202', Phone: '971 55 222 3344', Email: 'saleh@example.com', Area: 'Khalidiya', Commission: 4.5, JoinDate: '2020-08-15', Status: 'Active', Month: 'November', TotalRings: 2980, Answered: 1550, Missed: 1430, AvgWaitTime: '00:00:13', MaxWaitTime: '00:04:40', AvgTalkTime: '00:01:45', TotalTalkTime: '45:12:20', MissedRate: 48.00 },
+      { ID: 210, Name: 'Nona Rose', Phone: '971 56 333 4455', Email: 'nona@example.com', Area: 'Muroor Road', Commission: 6, JoinDate: '2021-11-20', Status: 'Active', Month: 'November', TotalRings: 4650, Answered: 2650, Missed: 2000, AvgWaitTime: '00:00:10', MaxWaitTime: '00:03:45', AvgTalkTime: '00:02:05', TotalTalkTime: '90:15:30', MissedRate: 43.01 },
+      { ID: 211, Name: 'manju ranabhat', Phone: '971 54 444 5566', Email: 'manju@example.com', Area: 'Al Barsha', Commission: 5.5, JoinDate: '2022-02-05', Status: 'Active', Month: 'November', TotalRings: 5700, Answered: 2850, Missed: 2850, AvgWaitTime: '00:00:12', MaxWaitTime: '00:04:45', AvgTalkTime: '00:01:35', TotalTalkTime: '80:30:45', MissedRate: 50.00 },
+      { ID: 212, Name: 'Melvin compendio', Phone: '971 52 555 6677', Email: 'melvin@example.com', Area: 'Al Satwa', Commission: 4, JoinDate: '2021-07-12', Status: 'Active', Month: 'November', TotalRings: 2200, Answered: 1200, Missed: 1000, AvgWaitTime: '00:00:11', MaxWaitTime: '00:03:30', AvgTalkTime: '00:01:55', TotalTalkTime: '38:45:20', MissedRate: 45.45 },
+      { ID: 213, Name: 'AGENT', Phone: '971 55 666 7788', Email: 'agent@example.com', Area: 'Al Reega', Commission: 7, JoinDate: '2022-05-18', Status: 'Active', Month: 'November', TotalRings: 2400, Answered: 1350, Missed: 1050, AvgWaitTime: '00:00:15', MaxWaitTime: '00:03:15', AvgTalkTime: '00:01:35', TotalTalkTime: '35:20:10', MissedRate: 43.75 },
+      { ID: 214, Name: 'Asmita Sapkota', Phone: '971 50 777 8899', Email: 'asmita@example.com', Area: 'Hamdan Street', Commission: 5.5, JoinDate: '2021-09-18', Status: 'Active', Month: 'November', TotalRings: 4800, Answered: 2250, Missed: 2550, AvgWaitTime: '00:00:15', MaxWaitTime: '00:04:25', AvgTalkTime: '00:01:40', TotalTalkTime: '65:30:15', MissedRate: 53.13 },
+      // December data
+      { ID: 215, Name: 'Ann Areille David', Phone: '971 50 111 2233', Email: 'ann@example.com', Area: 'Hamdan Street', Commission: 5, JoinDate: '2021-03-10', Status: 'Active', Month: 'December', TotalRings: 3900, Answered: 1800, Missed: 2100, AvgWaitTime: '00:00:16', MaxWaitTime: '00:04:35', AvgTalkTime: '00:01:38', TotalTalkTime: '50:10:05', MissedRate: 53.85 },
+      { ID: 216, Name: 'SALEH EMAD 202', Phone: '971 55 222 3344', Email: 'saleh@example.com', Area: 'Khalidiya', Commission: 4.5, JoinDate: '2020-08-15', Status: 'Active', Month: 'December', TotalRings: 3100, Answered: 1600, Missed: 1500, AvgWaitTime: '00:00:14', MaxWaitTime: '00:04:45', AvgTalkTime: '00:01:42', TotalTalkTime: '47:15:30', MissedRate: 48.39 },
+      { ID: 217, Name: 'Nona Rose', Phone: '971 56 333 4455', Email: 'nona@example.com', Area: 'Muroor Road', Commission: 6, JoinDate: '2021-11-20', Status: 'Active', Month: 'December', TotalRings: 4800, Answered: 2750, Missed: 2050, AvgWaitTime: '00:00:11', MaxWaitTime: '00:03:50', AvgTalkTime: '00:02:03', TotalTalkTime: '95:05:20', MissedRate: 42.71 },
+      { ID: 218, Name: 'manju ranabhat', Phone: '971 54 444 5566', Email: 'manju@example.com', Area: 'Al Barsha', Commission: 5.5, JoinDate: '2022-02-05', Status: 'Active', Month: 'December', TotalRings: 5900, Answered: 3000, Missed: 2900, AvgWaitTime: '00:00:13', MaxWaitTime: '00:04:50', AvgTalkTime: '00:01:33', TotalTalkTime: '85:45:30', MissedRate: 49.15 },
+      { ID: 219, Name: 'Melvin compendio', Phone: '971 52 555 6677', Email: 'melvin@example.com', Area: 'Al Satwa', Commission: 4, JoinDate: '2021-07-12', Status: 'Active', Month: 'December', TotalRings: 2300, Answered: 1250, Missed: 1050, AvgWaitTime: '00:00:12', MaxWaitTime: '00:03:35', AvgTalkTime: '00:01:52', TotalTalkTime: '40:20:15', MissedRate: 45.65 },
+      { ID: 220, Name: 'AGENT', Phone: '971 55 666 7788', Email: 'agent@example.com', Area: 'Al Reega', Commission: 7, JoinDate: '2022-05-18', Status: 'Active', Month: 'December', TotalRings: 2500, Answered: 1400, Missed: 1100, AvgWaitTime: '00:00:16', MaxWaitTime: '00:03:20', AvgTalkTime: '00:01:33', TotalTalkTime: '37:10:05', MissedRate: 44.00 },
+      { ID: 221, Name: 'Asmita Sapkota', Phone: '971 50 777 8899', Email: 'asmita@example.com', Area: 'Hamdan Street', Commission: 5.5, JoinDate: '2021-09-18', Status: 'Active', Month: 'December', TotalRings: 4900, Answered: 2300, Missed: 2600, AvgWaitTime: '00:00:15', MaxWaitTime: '00:04:30', AvgTalkTime: '00:01:38', TotalTalkTime: '68:15:20', MissedRate: 53.06 }
     ],
     monthlySales: [
       { ID: 1, Branch: 'Crispy Chicken-Hamdan St', Year: 2025, Month: 1, DeliveryCount: 450, Percentage: 10, Amount: 12500 },
@@ -1629,41 +1794,85 @@
     } else {
       // Add new branch
       document.getElementById('branch-form-title').textContent = 'Add New Branch';
-      document.getElementById('branch-submit-btn').textContent = 'Add Branch';
+      document.getElementById('branch-submit-btn').textContent = 'Save Branch';
       document.getElementById('branch-edit-id').value = '';
       document.getElementById('branch-delete-btn').style.display = 'none';
       document.getElementById('branch-form').reset();
     }
   }
 
-  function deleteBranch(id) {
-    if (confirm('Are you sure you want to delete this branch? This cannot be undone.')) {
-      const index = sampleData.branches.findIndex(b => b.ID === id);
+  function submitBranchForm(e) {
+    e.preventDefault();
+    
+    const branchId = document.getElementById('branch-edit-id').value;
+    const branchData = {
+      'Branch Name': document.getElementById('branch-name').value,
+      City: document.getElementById('branch-city').value,
+      direction: document.getElementById('branch-direction').value,
+      AREA: document.getElementById('branch-area').value,
+      'Land line': document.getElementById('branch-landline').value,
+      'Google site': document.getElementById('branch-google-site').value,
+      RATE: document.getElementById('branch-rate').value,
+      'Manger name': document.getElementById('branch-manager').value,
+      'Email address': document.getElementById('branch-email').value,
+      'Delivery status': document.getElementById('branch-delivery-status').value,
+      'Link online': document.getElementById('branch-link-online').value,
+      'Number bikes': document.getElementById('branch-num-bikes').value,
+      'Number driver': document.getElementById('branch-num-drivers').value,
+      'Talabat device': document.getElementById('branch-talabat-device').value,
+      'Noon device': document.getElementById('branch-noon-device').value,
+      'Careen device': document.getElementById('branch-careem-device').value,
+      'Deliveroo device': document.getElementById('branch-deliveroo-device').value,
+      'Smile device': document.getElementById('branch-smile-device').value,
+      'Talabana device': document.getElementById('branch-talabana-device').value
+    };
+    
+    if (branchId) {
+      // Update existing branch
+      const index = sampleData.branches.findIndex(b => b.ID == branchId);
       if (index !== -1) {
-        sampleData.branches.splice(index, 1);
-        showNotification('Branch deleted successfully!', 'success');
-        renderBranches();
-        updateDashboardCounters();
-        updateBranchMarkers();
+        sampleData.branches[index] = { ...sampleData.branches[index], ...branchData };
+        showNotification('Branch updated successfully', 'success');
       }
+    } else {
+      // Add new branch
+      const newId = Math.max(...sampleData.branches.map(b => b.ID), 0) + 1;
+      sampleData.branches.push({ ID: newId, ...branchData });
+      showNotification('Branch added successfully', 'success');
+    }
+    
+    closeForm('branch-form-popup');
+    renderBranches();
+    updateDashboardCounters();
+    updateBranchMarkers();
+  }
+
+  function deleteBranch(id) {
+    if (confirm('Are you sure you want to delete this branch?')) {
+      sampleData.branches = sampleData.branches.filter(b => b.ID !== id);
+      showNotification('Branch deleted successfully', 'success');
+      renderBranches();
+      updateDashboardCounters();
+      updateBranchMarkers();
     }
   }
 
   // --- DRIVER MANAGEMENT ---
   function renderDrivers() {
-    // Update driver statistics
-    updateDriverStatistics();
-    
     const tbody = document.getElementById('driver-table-body');
     tbody.innerHTML = '';
+    
+    // Update driver statistics
+    updateDriverStatistics();
     
     sampleData.drivers.forEach(driver => {
       const row = tbody.insertRow();
       const statusClass = driver.Status === 'Active' ? 'status-active' : 'status-inactive';
       
       // Check if license is expired
-      const isLicenseExpired = driver.LicenseExpiry && new Date(driver.LicenseExpiry) < new Date();
-      const licenseClass = isLicenseExpired ? 'status-inactive' : '';
+      const licenseExpiry = new Date(driver.LicenseExpiry);
+      const today = new Date();
+      const isExpired = licenseExpiry < today;
       
       row.innerHTML = `
         <td>${driver.ID}</td>
@@ -1672,7 +1881,7 @@
         <td>${driver.BikeNumber}</td>
         <td>${driver.Outlet}</td>
         <td>${driver.PlateNumber}</td>
-        <td class="${licenseClass}">${driver.LicenseExpiry || '—'}</td>
+        <td style="color: ${isExpired ? 'var(--danger-red)' : ''}">${driver.LicenseExpiry}</td>
         <td><span class="status-badge ${statusClass}">${driver.Status}</span></td>
         <td>
           <button class="action-btn" onclick="openDriverForm(${driver.ID})" title="Edit">
@@ -1702,8 +1911,9 @@
         const statusClass = driver.Status === 'Active' ? 'status-active' : 'status-inactive';
         
         // Check if license is expired
-        const isLicenseExpired = driver.LicenseExpiry && new Date(driver.LicenseExpiry) < new Date();
-        const licenseClass = isLicenseExpired ? 'status-inactive' : '';
+        const licenseExpiry = new Date(driver.LicenseExpiry);
+        const today = new Date();
+        const isExpired = licenseExpiry < today;
         
         row.innerHTML = `
           <td>${driver.ID}</td>
@@ -1712,7 +1922,7 @@
           <td>${driver.BikeNumber}</td>
           <td>${driver.Outlet}</td>
           <td>${driver.PlateNumber}</td>
-          <td class="${licenseClass}">${driver.LicenseExpiry || '—'}</td>
+          <td style="color: ${isExpired ? 'var(--danger-red)' : ''}">${driver.LicenseExpiry}</td>
           <td><span class="status-badge ${statusClass}">${driver.Status}</span></td>
           <td>
             <button class="action-btn" onclick="openDriverForm(${driver.ID})" title="Edit">
@@ -1728,24 +1938,25 @@
   }
 
   function updateDriverStatistics() {
-    // Total drivers
-    document.getElementById('driver-total-count').textContent = sampleData.drivers.length;
+    const totalDrivers = sampleData.drivers.length;
+    const activeDrivers = sampleData.drivers.filter(d => d.Status === 'Active').length;
+    const inactiveDrivers = sampleData.drivers.filter(d => d.Status === 'Inactive').length;
     
-    // Active drivers
-    const activeDrivers = sampleData.drivers.filter(driver => driver.Status === 'Active').length;
+    // Calculate expired licenses
+    let expiredLicenses = 0;
+    sampleData.drivers.forEach(driver => {
+      if (driver.LicenseExpiry) {
+        const licenseExpiry = new Date(driver.LicenseExpiry);
+        const today = new Date();
+        if (licenseExpiry < today) {
+          expiredLicenses++;
+        }
+      }
+    });
+    
+    document.getElementById('driver-total-count').textContent = totalDrivers;
     document.getElementById('driver-active-count').textContent = activeDrivers;
-    
-    // Inactive drivers
-    const inactiveDrivers = sampleData.drivers.filter(driver => driver.Status !== 'Active').length;
     document.getElementById('driver-inactive-count').textContent = inactiveDrivers;
-    
-    // Expired licenses
-    const today = new Date();
-    const expiredLicenses = sampleData.drivers.filter(driver => {
-      if (!driver.LicenseExpiry) return false;
-      const expiryDate = new Date(driver.LicenseExpiry);
-      return expiryDate < today;
-    }).length;
     document.getElementById('driver-expired-count').textContent = expiredLicenses;
   }
 
@@ -1791,22 +2002,59 @@
     } else {
       // Add new driver
       document.getElementById('driver-form-title').textContent = 'Add New Driver';
-      document.getElementById('driver-submit-btn').textContent = 'Add Driver';
+      document.getElementById('driver-submit-btn').textContent = 'Save Driver';
       document.getElementById('driver-edit-id').value = '';
       document.getElementById('driver-delete-btn').style.display = 'none';
       document.getElementById('driver-form').reset();
     }
   }
 
-  function deleteDriver(id) {
-    if (confirm('Are you sure you want to delete this driver? This cannot be undone.')) {
-      const index = sampleData.drivers.findIndex(d => d.ID === id);
+  function submitDriverForm(e) {
+    e.preventDefault();
+    
+    const driverId = document.getElementById('driver-edit-id').value;
+    const driverData = {
+      Name: document.getElementById('driver-name').value,
+      MobileNumber: document.getElementById('driver-mobile').value,
+      BikeNumber: document.getElementById('driver-bike-number').value,
+      Outlet: document.getElementById('driver-outlet').value,
+      PlateNumber: document.getElementById('driver-plate-number').value,
+      LicenseExpiry: formatDateForStorage(document.getElementById('driver-license-expiry').value),
+      TrafficCode: document.getElementById('driver-traffic-code').value,
+      DocumentNumber: document.getElementById('driver-document-number').value,
+      OwnershipExpiry: formatDateForStorage(document.getElementById('driver-ownership-expiry').value),
+      DrivingLicenseNo: document.getElementById('driver-driving-license').value,
+      DrivingLicenseExpiry: formatDateForStorage(document.getElementById('driver-driving-license-expiry').value),
+      JoinDate: formatDateForStorage(document.getElementById('driver-join-date').value),
+      Salary: parseFloat(document.getElementById('driver-salary').value) || 0,
+      Status: document.getElementById('driver-status').value
+    };
+    
+    if (driverId) {
+      // Update existing driver
+      const index = sampleData.drivers.findIndex(d => d.ID == driverId);
       if (index !== -1) {
-        sampleData.drivers.splice(index, 1);
-        showNotification('Driver deleted successfully!', 'success');
-        renderDrivers();
-        updateDashboardCounters();
+        sampleData.drivers[index] = { ...sampleData.drivers[index], ...driverData };
+        showNotification('Driver updated successfully', 'success');
       }
+    } else {
+      // Add new driver
+      const newId = Math.max(...sampleData.drivers.map(d => d.ID), 0) + 1;
+      sampleData.drivers.push({ ID: newId, ...driverData });
+      showNotification('Driver added successfully', 'success');
+    }
+    
+    closeForm('driver-form-popup');
+    renderDrivers();
+    updateDashboardCounters();
+  }
+
+  function deleteDriver(id) {
+    if (confirm('Are you sure you want to delete this driver?')) {
+      sampleData.drivers = sampleData.drivers.filter(d => d.ID !== id);
+      showNotification('Driver deleted successfully', 'success');
+      renderDrivers();
+      updateDashboardCounters();
     }
   }
 
@@ -1844,6 +2092,7 @@
       const filteredData = sampleData.managers.filter(manager => 
         manager.Name.toLowerCase().includes(searchTerm) ||
         manager.Phone.toLowerCase().includes(searchTerm) ||
+        manager.Email.toLowerCase().includes(searchTerm) ||
         manager.Branch.toLowerCase().includes(searchTerm)
       );
       
@@ -1907,22 +2156,52 @@
     } else {
       // Add new manager
       document.getElementById('manager-form-title').textContent = 'Add New Manager';
-      document.getElementById('manager-submit-btn').textContent = 'Add Manager';
+      document.getElementById('manager-submit-btn').textContent = 'Save Manager';
       document.getElementById('manager-edit-id').value = '';
       document.getElementById('manager-delete-btn').style.display = 'none';
       document.getElementById('manager-form').reset();
     }
   }
 
-  function deleteManager(id) {
-    if (confirm('Are you sure you want to delete this manager? This cannot be undone.')) {
-      const index = sampleData.managers.findIndex(m => m.ID === id);
+  function submitManagerForm(e) {
+    e.preventDefault();
+    
+    const managerId = document.getElementById('manager-edit-id').value;
+    const managerData = {
+      Name: document.getElementById('manager-name').value,
+      Phone: document.getElementById('manager-phone').value,
+      Email: document.getElementById('manager-email').value,
+      Branch: document.getElementById('manager-branch').value,
+      JoinDate: formatDateForStorage(document.getElementById('manager-join-date').value),
+      Salary: parseFloat(document.getElementById('manager-salary').value) || 0,
+      Status: document.getElementById('manager-status').value
+    };
+    
+    if (managerId) {
+      // Update existing manager
+      const index = sampleData.managers.findIndex(m => m.ID == managerId);
       if (index !== -1) {
-        sampleData.managers.splice(index, 1);
-        showNotification('Manager deleted successfully!', 'success');
-        renderManagers();
-        updateDashboardCounters();
+        sampleData.managers[index] = { ...sampleData.managers[index], ...managerData };
+        showNotification('Manager updated successfully', 'success');
       }
+    } else {
+      // Add new manager
+      const newId = Math.max(...sampleData.managers.map(m => m.ID), 0) + 1;
+      sampleData.managers.push({ ID: newId, ...managerData });
+      showNotification('Manager added successfully', 'success');
+    }
+    
+    closeForm('manager-form-popup');
+    renderManagers();
+    updateDashboardCounters();
+  }
+
+  function deleteManager(id) {
+    if (confirm('Are you sure you want to delete this manager?')) {
+      sampleData.managers = sampleData.managers.filter(m => m.ID !== id);
+      showNotification('Manager deleted successfully', 'success');
+      renderManagers();
+      updateDashboardCounters();
     }
   }
 
@@ -1931,17 +2210,41 @@
     const tbody = document.getElementById('agent-table-body');
     tbody.innerHTML = '';
     
-    sampleData.agents.forEach(agent => {
+    // Get month filter value
+    const monthFilter = document.getElementById('month-filter').value;
+    
+    // Filter agents by month if selected
+    const filteredAgents = monthFilter 
+      ? sampleData.agents.filter(agent => agent.Month === monthFilter)
+      : sampleData.agents;
+    
+    // Update agent performance summary with filtered data
+    updateAgentPerformanceSummary(filteredAgents, monthFilter);
+    
+    filteredAgents.forEach(agent => {
       const row = tbody.insertRow();
       const statusClass = agent.Status === 'Active' ? 'status-active' : 'status-inactive';
+      
+      // Determine missed rate class
+      let missedRateClass = 'medium';
+      if (agent.MissedRate < 30) {
+        missedRateClass = 'high';
+      } else if (agent.MissedRate > 50) {
+        missedRateClass = 'low';
+      }
       
       row.innerHTML = `
         <td>${agent.ID}</td>
         <td>${agent.Name}</td>
-        <td>${agent.Phone}</td>
-        <td>${agent.Area}</td>
-        <td>${agent.Commission}%</td>
-        <td><span class="status-badge ${statusClass}">${agent.Status}</span></td>
+        <td>${agent.Month}</td>
+        <td>${agent.TotalRings}</td>
+        <td>${agent.Answered}</td>
+        <td>${agent.Missed}</td>
+        <td>${agent.AvgWaitTime}</td>
+        <td>${agent.MaxWaitTime}</td>
+        <td>${agent.AvgTalkTime}</td>
+        <td>${agent.TotalTalkTime}</td>
+        <td><span class="agent-performance-value ${missedRateClass}">${agent.MissedRate}%</span></td>
         <td>
           <button class="action-btn" onclick="openAgentForm(${agent.ID})" title="Edit">
             <i class="fas fa-edit"></i>
@@ -1957,10 +2260,25 @@
     const searchInput = document.getElementById('agent-search');
     searchInput.addEventListener('keyup', function() {
       const searchTerm = this.value.toLowerCase();
-      const filteredData = sampleData.agents.filter(agent => 
+      const monthFilter = document.getElementById('month-filter').value;
+      
+      let filteredData = sampleData.agents;
+      
+      // Apply month filter if selected
+      if (monthFilter) {
+        filteredData = filteredData.filter(agent => agent.Month === monthFilter);
+      }
+      
+      // Apply search term filter
+      filteredData = filteredData.filter(agent => 
         agent.Name.toLowerCase().includes(searchTerm) ||
         agent.Phone.toLowerCase().includes(searchTerm) ||
-        agent.Area.toLowerCase().includes(searchTerm)
+        agent.Email.toLowerCase().includes(searchTerm) ||
+        agent.Area.toLowerCase().includes(searchTerm) ||
+        agent.TotalRings.toString().includes(searchTerm) ||
+        agent.Answered.toString().includes(searchTerm) ||
+        agent.Missed.toString().includes(searchTerm) ||
+        agent.MissedRate.toString().includes(searchTerm)
       );
       
       tbody.innerHTML = '';
@@ -1968,13 +2286,26 @@
         const row = tbody.insertRow();
         const statusClass = agent.Status === 'Active' ? 'status-active' : 'status-inactive';
         
+        // Determine missed rate class
+        let missedRateClass = 'medium';
+        if (agent.MissedRate < 30) {
+          missedRateClass = 'high';
+        } else if (agent.MissedRate > 50) {
+          missedRateClass = 'low';
+        }
+        
         row.innerHTML = `
           <td>${agent.ID}</td>
           <td>${agent.Name}</td>
-          <td>${agent.Phone}</td>
-          <td>${agent.Area}</td>
-          <td>${agent.Commission}%</td>
-          <td><span class="status-badge ${statusClass}">${agent.Status}</span></td>
+          <td>${agent.Month}</td>
+          <td>${agent.TotalRings}</td>
+          <td>${agent.Answered}</td>
+          <td>${agent.Missed}</td>
+          <td>${agent.AvgWaitTime}</td>
+          <td>${agent.MaxWaitTime}</td>
+          <td>${agent.AvgTalkTime}</td>
+          <td>${agent.TotalTalkTime}</td>
+          <td><span class="agent-performance-value ${missedRateClass}">${agent.MissedRate}%</span></td>
           <td>
             <button class="action-btn" onclick="openAgentForm(${agent.ID})" title="Edit">
               <i class="fas fa-edit"></i>
@@ -1985,7 +2316,75 @@
           </td>
         `;
       });
+      
+      // Update summary with filtered data
+      updateAgentPerformanceSummary(filteredData, monthFilter);
     });
+    
+    // Initialize month filter
+    const monthFilterSelect = document.getElementById('month-filter');
+    monthFilterSelect.addEventListener('change', function() {
+      renderAgents();
+    });
+  }
+
+  function updateAgentPerformanceSummary(agents, monthFilter) {
+    // Calculate totals for the provided agents
+    let totalRings = 0;
+    let totalAnswered = 0;
+    let totalMissed = 0;
+    let totalMissedRate = 0;
+    
+    agents.forEach(agent => {
+      totalRings += agent.TotalRings;
+      totalAnswered += agent.Answered;
+      totalMissed += agent.Missed;
+    });
+    
+    if (totalRings > 0) {
+      totalMissedRate = (totalMissed / totalRings * 100).toFixed(1);
+    }
+    
+    // Calculate average times
+    let avgWaitTime = '00:00:00';
+    let maxWaitTime = '00:00:00';
+    let avgTalkTime = '00:00:00';
+    let totalTalkTime = '00:00:00';
+    
+    // For simplicity, we'll just use the values from the first agent
+    // In a real implementation, you would calculate proper averages
+    if (agents.length > 0) {
+      avgWaitTime = agents[0].AvgWaitTime;
+      maxWaitTime = agents[0].MaxWaitTime;
+      avgTalkTime = agents[0].AvgTalkTime;
+      totalTalkTime = agents[0].TotalTalkTime;
+    }
+    
+    // Update the DOM
+    document.getElementById('agent-total-rings').textContent = totalRings.toLocaleString();
+    document.getElementById('agent-answered').textContent = totalAnswered.toLocaleString();
+    document.getElementById('agent-missed').textContent = totalMissed.toLocaleString();
+    document.getElementById('agent-missed-rate').textContent = `${totalMissedRate}%`;
+    document.getElementById('agent-avg-wait').textContent = avgWaitTime;
+    document.getElementById('agent-max-wait').textContent = maxWaitTime;
+    document.getElementById('agent-avg-talk').textContent = avgTalkTime;
+    document.getElementById('agent-total-talk').textContent = totalTalkTime;
+    
+    // Update missed rate color
+    const missedRateElement = document.getElementById('agent-missed-rate');
+    missedRateElement.className = 'agent-performance-value';
+    
+    if (totalMissedRate < 30) {
+      missedRateElement.classList.add('high');
+    } else if (totalMissedRate > 50) {
+      missedRateElement.classList.add('low');
+    } else {
+      missedRateElement.classList.add('medium');
+    }
+    
+    // Update the period indicator
+    const periodElement = document.getElementById('agent-summary-period');
+    periodElement.textContent = monthFilter ? monthFilter : 'All Months';
   }
 
   function openAgentForm(id = null) {
@@ -2009,58 +2408,144 @@
         document.getElementById('agent-commission').value = agent.Commission;
         document.getElementById('agent-join-date').value = formatDateForInput(agent.JoinDate);
         document.getElementById('agent-status').value = agent.Status;
+        
+        // Populate performance metrics
+        document.getElementById('agent-month').value = agent.Month;
+        document.getElementById('agent-total-rings').value = agent.TotalRings;
+        document.getElementById('agent-answered').value = agent.Answered;
+        document.getElementById('agent-missed').value = agent.Missed;
+        document.getElementById('agent-avg-wait-time').value = agent.AvgWaitTime;
+        document.getElementById('agent-max-wait-time').value = agent.MaxWaitTime;
+        document.getElementById('agent-avg-talk-time').value = agent.AvgTalkTime;
+        document.getElementById('agent-total-talk-time').value = agent.TotalTalkTime;
+        document.getElementById('agent-missed-rate').value = agent.MissedRate;
       }
     } else {
       // Add new agent
       document.getElementById('agent-form-title').textContent = 'Add New Agent';
-      document.getElementById('agent-submit-btn').textContent = 'Add Agent';
+      document.getElementById('agent-submit-btn').textContent = 'Save Agent';
       document.getElementById('agent-edit-id').value = '';
       document.getElementById('agent-delete-btn').style.display = 'none';
       document.getElementById('agent-form').reset();
     }
+    
+    // Calculate missed rate automatically when rings or missed values change
+    const totalRingsInput = document.getElementById('agent-total-rings');
+    const missedInput = document.getElementById('agent-missed');
+    const missedRateInput = document.getElementById('agent-missed-rate');
+    
+    function calculateMissedRate() {
+      const totalRings = parseInt(totalRingsInput.value) || 0;
+      const missed = parseInt(missedInput.value) || 0;
+      
+      if (totalRings > 0) {
+        const rate = (missed / totalRings * 100).toFixed(2);
+        missedRateInput.value = rate;
+      } else {
+        missedRateInput.value = '0';
+      }
+    }
+    
+    totalRingsInput.addEventListener('input', calculateMissedRate);
+    missedInput.addEventListener('input', calculateMissedRate);
+  }
+
+  function submitAgentForm(e) {
+    e.preventDefault();
+    
+    const agentId = document.getElementById('agent-edit-id').value;
+    const agentData = {
+      Name: document.getElementById('agent-name').value,
+      Phone: document.getElementById('agent-phone').value,
+      Email: document.getElementById('agent-email').value,
+      Area: document.getElementById('agent-area').value,
+      Commission: parseFloat(document.getElementById('agent-commission').value) || 0,
+      JoinDate: formatDateForStorage(document.getElementById('agent-join-date').value),
+      Status: document.getElementById('agent-status').value,
+      Month: document.getElementById('agent-month').value,
+      TotalRings: parseInt(document.getElementById('agent-total-rings').value) || 0,
+      Answered: parseInt(document.getElementById('agent-answered').value) || 0,
+      Missed: parseInt(document.getElementById('agent-missed').value) || 0,
+      AvgWaitTime: document.getElementById('agent-avg-wait-time').value,
+      MaxWaitTime: document.getElementById('agent-max-wait-time').value,
+      AvgTalkTime: document.getElementById('agent-avg-talk-time').value,
+      TotalTalkTime: document.getElementById('agent-total-talk-time').value,
+      MissedRate: parseFloat(document.getElementById('agent-missed-rate').value) || 0
+    };
+    
+    if (agentId) {
+      // Update existing agent
+      const index = sampleData.agents.findIndex(a => a.ID == agentId);
+      if (index !== -1) {
+        sampleData.agents[index] = { ...sampleData.agents[index], ...agentData };
+        showNotification('Agent updated successfully', 'success');
+      }
+    } else {
+      // Add new agent
+      const newId = Math.max(...sampleData.agents.map(a => a.ID), 0) + 1;
+      sampleData.agents.push({ ID: newId, ...agentData });
+      showNotification('Agent added successfully', 'success');
+    }
+    
+    closeForm('agent-form-popup');
+    renderAgents();
+    updateDashboardCounters();
   }
 
   function deleteAgent(id) {
-    if (confirm('Are you sure you want to delete this agent? This cannot be undone.')) {
-      const index = sampleData.agents.findIndex(a => a.ID === id);
-      if (index !== -1) {
-        sampleData.agents.splice(index, 1);
-        showNotification('Agent deleted successfully!', 'success');
-        renderAgents();
-        updateDashboardCounters();
-      }
+    if (confirm('Are you sure you want to delete this agent?')) {
+      sampleData.agents = sampleData.agents.filter(a => a.ID !== id);
+      showNotification('Agent deleted successfully', 'success');
+      renderAgents();
+      updateDashboardCounters();
     }
   }
 
   // --- MONTHLY SALES MANAGEMENT ---
   function renderMonthlySales() {
-    // Render monthly sales summary cards
-    renderMonthlySalesSummary();
-    
-    // Render monthly sales table
     const tbody = document.getElementById('monthly-sales-table-body');
     tbody.innerHTML = '';
     
-    sampleData.monthlySales.forEach(sale => {
+    // Get year and month filter values
+    const yearFilter = document.getElementById('year-filter').value;
+    const monthFilter = document.getElementById('sales-month-filter').value;
+    
+    // Filter sales by year and month if selected
+    let filteredSales = sampleData.monthlySales;
+    
+    if (yearFilter) {
+      filteredSales = filteredSales.filter(sale => sale.Year.toString() === yearFilter);
+    }
+    
+    if (monthFilter) {
+      filteredSales = filteredSales.filter(sale => sale.Month.toString() === monthFilter);
+    }
+    
+    // Update monthly sales summary cards
+    updateMonthlySalesSummary(filteredSales);
+    
+    filteredSales.forEach(sale => {
       const row = tbody.insertRow();
       
-      // Determine percentage class for styling
-      let percentageClass = '';
+      // Determine percentage class
+      let percentageClass = 'medium';
       if (sale.Percentage >= 10) {
-        percentageClass = 'percentage-high';
-      } else if (sale.Percentage >= 8) {
-        percentageClass = 'percentage-medium';
-      } else {
-        percentageClass = 'percentage-low';
+        percentageClass = 'high';
+      } else if (sale.Percentage < 8) {
+        percentageClass = 'low';
       }
+      
+      // Convert month number to name
+      const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      const monthName = monthNames[sale.Month - 1] || sale.Month;
       
       row.innerHTML = `
         <td>${sale.ID}</td>
         <td>${sale.Branch}</td>
         <td>${sale.Year}</td>
-        <td>${getMonthName(sale.Month)}</td>
+        <td>${monthName}</td>
         <td>${sale.DeliveryCount}</td>
-        <td><span class="${percentageClass}">${sale.Percentage}%</span></td>
+        <td><span class="agent-performance-value ${percentageClass}">${sale.Percentage}%</span></td>
         <td>AED ${sale.Amount.toLocaleString()}</td>
         <td>
           <button class="action-btn" onclick="openMonthlySalesForm(${sale.ID})" title="Edit">
@@ -2078,43 +2563,52 @@
     searchInput.addEventListener('keyup', function() {
       const searchTerm = this.value.toLowerCase();
       const yearFilter = document.getElementById('year-filter').value;
+      const monthFilter = document.getElementById('sales-month-filter').value;
       
       let filteredData = sampleData.monthlySales;
       
-      // Apply search filter
-      if (searchTerm) {
-        filteredData = filteredData.filter(sale => 
-          sale.Branch.toLowerCase().includes(searchTerm) ||
-          getMonthName(sale.Month).toLowerCase().includes(searchTerm)
-        );
+      // Apply year filter if selected
+      if (yearFilter) {
+        filteredData = filteredData.filter(sale => sale.Year.toString() === yearFilter);
       }
       
-      // Apply year filter
-      if (yearFilter) {
-        filteredData = filteredData.filter(sale => sale.Year == yearFilter);
+      // Apply month filter if selected
+      if (monthFilter) {
+        filteredData = filteredData.filter(sale => sale.Month.toString() === monthFilter);
       }
+      
+      // Apply search term filter
+      filteredData = filteredData.filter(sale => 
+        sale.Branch.toLowerCase().includes(searchTerm) ||
+        sale.Month.toString().includes(searchTerm) ||
+        sale.DeliveryCount.toString().includes(searchTerm) ||
+        sale.Percentage.toString().includes(searchTerm) ||
+        sale.Amount.toString().includes(searchTerm)
+      );
       
       tbody.innerHTML = '';
       filteredData.forEach(sale => {
         const row = tbody.insertRow();
         
-        // Determine percentage class for styling
-        let percentageClass = '';
+        // Determine percentage class
+        let percentageClass = 'medium';
         if (sale.Percentage >= 10) {
-          percentageClass = 'percentage-high';
-        } else if (sale.Percentage >= 8) {
-          percentageClass = 'percentage-medium';
-        } else {
-          percentageClass = 'percentage-low';
+          percentageClass = 'high';
+        } else if (sale.Percentage < 8) {
+          percentageClass = 'low';
         }
+        
+        // Convert month number to name
+        const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        const monthName = monthNames[sale.Month - 1] || sale.Month;
         
         row.innerHTML = `
           <td>${sale.ID}</td>
           <td>${sale.Branch}</td>
           <td>${sale.Year}</td>
-          <td>${getMonthName(sale.Month)}</td>
+          <td>${monthName}</td>
           <td>${sale.DeliveryCount}</td>
-          <td><span class="${percentageClass}">${sale.Percentage}%</span></td>
+          <td><span class="agent-performance-value ${percentageClass}">${sale.Percentage}%</span></td>
           <td>AED ${sale.Amount.toLocaleString()}</td>
           <td>
             <button class="action-btn" onclick="openMonthlySalesForm(${sale.ID})" title="Edit">
@@ -2129,118 +2623,72 @@
     });
     
     // Initialize year filter
-    const yearFilter = document.getElementById('year-filter');
-    yearFilter.addEventListener('change', function() {
-      const searchTerm = document.getElementById('monthly-sales-search').value.toLowerCase();
-      const yearFilterValue = this.value;
-      
-      let filteredData = sampleData.monthlySales;
-      
-      // Apply search filter
-      if (searchTerm) {
-        filteredData = filteredData.filter(sale => 
-          sale.Branch.toLowerCase().includes(searchTerm) ||
-          getMonthName(sale.Month).toLowerCase().includes(searchTerm)
-        );
-      }
-      
-      // Apply year filter
-      if (yearFilterValue) {
-        filteredData = filteredData.filter(sale => sale.Year == yearFilterValue);
-      }
-      
-      tbody.innerHTML = '';
-      filteredData.forEach(sale => {
-        const row = tbody.insertRow();
-        
-        // Determine percentage class for styling
-        let percentageClass = '';
-        if (sale.Percentage >= 10) {
-          percentageClass = 'percentage-high';
-        } else if (sale.Percentage >= 8) {
-          percentageClass = 'percentage-medium';
-        } else {
-          percentageClass = 'percentage-low';
-        }
-        
-        row.innerHTML = `
-          <td>${sale.ID}</td>
-          <td>${sale.Branch}</td>
-          <td>${sale.Year}</td>
-          <td>${getMonthName(sale.Month)}</td>
-          <td>${sale.DeliveryCount}</td>
-          <td><span class="${percentageClass}">${sale.Percentage}%</span></td>
-          <td>AED ${sale.Amount.toLocaleString()}</td>
-          <td>
-            <button class="action-btn" onclick="openMonthlySalesForm(${sale.ID})" title="Edit">
-              <i class="fas fa-edit"></i>
-            </button>
-            <button class="action-btn delete" onclick="deleteMonthlySales(${sale.ID})" title="Delete">
-              <i class="fas fa-trash"></i>
-            </button>
-          </td>
-        `;
-      });
+    const yearFilterSelect = document.getElementById('year-filter');
+    yearFilterSelect.addEventListener('change', function() {
+      renderMonthlySales();
+    });
+    
+    // Initialize month filter
+    const monthFilterSelect = document.getElementById('sales-month-filter');
+    monthFilterSelect.addEventListener('change', function() {
+      renderMonthlySales();
     });
   }
 
-  function renderMonthlySalesSummary() {
+  function updateMonthlySalesSummary(salesData) {
     const summaryContainer = document.getElementById('monthly-sales-summary');
     summaryContainer.innerHTML = '';
     
-    // Get current year and month
-    const currentDate = new Date();
-    const currentYear = currentDate.getFullYear();
-    const currentMonth = currentDate.getMonth() + 1;
+    // Group sales by month
+    const monthlyData = {};
     
-    // Calculate summary data for each month of the current year
-    for (let month = 1; month <= 12; month++) {
-      // Find sales data for this month
-      const monthSales = sampleData.monthlySales.filter(sale => 
-        sale.Year === currentYear && sale.Month === month
-      );
+    salesData.forEach(sale => {
+      const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      const monthName = monthNames[sale.Month - 1] || sale.Month;
       
-      // Calculate totals for this month
-      let totalDeliveryCount = 0;
-      let totalAmount = 0;
-      let avgPercentage = 0;
-      
-      if (monthSales.length > 0) {
-        monthSales.forEach(sale => {
-          totalDeliveryCount += sale.DeliveryCount;
-          totalAmount += sale.Amount;
-          avgPercentage += sale.Percentage;
-        });
-        avgPercentage = avgPercentage / monthSales.length;
+      if (!monthlyData[monthName]) {
+        monthlyData[monthName] = {
+          month: monthName,
+          totalDeliveryCount: 0,
+          avgPercentage: 0,
+          totalAmount: 0,
+          count: 0
+        };
       }
       
-      // Create summary card
+      monthlyData[monthName].totalDeliveryCount += sale.DeliveryCount;
+      monthlyData[monthName].avgPercentage += sale.Percentage;
+      monthlyData[monthName].totalAmount += sale.Amount;
+      monthlyData[monthName].count += 1;
+    });
+    
+    // Calculate average percentage
+    Object.keys(monthlyData).forEach(month => {
+      monthlyData[month].avgPercentage = monthlyData[month].avgPercentage / monthlyData[month].count;
+    });
+    
+    // Create summary cards
+    Object.values(monthlyData).forEach(data => {
       const card = document.createElement('div');
       card.className = 'monthly-sales-card';
       
-      // Determine percentage class for styling
-      let percentageClass = '';
-      if (avgPercentage >= 10) {
-        percentageClass = 'percentage-high';
-      } else if (avgPercentage >= 8) {
-        percentageClass = 'percentage-medium';
-      } else {
-        percentageClass = 'percentage-low';
-      }
-      
-      // Highlight current month
-      if (month === currentMonth) {
-        card.style.border = '2px solid var(--primary)';
+      // Determine percentage class
+      let percentageClass = 'medium';
+      if (data.avgPercentage >= 10) {
+        percentageClass = 'high';
+      } else if (data.avgPercentage < 8) {
+        percentageClass = 'low';
       }
       
       card.innerHTML = `
-        <div class="month">${getMonthName(month)}</div>
-        <div class="percentage ${percentageClass}">${avgPercentage.toFixed(1)}%</div>
-        <div class="delivery-count">${totalDeliveryCount} deliveries</div>
+        <div class="month">${data.month}</div>
+        <div class="percentage ${percentageClass}">${data.avgPercentage.toFixed(1)}%</div>
+        <div class="delivery-count">${data.totalDeliveryCount} deliveries</div>
+        <div class="amount">AED ${data.totalAmount.toLocaleString()}</div>
       `;
       
       summaryContainer.appendChild(card);
-    }
+    });
   }
 
   function openMonthlySalesForm(id = null) {
@@ -2271,12 +2719,13 @@
     // Populate month dropdown
     const monthSelect = document.getElementById('monthly-sales-month');
     monthSelect.innerHTML = '';
-    for (let month = 1; month <= 12; month++) {
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    months.forEach((month, index) => {
       const option = document.createElement('option');
-      option.value = month;
-      option.textContent = getMonthName(month);
+      option.value = index + 1; // Store as number (1-12)
+      option.textContent = month;
       monthSelect.appendChild(option);
-    }
+    });
     
     if (id) {
       // Edit existing monthly sales
@@ -2298,324 +2747,155 @@
     } else {
       // Add new monthly sales
       document.getElementById('monthly-sales-form-title').textContent = 'Add Monthly Sales';
-      document.getElementById('monthly-sales-submit-btn').textContent = 'Add Monthly Sales';
+      document.getElementById('monthly-sales-submit-btn').textContent = 'Save Monthly Sales';
       document.getElementById('monthly-sales-edit-id').value = '';
       document.getElementById('monthly-sales-delete-btn').style.display = 'none';
       document.getElementById('monthly-sales-form').reset();
       
-      // Set current year and month as defaults
+      // Set default values
       document.getElementById('monthly-sales-year').value = currentYear;
-      document.getElementById('monthly-sales-month').value = currentMonth;
+      document.getElementById('monthly-sales-month').value = new Date().getMonth() + 1;
     }
   }
 
-  function deleteMonthlySales(id) {
-    if (confirm('Are you sure you want to delete this monthly sales record? This cannot be undone.')) {
-      const index = sampleData.monthlySales.findIndex(s => s.ID === id);
-      if (index !== -1) {
-        sampleData.monthlySales.splice(index, 1);
-        showNotification('Monthly sales record deleted successfully!', 'success');
-        renderMonthlySales();
-        updateDashboardCounters();
-      }
-    }
-  }
-
-  // --- FORM HANDLING ---
-  document.getElementById('branch-form').addEventListener('submit', function(e) {
+  function submitMonthlySalesForm(e) {
     e.preventDefault();
-    const isEdit = document.getElementById('branch-edit-id').value;
     
-    const branchData = {
-      'Branch Name': document.getElementById('branch-name').value,
-      City: document.getElementById('branch-city').value,
-      direction: document.getElementById('branch-direction').value,
-      AREA: document.getElementById('branch-area').value,
-      'Land line': document.getElementById('branch-landline').value,
-      'Google site': document.getElementById('branch-google-site').value,
-      RATE: document.getElementById('branch-rate').value,
-      'Manger name': document.getElementById('branch-manager').value,
-      'Number manager': '', // Will be populated from manager data
-      'Email address': document.getElementById('branch-email').value,
-      'Delivery status': document.getElementById('branch-delivery-status').value,
-      'Link online': document.getElementById('branch-link-online').value,
-      'Number bikes': document.getElementById('branch-num-bikes').value,
-      'Number driver': document.getElementById('branch-num-drivers').value,
-      'Talabat device': document.getElementById('branch-talabat-device').value,
-      'Noon device': document.getElementById('branch-noon-device').value,
-      'Careen device': document.getElementById('branch-careem-device').value,
-      'Deliveroo device': document.getElementById('branch-deliveroo-device').value,
-      'Smile device': document.getElementById('branch-smile-device').value,
-      'Talabana device': document.getElementById('branch-talabana-device').value
-    };
-    
-    // Get manager phone number
-    const manager = sampleData.managers.find(m => m.Name === branchData['Manger name']);
-    if (manager) {
-      branchData['Number manager'] = manager.Phone;
-    }
-    
-    if (isEdit) {
-      // Update existing branch
-      const index = sampleData.branches.findIndex(b => b.ID == isEdit);
-      if (index !== -1) {
-        sampleData.branches[index] = { ...sampleData.branches[index], ...branchData };
-        showNotification('Branch updated successfully!', 'success');
-      }
-    } else {
-      // Add new branch
-      const newId = Math.max(...sampleData.branches.map(b => b.ID), 0) + 1;
-      sampleData.branches.push({ ID: newId, ...branchData });
-      showNotification('Branch added successfully!', 'success');
-    }
-    
-    closeForm('branch-form-popup');
-    renderBranches();
-    updateDashboardCounters();
-    updateBranchMarkers();
-  });
-
-  document.getElementById('driver-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const isEdit = document.getElementById('driver-edit-id').value;
-    
-    const driverData = {
-      Name: document.getElementById('driver-name').value,
-      MobileNumber: document.getElementById('driver-mobile').value,
-      BikeNumber: document.getElementById('driver-bike-number').value,
-      Outlet: document.getElementById('driver-outlet').value,
-      PlateNumber: document.getElementById('driver-plate-number').value,
-      LicenseExpiry: formatDateForStorage(document.getElementById('driver-license-expiry').value),
-      TrafficCode: document.getElementById('driver-traffic-code').value,
-      DocumentNumber: document.getElementById('driver-document-number').value,
-      OwnershipExpiry: formatDateForStorage(document.getElementById('driver-ownership-expiry').value),
-      DrivingLicenseNo: document.getElementById('driver-driving-license').value,
-      DrivingLicenseExpiry: formatDateForStorage(document.getElementById('driver-driving-license-expiry').value),
-      JoinDate: formatDateForStorage(document.getElementById('driver-join-date').value),
-      Salary: parseFloat(document.getElementById('driver-salary').value),
-      Status: document.getElementById('driver-status').value
-    };
-    
-    if (isEdit) {
-      // Update existing driver
-      const index = sampleData.drivers.findIndex(d => d.ID == isEdit);
-      if (index !== -1) {
-        sampleData.drivers[index] = { ...sampleData.drivers[index], ...driverData };
-        showNotification('Driver updated successfully!', 'success');
-      }
-    } else {
-      // Add new driver
-      const newId = Math.max(...sampleData.drivers.map(d => d.ID), 0) + 1;
-      sampleData.drivers.push({ ID: newId, ...driverData });
-      showNotification('Driver added successfully!', 'success');
-    }
-    
-    closeForm('driver-form-popup');
-    renderDrivers();
-    updateDashboardCounters();
-  });
-
-  document.getElementById('manager-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const isEdit = document.getElementById('manager-edit-id').value;
-    
-    const managerData = {
-      Name: document.getElementById('manager-name').value,
-      Phone: document.getElementById('manager-phone').value,
-      Email: document.getElementById('manager-email').value,
-      Branch: document.getElementById('manager-branch').value,
-      JoinDate: formatDateForStorage(document.getElementById('manager-join-date').value),
-      Salary: parseFloat(document.getElementById('manager-salary').value),
-      Status: document.getElementById('manager-status').value
-    };
-    
-    if (isEdit) {
-      // Update existing manager
-      const index = sampleData.managers.findIndex(m => m.ID == isEdit);
-      if (index !== -1) {
-        sampleData.managers[index] = { ...sampleData.managers[index], ...managerData };
-        showNotification('Manager updated successfully!', 'success');
-      }
-    } else {
-      // Add new manager
-      const newId = Math.max(...sampleData.managers.map(m => m.ID), 0) + 1;
-      sampleData.managers.push({ ID: newId, ...managerData });
-      showNotification('Manager added successfully!', 'success');
-    }
-    
-    closeForm('manager-form-popup');
-    renderManagers();
-    updateDashboardCounters();
-  });
-
-  document.getElementById('agent-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const isEdit = document.getElementById('agent-edit-id').value;
-    
-    const agentData = {
-      Name: document.getElementById('agent-name').value,
-      Phone: document.getElementById('agent-phone').value,
-      Email: document.getElementById('agent-email').value,
-      Area: document.getElementById('agent-area').value,
-      Commission: parseFloat(document.getElementById('agent-commission').value),
-      JoinDate: formatDateForStorage(document.getElementById('agent-join-date').value),
-      Status: document.getElementById('agent-status').value
-    };
-    
-    if (isEdit) {
-      // Update existing agent
-      const index = sampleData.agents.findIndex(a => a.ID == isEdit);
-      if (index !== -1) {
-        sampleData.agents[index] = { ...sampleData.agents[index], ...agentData };
-        showNotification('Agent updated successfully!', 'success');
-      }
-    } else {
-      // Add new agent
-      const newId = Math.max(...sampleData.agents.map(a => a.ID), 0) + 1;
-      sampleData.agents.push({ ID: newId, ...agentData });
-      showNotification('Agent added successfully!', 'success');
-    }
-    
-    closeForm('agent-form-popup');
-    renderAgents();
-    updateDashboardCounters();
-  });
-
-  document.getElementById('monthly-sales-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const isEdit = document.getElementById('monthly-sales-edit-id').value;
-    
+    const salesId = document.getElementById('monthly-sales-edit-id').value;
     const salesData = {
       Branch: document.getElementById('monthly-sales-branch').value,
       Year: parseInt(document.getElementById('monthly-sales-year').value),
       Month: parseInt(document.getElementById('monthly-sales-month').value),
-      DeliveryCount: parseInt(document.getElementById('monthly-sales-delivery-count').value),
-      Percentage: parseFloat(document.getElementById('monthly-sales-percentage').value),
-      Amount: parseFloat(document.getElementById('monthly-sales-amount').value)
+      DeliveryCount: parseInt(document.getElementById('monthly-sales-delivery-count').value) || 0,
+      Percentage: parseFloat(document.getElementById('monthly-sales-percentage').value) || 0,
+      Amount: parseFloat(document.getElementById('monthly-sales-amount').value) || 0
     };
     
-    if (isEdit) {
+    if (salesId) {
       // Update existing monthly sales
-      const index = sampleData.monthlySales.findIndex(s => s.ID == isEdit);
+      const index = sampleData.monthlySales.findIndex(s => s.ID == salesId);
       if (index !== -1) {
         sampleData.monthlySales[index] = { ...sampleData.monthlySales[index], ...salesData };
-        showNotification('Monthly sales updated successfully!', 'success');
+        showNotification('Monthly sales updated successfully', 'success');
       }
     } else {
       // Add new monthly sales
       const newId = Math.max(...sampleData.monthlySales.map(s => s.ID), 0) + 1;
       sampleData.monthlySales.push({ ID: newId, ...salesData });
-      showNotification('Monthly sales added successfully!', 'success');
+      showNotification('Monthly sales added successfully', 'success');
     }
     
     closeForm('monthly-sales-form-popup');
     renderMonthlySales();
     updateDashboardCounters();
-  });
-
-  // --- DELETE BUTTONS ---
-  document.getElementById('branch-delete-btn').addEventListener('click', function() {
-    const id = document.getElementById('branch-edit-id').value;
-    deleteBranch(id);
-  });
-
-  document.getElementById('driver-delete-btn').addEventListener('click', function() {
-    const id = document.getElementById('driver-edit-id').value;
-    deleteDriver(id);
-  });
-
-  document.getElementById('manager-delete-btn').addEventListener('click', function() {
-    const id = document.getElementById('manager-edit-id').value;
-    deleteManager(id);
-  });
-
-  document.getElementById('agent-delete-btn').addEventListener('click', function() {
-    const id = document.getElementById('agent-edit-id').value;
-    deleteAgent(id);
-  });
-
-  document.getElementById('monthly-sales-delete-btn').addEventListener('click', function() {
-    const id = document.getElementById('monthly-sales-edit-id').value;
-    deleteMonthlySales(id);
-  });
-
-  // --- EXPORT FUNCTIONS ---
-  function exportAllData() {
-    // Create a combined export with all data
-    const exportData = {
-      branches: sampleData.branches,
-      drivers: sampleData.drivers,
-      managers: sampleData.managers,
-      agents: sampleData.agents,
-      monthlySales: sampleData.monthlySales,
-      exportDate: new Date().toISOString()
-    };
-    
-    const dataStr = JSON.stringify(exportData, null, 2);
-    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-    
-    const exportFileDefaultName = 'crispy-chicken-all-data.json';
-    
-    const linkElement = document.createElement('a');
-    linkElement.setAttribute('href', dataUri);
-    linkElement.setAttribute('download', exportFileDefaultName);
-    linkElement.click();
-    
-    showNotification('All data exported successfully!', 'success');
   }
 
-  function exportData(section) {
-    let dataToExport;
-    let fileName;
+  function deleteMonthlySales(id) {
+    if (confirm('Are you sure you want to delete this monthly sales record?')) {
+      sampleData.monthlySales = sampleData.monthlySales.filter(s => s.ID !== id);
+      showNotification('Monthly sales deleted successfully', 'success');
+      renderMonthlySales();
+      updateDashboardCounters();
+    }
+  }
+
+  // --- EXPORT FUNCTIONS ---
+  function exportData(dataType) {
+    let data = [];
+    let headers = [];
+    let filename = '';
     
-    switch(section) {
+    switch (dataType) {
       case 'branches':
-        dataToExport = sampleData.branches;
-        fileName = 'crispy-chicken-branches.csv';
+        data = sampleData.branches;
+        headers = ['ID', 'Branch Name', 'City', 'Area', 'Manager', 'Delivery Status'];
+        filename = 'branches_export';
         break;
       case 'drivers':
-        dataToExport = sampleData.drivers;
-        fileName = 'crispy-chicken-drivers.csv';
+        data = sampleData.drivers;
+        headers = ['ID', 'Name', 'Mobile Number', 'Bike Number', 'Outlet', 'Plate Number', 'License Expiry', 'Status'];
+        filename = 'drivers_export';
         break;
       case 'managers':
-        dataToExport = sampleData.managers;
-        fileName = 'crispy-chicken-managers.csv';
+        data = sampleData.managers;
+        headers = ['ID', 'Name', 'Phone', 'Email', 'Branch', 'Status'];
+        filename = 'managers_export';
         break;
       case 'agents':
-        dataToExport = sampleData.agents;
-        fileName = 'crispy-chicken-agents.csv';
+        data = sampleData.agents;
+        headers = ['ID', 'Name', 'Phone', 'Email', 'Area', 'Commission', 'Status', 'Month', 'Total Rings', 'Answered', 'Missed', 'Avg. Wait Time', 'Max Wait Time', 'Avg. Talk Time', 'Total Talk Time', 'Missed Rate'];
+        filename = 'agents_export';
         break;
       case 'monthly-sales':
-        dataToExport = sampleData.monthlySales;
-        fileName = 'crispy-chicken-monthly-sales.csv';
+        data = sampleData.monthlySales;
+        headers = ['ID', 'Branch', 'Year', 'Month', 'Delivery Count', 'Percentage', 'Amount'];
+        filename = 'monthly_sales_export';
         break;
       default:
         return;
     }
     
-    // Convert to CSV
-    if (dataToExport.length > 0) {
-      const headers = Object.keys(dataToExport[0]);
-      const csvContent = [
-        headers.join(','),
-        ...dataToExport.map(item => 
-          headers.map(header => `"${item[header] || ''}"`).join(',')
-        )
-      ].join('\n');
+    // Create CSV content
+    let csvContent = headers.join(',') + '\n';
+    
+    data.forEach(item => {
+      const row = headers.map(header => {
+        // Handle nested objects and special formatting
+        let value = item[header.replace(/\s/g, '')] || '';
+        
+        // Format dates
+        if (header.includes('Date') || header.includes('Expiry')) {
+          value = formatDateForStorage(value);
+        }
+        
+        // Escape commas and quotes
+        if (typeof value === 'string' && (value.includes(',') || value.includes('"'))) {
+          value = '"' + value.replace(/"/g, '""') + '"';
+        }
+        
+        return value;
+      });
       
-      const blob = new Blob([csvContent], { type: 'text/csv' });
-      const url = URL.createObjectURL(blob);
-      
-      const linkElement = document.createElement('a');
-      linkElement.setAttribute('href', url);
-      linkElement.setAttribute('download', fileName);
-      linkElement.click();
-      
-      URL.revokeObjectURL(url);
-      showNotification(`${section.charAt(0).toUpperCase() + section.slice(1)} data exported successfully!`, 'success');
-    } else {
-      showNotification(`No ${section} data to export!`, 'error');
-    }
+      csvContent += row.join(',') + '\n';
+    });
+    
+    // Create download link
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', filename + '.csv');
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    showNotification(`${filename} exported successfully`, 'success');
+  }
+
+  function exportAllData() {
+    // Create a combined export of all data
+    const allData = {
+      branches: sampleData.branches,
+      drivers: sampleData.drivers,
+      managers: sampleData.managers,
+      agents: sampleData.agents,
+      monthlySales: sampleData.monthlySales
+    };
+    
+    // Convert to JSON and download
+    const jsonStr = JSON.stringify(allData, null, 2);
+    const blob = new Blob([jsonStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'crispy_chicken_data_export.json');
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    showNotification('All data exported successfully', 'success');
   }
 
   // --- UTILITY FUNCTIONS ---
@@ -2626,51 +2906,46 @@
   function showNotification(message, type) {
     const notification = document.getElementById('notification');
     notification.textContent = message;
-    notification.className = `notification ${type}`;
+    notification.className = 'notification ' + type;
     notification.style.display = 'block';
     
     setTimeout(() => {
       notification.style.display = 'none';
-    }, 5000);
+    }, 3000);
   }
 
-  function getMonthName(monthNumber) {
-    const months = [
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'
-    ];
-    return months[monthNumber - 1];
-  }
-
-  function formatDateForInput(dateString) {
-    if (!dateString || dateString === '—') return '';
+  function formatDateForInput(dateStr) {
+    if (!dateStr) return '';
     
-    // Handle different date formats
-    if (dateString.includes('/')) {
-      // Format: DD/MM/YYYY
-      const parts = dateString.split('/');
-      if (parts.length === 3) {
-        return `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
-      }
+    // Convert DD/MM/YYYY to YYYY-MM-DD for input fields
+    const parts = dateStr.split('/');
+    if (parts.length === 3) {
+      return `${parts[2]}-${parts[1]}-${parts[0]}`;
     }
     
-    return dateString;
+    // If already in YYYY-MM-DD format, return as is
+    return dateStr;
   }
 
-  function formatDateForStorage(dateString) {
-    if (!dateString) return '';
+  function formatDateForStorage(dateStr) {
+    if (!dateStr) return '';
     
-    // Convert from YYYY-MM-DD to DD/MM/YYYY
-    if (dateString.includes('-')) {
-      const parts = dateString.split('-');
-      if (parts.length === 3) {
-        return `${parts[2]}/${parts[1]}/${parts[0]}`;
-      }
+    // Convert YYYY-MM-DD to DD/MM/YYYY for storage
+    const parts = dateStr.split('-');
+    if (parts.length === 3) {
+      return `${parts[2]}/${parts[1]}/${parts[0]}`;
     }
     
-    return dateString;
+    // If already in DD/MM/YYYY format, return as is
+    return dateStr;
   }
+
+  // --- FORM SUBMISSION HANDLERS ---
+  document.getElementById('branch-form').addEventListener('submit', submitBranchForm);
+  document.getElementById('driver-form').addEventListener('submit', submitDriverForm);
+  document.getElementById('manager-form').addEventListener('submit', submitManagerForm);
+  document.getElementById('agent-form').addEventListener('submit', submitAgentForm);
+  document.getElementById('monthly-sales-form').addEventListener('submit', submitMonthlySalesForm);
 </script>
-
 </body>
 </html>
