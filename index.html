@@ -133,7 +133,24 @@
       border-radius: 4px;
       cursor: pointer;
       font-weight: 500;
-      transition: background-color 0.3s;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .btn:active {
+      transform: translateY(0);
+    }
+    
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
     }
     
     .btn-primary {
@@ -152,6 +169,24 @@
     
     .btn-info:hover {
       background-color: #31b0d5;
+    }
+    
+    .btn-warning {
+      background-color: var(--warning);
+      color: var(--white);
+    }
+    
+    .btn-warning:hover {
+      background-color: #ec971f;
+    }
+    
+    .btn-secondary {
+      background-color: var(--secondary);
+      color: var(--white);
+    }
+    
+    .btn-secondary:hover {
+      background-color: #4cae4c;
     }
     
     .content-body {
@@ -301,7 +336,7 @@
       margin: 0 3px;
       padding: 5px;
       border-radius: 4px;
-      transition: background-color 0.3s;
+      transition: all 0.3s;
     }
     
     .action-btn:hover {
@@ -327,7 +362,13 @@
       background-color: rgba(0,0,0,0.5); 
       z-index: 1000; 
       justify-content: center; 
-      align-items: center; 
+      align-items: center;
+      animation: fadeIn 0.3s;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
     
     .form-container { 
@@ -339,6 +380,12 @@
       max-height: 90vh; 
       overflow-y: auto;
       box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      animation: slideIn 0.3s;
+    }
+    
+    @keyframes slideIn {
+      from { transform: translateY(-50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
     
     .close-btn { 
@@ -346,7 +393,8 @@
       float: right; 
       font-size: 28px; 
       font-weight: bold; 
-      cursor: pointer; 
+      cursor: pointer;
+      transition: color 0.3s;
     }
     
     .close-btn:hover { 
@@ -384,6 +432,28 @@
       border-radius: 4px; 
       font-size: 14px;
       box-sizing: border-box;
+      transition: border-color 0.3s;
+    }
+    
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(217, 83, 79, 0.2);
+    }
+    
+    .form-group.error input, .form-group.error select, .form-group.error textarea {
+      border-color: var(--danger-red);
+    }
+    
+    .error-message {
+      color: var(--danger-red);
+      font-size: 0.8rem;
+      margin-top: 5px;
+      display: none;
+    }
+    
+    .form-group.error .error-message {
+      display: block;
     }
     
     .form-actions {
@@ -410,25 +480,218 @@
       background-color: #c9302c;
     }
     
-    /* Notification */
-    .notification { 
-      position: fixed; 
-      top: 20px; 
-      right: 20px; 
-      padding: 15px; 
-      border-radius: 4px; 
-      color: var(--white); 
-      z-index: 1001; 
+    /* Toast Notifications */
+    .toast-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .toast {
+      background: var(--white);
+      border-radius: 4px;
+      padding: 15px 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      display: flex;
+      align-items: center;
+      min-width: 300px;
+      animation: slideInRight 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    @keyframes slideInRight {
+      from { transform: translateX(100%); }
+      to { transform: translateX(0); }
+    }
+    
+    .toast.hiding {
+      animation: slideOutRight 0.3s forwards;
+    }
+    
+    @keyframes slideOutRight {
+      from { transform: translateX(0); }
+      to { transform: translateX(100%); }
+    }
+    
+    .toast-icon {
+      margin-right: 10px;
+      font-size: 1.2rem;
+    }
+    
+    .toast.success {
+      border-left: 4px solid var(--success-green);
+    }
+    
+    .toast.success .toast-icon {
+      color: var(--success-green);
+    }
+    
+    .toast.error {
+      border-left: 4px solid var(--danger-red);
+    }
+    
+    .toast.error .toast-icon {
+      color: var(--danger-red);
+    }
+    
+    .toast.warning {
+      border-left: 4px solid var(--warning);
+    }
+    
+    .toast.warning .toast-icon {
+      color: var(--warning);
+    }
+    
+    .toast.info {
+      border-left: 4px solid var(--info);
+    }
+    
+    .toast.info .toast-icon {
+      color: var(--info);
+    }
+    
+    .toast-close {
+      margin-left: auto;
+      background: none;
+      border: none;
+      color: #999;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    
+    .toast-close:hover {
+      color: var(--dark);
+    }
+    
+    .toast-progress {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 3px;
+      background: rgba(0,0,0,0.1);
+      animation: progress 5s linear forwards;
+    }
+    
+    @keyframes progress {
+      from { width: 100%; }
+      to { width: 0%; }
+    }
+    
+    /* Loading Overlay */
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255,255,255,0.8);
       display: none;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+      justify-content: center;
+      align-items: center;
+      z-index: 3000;
     }
     
-    .success { 
-      background-color: var(--success-green); 
+    .loading-overlay.active {
+      display: flex;
     }
     
-    .error { 
-      background-color: var(--danger-red); 
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(0,0,0,0.1);
+      border-radius: 50%;
+      border-top-color: var(--primary);
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    /* Confirmation Dialog */
+    .confirm-dialog {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 2500;
+    }
+    
+    .confirm-dialog.active {
+      display: flex;
+    }
+    
+    .confirm-container {
+      background: var(--white);
+      border-radius: 8px;
+      padding: 20px;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      animation: slideIn 0.3s;
+    }
+    
+    .confirm-title {
+      margin-top: 0;
+      color: var(--primary);
+    }
+    
+    .confirm-message {
+      margin-bottom: 20px;
+    }
+    
+    .confirm-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    
+    /* Keyboard Shortcuts Help */
+    .shortcuts-help {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--white);
+      border-radius: 8px;
+      padding: 15px;
+      box-shadow: var(--card-shadow);
+      display: none;
+      z-index: 1500;
+      max-width: 300px;
+    }
+    
+    .shortcuts-help.active {
+      display: block;
+    }
+    
+    .shortcuts-title {
+      margin-top: 0;
+      color: var(--primary);
+      font-size: 1rem;
+    }
+    
+    .shortcut-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+    }
+    
+    .shortcut-key {
+      background: #f0f0f0;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: monospace;
     }
     
     /* Map Styles */
@@ -596,6 +859,42 @@
       color: var(--danger-red);
     }
     
+    /* Timestamp */
+    .timestamp {
+      font-size: 0.8rem;
+      color: #666;
+      margin-top: 5px;
+    }
+    
+    /* Tooltip */
+    .tooltip {
+      position: relative;
+      display: inline-block;
+    }
+    
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 200px;
+      background-color: #555;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%;
+      left: 50%;
+      margin-left: -100px;
+      opacity: 0;
+      transition: opacity 0.3s;
+      font-size: 0.8rem;
+    }
+    
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+    
     /* Responsive */
     @media (max-width: 992px) {
       .container {
@@ -620,6 +919,15 @@
       .nav-link {
         padding: 8px 15px;
         border-radius: 4px;
+      }
+      
+      .section-controls {
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      .search-box {
+        width: 100%;
       }
     }
   </style>
@@ -673,6 +981,9 @@
       <div class="content-header">
         <h2 class="content-title">Management Dashboard</h2>
         <div class="content-actions">
+          <button class="btn btn-warning" onclick="resetData()">
+            <i class="fas fa-undo"></i> Reset Data
+          </button>
           <button class="btn btn-info" onclick="exportAllData()">
             <i class="fas fa-download"></i> Export All Data
           </button>
@@ -685,6 +996,7 @@
             <div class="content">
               <p class="value" id="total-branches">8</p>
               <p class="label">Total Branches</p>
+              <div class="timestamp" id="branches-timestamp">Last updated: Never</div>
             </div>
           </div>
           
@@ -693,6 +1005,7 @@
             <div class="content">
               <p class="value" id="total-drivers">19</p>
               <p class="label">Total Drivers</p>
+              <div class="timestamp" id="drivers-timestamp">Last updated: Never</div>
             </div>
           </div>
           
@@ -701,6 +1014,7 @@
             <div class="content">
               <p class="value" id="total-managers">8</p>
               <p class="label">Total Managers</p>
+              <div class="timestamp" id="managers-timestamp">Last updated: Never</div>
             </div>
           </div>
           
@@ -709,6 +1023,7 @@
             <div class="content">
               <p class="value" id="total-agents">7</p>
               <p class="label">Total Agents</p>
+              <div class="timestamp" id="agents-timestamp">Last updated: Never</div>
             </div>
           </div>
           
@@ -717,6 +1032,7 @@
             <div class="content">
               <p class="value" id="total-sales">AED 125,430</p>
               <p class="label">Total Sales</p>
+              <div class="timestamp" id="sales-timestamp">Last updated: Never</div>
             </div>
           </div>
         </div>
@@ -1067,12 +1383,12 @@
 <!-- Branch Form Popup -->
 <div id="branch-form-popup" class="form-popup">
   <div class="form-container">
-    <span class="close-btn" onclick="closeForm('branch-form-popup')">&times;</span>
+    <span class="close-btn" onclick="confirmCloseForm('branch-form-popup')">&times;</span>
     <h2 class="form-title" id="branch-form-title">Add New Branch</h2>
     <form id="branch-form">
       <input type="hidden" id="branch-edit-id">
-      <div class="form-group"><label for="branch-name">Branch Name</label><input type="text" id="branch-name" required></div>
-      <div class="form-group"><label for="branch-city">City</label><input type="text" id="branch-city" required></div>
+      <div class="form-group"><label for="branch-name">Branch Name</label><input type="text" id="branch-name" required><span class="error-message">Branch name is required</span></div>
+      <div class="form-group"><label for="branch-city">City</label><input type="text" id="branch-city" required><span class="error-message">City is required</span></div>
       <div class="form-group"><label for="branch-direction">Coordinates (lat, lng)</label><input type="text" id="branch-direction" placeholder="24.4958, 54.3715"></div>
       <div class="form-group"><label for="branch-area">Area</label><input type="text" id="branch-area"></div>
       <div class="form-group"><label for="branch-landline">Landline</label><input type="text" id="branch-landline"></div>
@@ -1094,8 +1410,13 @@
       <div class="form-group"><label for="branch-talabana-device">Talabana Device</label><select id="branch-talabana-device"><option value="1">Yes</option><option value="0">No</option></select></div>
       
       <div class="form-actions">
-        <button type="submit" class="btn btn-submit" id="branch-submit-btn">Save Branch</button>
-        <button type="button" class="btn btn-delete" id="branch-delete-btn" style="display:none;">Delete Branch</button>
+        <button type="button" class="btn btn-secondary" onclick="clearForm('branch-form')">
+          <i class="fas fa-eraser"></i> Clear All
+        </button>
+        <div>
+          <button type="submit" class="btn btn-submit" id="branch-submit-btn">Save Branch</button>
+          <button type="button" class="btn btn-delete" id="branch-delete-btn" style="display:none;">Delete Branch</button>
+        </div>
       </div>
     </form>
   </div>
@@ -1104,16 +1425,16 @@
 <!-- Driver Form Popup -->
 <div id="driver-form-popup" class="form-popup">
   <div class="form-container">
-    <span class="close-btn" onclick="closeForm('driver-form-popup')">&times;</span>
+    <span class="close-btn" onclick="confirmCloseForm('driver-form-popup')">&times;</span>
     <h2 class="form-title" id="driver-form-title">Add New Driver</h2>
     <form id="driver-form">
       <input type="hidden" id="driver-edit-id">
-      <div class="form-group"><label for="driver-name">Driver Name</label><input type="text" id="driver-name" required></div>
-      <div class="form-group"><label for="driver-mobile">Mobile Number</label><input type="text" id="driver-mobile" required></div>
+      <div class="form-group"><label for="driver-name">Driver Name</label><input type="text" id="driver-name" required><span class="error-message">Driver name is required</span></div>
+      <div class="form-group"><label for="driver-mobile">Mobile Number</label><input type="text" id="driver-mobile" required><span class="error-message">Mobile number is required</span></div>
       <div class="form-group"><label for="driver-bike-number">Bike Number</label><input type="text" id="driver-bike-number"></div>
       <div class="form-group"><label for="driver-outlet">Outlet</label><select id="driver-outlet"></select></div>
       <div class="form-group"><label for="driver-plate-number">Plate Number</label><input type="text" id="driver-plate-number"></div>
-      <div class="form-group"><label for="driver-license-expiry">License Expiry</label><input type="date" id="driver-license-expiry"></div>
+      <div class="form-group"><label for="driver-license-expiry">License Expiry</label><input type="date" id="driver-license-expiry" required><span class="error-message">License expiry is required</span></div>
       <div class="form-group"><label for="driver-traffic-code">Traffic Code</label><input type="text" id="driver-traffic-code"></div>
       <div class="form-group"><label for="driver-document-number">Document Number</label><input type="text" id="driver-document-number"></div>
       <div class="form-group"><label for="driver-ownership-expiry">Ownership Expiry</label><input type="date" id="driver-ownership-expiry"></div>
@@ -1124,8 +1445,13 @@
       <div class="form-group"><label for="driver-status">Status</label><select id="driver-status"><option>Active</option><option>Inactive</option><option>On Leave</option></select></div>
       
       <div class="form-actions">
-        <button type="submit" class="btn btn-submit" id="driver-submit-btn">Save Driver</button>
-        <button type="button" class="btn btn-delete" id="driver-delete-btn" style="display:none;">Delete Driver</button>
+        <button type="button" class="btn btn-secondary" onclick="clearForm('driver-form')">
+          <i class="fas fa-eraser"></i> Clear All
+        </button>
+        <div>
+          <button type="submit" class="btn btn-submit" id="driver-submit-btn">Save Driver</button>
+          <button type="button" class="btn btn-delete" id="driver-delete-btn" style="display:none;">Delete Driver</button>
+        </div>
       </div>
     </form>
   </div>
@@ -1134,12 +1460,12 @@
 <!-- Manager Form Popup -->
 <div id="manager-form-popup" class="form-popup">
   <div class="form-container">
-    <span class="close-btn" onclick="closeForm('manager-form-popup')">&times;</span>
+    <span class="close-btn" onclick="confirmCloseForm('manager-form-popup')">&times;</span>
     <h2 class="form-title" id="manager-form-title">Add New Manager</h2>
     <form id="manager-form">
       <input type="hidden" id="manager-edit-id">
-      <div class="form-group"><label for="manager-name">Name</label><input type="text" id="manager-name" required></div>
-      <div class="form-group"><label for="manager-phone">Phone</label><input type="text" id="manager-phone" required></div>
+      <div class="form-group"><label for="manager-name">Name</label><input type="text" id="manager-name" required><span class="error-message">Name is required</span></div>
+      <div class="form-group"><label for="manager-phone">Phone</label><input type="text" id="manager-phone" required><span class="error-message">Phone is required</span></div>
       <div class="form-group"><label for="manager-email">Email</label><input type="email" id="manager-email"></div>
       <div class="form-group"><label for="manager-branch">Branch</label><select id="manager-branch"></select></div>
       <div class="form-group"><label for="manager-join-date">Join Date</label><input type="date" id="manager-join-date"></div>
@@ -1147,8 +1473,13 @@
       <div class="form-group"><label for="manager-status">Status</label><select id="manager-status"><option>Active</option><option>Inactive</option><option>On Leave</option></select></div>
       
       <div class="form-actions">
-        <button type="submit" class="btn btn-submit" id="manager-submit-btn">Save Manager</button>
-        <button type="button" class="btn btn-delete" id="manager-delete-btn" style="display:none;">Delete Manager</button>
+        <button type="button" class="btn btn-secondary" onclick="clearForm('manager-form')">
+          <i class="fas fa-eraser"></i> Clear All
+        </button>
+        <div>
+          <button type="submit" class="btn btn-submit" id="manager-submit-btn">Save Manager</button>
+          <button type="button" class="btn btn-delete" id="manager-delete-btn" style="display:none;">Delete Manager</button>
+        </div>
       </div>
     </form>
   </div>
@@ -1157,12 +1488,12 @@
 <!-- Agent Form Popup -->
 <div id="agent-form-popup" class="form-popup">
   <div class="form-container">
-    <span class="close-btn" onclick="closeForm('agent-form-popup')">&times;</span>
+    <span class="close-btn" onclick="confirmCloseForm('agent-form-popup')">&times;</span>
     <h2 class="form-title" id="agent-form-title">Add New Agent</h2>
     <form id="agent-form">
       <input type="hidden" id="agent-edit-id">
-      <div class="form-group"><label for="agent-name">Agent Name</label><input type="text" id="agent-name" required></div>
-      <div class="form-group"><label for="agent-phone">Phone</label><input type="text" id="agent-phone" required></div>
+      <div class="form-group"><label for="agent-name">Agent Name</label><input type="text" id="agent-name" required><span class="error-message">Agent name is required</span></div>
+      <div class="form-group"><label for="agent-phone">Phone</label><input type="text" id="agent-phone" required><span class="error-message">Phone is required</span></div>
       <div class="form-group"><label for="agent-email">Email</label><input type="email" id="agent-email"></div>
       <div class="form-group"><label for="agent-area">Area</label><input type="text" id="agent-area"></div>
       <div class="form-group"><label for="agent-commission">Commission (%)</label><input type="number" id="agent-commission" min="0" max="100" step="0.1"></div>
@@ -1181,8 +1512,13 @@
       <div class="form-group"><label for="agent-missed-rate">Missed Rate (%)</label><input type="number" id="agent-missed-rate" min="0" max="100" step="0.01"></div>
       
       <div class="form-actions">
-        <button type="submit" class="btn btn-submit" id="agent-submit-btn">Save Agent</button>
-        <button type="button" class="btn btn-delete" id="agent-delete-btn" style="display:none;">Delete Agent</button>
+        <button type="button" class="btn btn-secondary" onclick="clearForm('agent-form')">
+          <i class="fas fa-eraser"></i> Clear All
+        </button>
+        <div>
+          <button type="submit" class="btn btn-submit" id="agent-submit-btn">Save Agent</button>
+          <button type="button" class="btn btn-delete" id="agent-delete-btn" style="display:none;">Delete Agent</button>
+        </div>
       </div>
     </form>
   </div>
@@ -1191,26 +1527,70 @@
 <!-- Monthly Sales Form Popup -->
 <div id="monthly-sales-form-popup" class="form-popup">
   <div class="form-container">
-    <span class="close-btn" onclick="closeForm('monthly-sales-form-popup')">&times;</span>
+    <span class="close-btn" onclick="confirmCloseForm('monthly-sales-form-popup')">&times;</span>
     <h2 class="form-title" id="monthly-sales-form-title">Add Monthly Sales</h2>
     <form id="monthly-sales-form">
       <input type="hidden" id="monthly-sales-edit-id">
-      <div class="form-group"><label for="monthly-sales-branch">Branch</label><select id="monthly-sales-branch" required></select></div>
-      <div class="form-group"><label for="monthly-sales-year">Year</label><select id="monthly-sales-year" required></select></div>
-      <div class="form-group"><label for="monthly-sales-month">Month</label><select id="monthly-sales-month" required></select></div>
-      <div class="form-group"><label for="monthly-sales-delivery-count">Delivery Count</label><input type="number" id="monthly-sales-delivery-count" min="0" required></div>
-      <div class="form-group"><label for="monthly-sales-percentage">Percentage (%)</label><input type="number" id="monthly-sales-percentage" min="0" max="100" step="0.1" required></div>
-      <div class="form-group"><label for="monthly-sales-amount">Sales Amount (AED)</label><input type="number" id="monthly-sales-amount" min="0" step="0.01" required></div>
+      <div class="form-group"><label for="monthly-sales-branch">Branch</label><select id="monthly-sales-branch" required></select><span class="error-message">Branch is required</span></div>
+      <div class="form-group"><label for="monthly-sales-year">Year</label><select id="monthly-sales-year" required></select><span class="error-message">Year is required</span></div>
+      <div class="form-group"><label for="monthly-sales-month">Month</label><select id="monthly-sales-month" required></select><span class="error-message">Month is required</span></div>
+      <div class="form-group"><label for="monthly-sales-delivery-count">Delivery Count</label><input type="number" id="monthly-sales-delivery-count" min="0" required><span class="error-message">Delivery count is required</span></div>
+      <div class="form-group"><label for="monthly-sales-percentage">Percentage (%)</label><input type="number" id="monthly-sales-percentage" min="0" max="100" step="0.1" required><span class="error-message">Percentage is required</span></div>
+      <div class="form-group"><label for="monthly-sales-amount">Sales Amount (AED)</label><input type="number" id="monthly-sales-amount" min="0" step="0.01" required><span class="error-message">Sales amount is required</span></div>
       
       <div class="form-actions">
-        <button type="submit" class="btn btn-submit" id="monthly-sales-submit-btn">Save Monthly Sales</button>
-        <button type="button" class="btn btn-delete" id="monthly-sales-delete-btn" style="display:none;">Delete Monthly Sales</button>
+        <button type="button" class="btn btn-secondary" onclick="clearForm('monthly-sales-form')">
+          <i class="fas fa-eraser"></i> Clear All
+        </button>
+        <div>
+          <button type="submit" class="btn btn-submit" id="monthly-sales-submit-btn">Save Monthly Sales</button>
+          <button type="button" class="btn btn-delete" id="monthly-sales-delete-btn" style="display:none;">Delete Monthly Sales</button>
+        </div>
       </div>
     </form>
   </div>
 </div>
 
-<div id="notification" class="notification"></div>
+<!-- Confirmation Dialog -->
+<div id="confirm-dialog" class="confirm-dialog">
+  <div class="confirm-container">
+    <h3 class="confirm-title" id="confirm-title">Confirm Action</h3>
+    <p class="confirm-message" id="confirm-message">Are you sure you want to proceed?</p>
+    <div class="confirm-actions">
+      <button class="btn btn-secondary" id="confirm-cancel">Cancel</button>
+      <button class="btn btn-primary" id="confirm-ok">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- Keyboard Shortcuts Help -->
+<div id="shortcuts-help" class="shortcuts-help">
+  <h3 class="shortcuts-title">Keyboard Shortcuts</h3>
+  <div class="shortcut-item">
+    <span>Save Form</span>
+    <span class="shortcut-key">Ctrl+S</span>
+  </div>
+  <div class="shortcut-item">
+    <span>Close Form</span>
+    <span class="shortcut-key">Esc</span>
+  </div>
+  <div class="shortcut-item">
+    <span>Export Data</span>
+    <span class="shortcut-key">Ctrl+E</span>
+  </div>
+  <div class="shortcut-item">
+    <span>Help</span>
+    <span class="shortcut-key">Ctrl+?</span>
+  </div>
+</div>
+
+<!-- Loading Overlay -->
+<div id="loading-overlay" class="loading-overlay">
+  <div class="loading-spinner"></div>
+</div>
+
+<!-- Toast Container -->
+<div id="toast-container" class="toast-container"></div>
 
 <!-- Scripts -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -1221,9 +1601,15 @@
   let branchMarkers = [];
   let activeSection = 'dashboard';
   let salesChart = null;
+  let formHasChanges = {};
+  let confirmCallback = null;
+  
+  // --- DATA PERSISTENCE ---
+  const STORAGE_KEY = 'crispy_chicken_data';
+  const TIMESTAMP_KEY = 'crispy_chicken_timestamps';
   
   // Sample data
-  const sampleData = {
+  const defaultSampleData = {
     branches: [
       {
         ID: 1,
@@ -1572,14 +1958,96 @@
       { ID: 96, Branch: 'Crispy chicken Al Regga', Year: 2025, Month: 12, DeliveryCount: 0, Percentage: 0, Amount: 0 }
     ]
   };
-
+  
+  let sampleData = {};
+  let timestamps = {};
+  
   // --- INITIALIZATION ---
   document.addEventListener('DOMContentLoaded', function() {
+    loadDataFromStorage();
     initializeNavigation();
     initializeMap();
+    initializeKeyboardShortcuts();
     loadAllData();
   });
-
+  
+  // --- DATA PERSISTENCE FUNCTIONS ---
+  function loadDataFromStorage() {
+    try {
+      // Load data from localStorage
+      const storedData = localStorage.getItem(STORAGE_KEY);
+      if (storedData) {
+        sampleData = JSON.parse(storedData);
+      } else {
+        // Use default data if nothing is stored
+        sampleData = JSON.parse(JSON.stringify(defaultSampleData));
+        saveDataToStorage();
+      }
+      
+      // Load timestamps
+      const storedTimestamps = localStorage.getItem(TIMESTAMP_KEY);
+      if (storedTimestamps) {
+        timestamps = JSON.parse(storedTimestamps);
+        updateTimestampDisplays();
+      }
+    } catch (error) {
+      console.error('Error loading data from storage:', error);
+      showToast('Error loading data. Using default data.', 'error');
+      sampleData = JSON.parse(JSON.stringify(defaultSampleData));
+    }
+  }
+  
+  function saveDataToStorage() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(sampleData));
+      localStorage.setItem(TIMESTAMP_KEY, JSON.stringify(timestamps));
+    } catch (error) {
+      console.error('Error saving data to storage:', error);
+      showToast('Error saving data. Changes may not be persisted.', 'error');
+    }
+  }
+  
+  function updateTimestamp(section) {
+    const now = new Date();
+    const formattedTime = now.toLocaleString();
+    timestamps[section] = formattedTime;
+    saveDataToStorage();
+    updateTimestampDisplays();
+  }
+  
+  function updateTimestampDisplays() {
+    // Update dashboard timestamps
+    if (timestamps.branches) {
+      document.getElementById('branches-timestamp').textContent = `Last updated: ${timestamps.branches}`;
+    }
+    if (timestamps.drivers) {
+      document.getElementById('drivers-timestamp').textContent = `Last updated: ${timestamps.drivers}`;
+    }
+    if (timestamps.managers) {
+      document.getElementById('managers-timestamp').textContent = `Last updated: ${timestamps.managers}`;
+    }
+    if (timestamps.agents) {
+      document.getElementById('agents-timestamp').textContent = `Last updated: ${timestamps.agents}`;
+    }
+    if (timestamps.sales) {
+      document.getElementById('sales-timestamp').textContent = `Last updated: ${timestamps.sales}`;
+    }
+  }
+  
+  function resetData() {
+    showConfirmDialog(
+      'Reset Data',
+      'Are you sure you want to reset all data to default values? This action cannot be undone.',
+      function() {
+        sampleData = JSON.parse(JSON.stringify(defaultSampleData));
+        timestamps = {};
+        saveDataToStorage();
+        loadAllData();
+        showToast('Data has been reset to default values.', 'success');
+      }
+    );
+  }
+  
   // --- NAVIGATION ---
   function initializeNavigation() {
     const navLinks = document.querySelectorAll('.nav-link');
@@ -1595,7 +2063,7 @@
       });
     });
   }
-
+  
   function switchSection(section) {
     // Hide all sections
     const sections = document.querySelectorAll('.data-section');
@@ -1618,7 +2086,7 @@
       renderMonthlySales();
     }
   }
-
+  
   // --- MAP FUNCTIONS ---
   function initializeMap() {
     map = L.map('map').setView([24.4539, 54.3773], 11); // Centered on Abu Dhabi
@@ -1626,7 +2094,7 @@
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
   }
-
+  
   function updateBranchMarkers() {
     // Clear existing markers
     branchMarkers.forEach(marker => map.removeLayer(marker));
@@ -1649,7 +2117,7 @@
       }
     });
   }
-
+  
   // --- DATA LOADING ---
   function loadAllData() {
     // Update dashboard counters
@@ -1658,7 +2126,7 @@
     // Update branch markers on map
     updateBranchMarkers();
   }
-
+  
   function updateDashboardCounters() {
     document.getElementById('total-branches').textContent = sampleData.branches.length;
     document.getElementById('total-drivers').textContent = sampleData.drivers.length;
@@ -1684,7 +2152,7 @@
     const totalStaff = sampleData.drivers.length + sampleData.managers.length + sampleData.agents.length;
     document.getElementById('total-staff').textContent = totalStaff;
   }
-
+  
   // --- BRANCH MANAGEMENT ---
   function renderBranches() {
     const tbody = document.getElementById('branch-table-body');
@@ -1702,11 +2170,13 @@
         <td>${branch['Manger name']}</td>
         <td><span class="status-badge ${statusClass}">${branch['Delivery status']}</span></td>
         <td>
-          <button class="action-btn" onclick="openBranchForm(${branch.ID})" title="Edit">
+          <button class="action-btn tooltip" onclick="openBranchForm(${branch.ID})" title="Edit">
             <i class="fas fa-edit"></i>
+            <span class="tooltiptext">Edit Branch</span>
           </button>
-          <button class="action-btn delete" onclick="deleteBranch(${branch.ID})" title="Delete">
+          <button class="action-btn delete tooltip" onclick="confirmDeleteBranch(${branch.ID})" title="Delete">
             <i class="fas fa-trash"></i>
+            <span class="tooltiptext">Delete Branch</span>
           </button>
         </td>
       `;
@@ -1735,21 +2205,26 @@
           <td>${branch['Manger name']}</td>
           <td><span class="status-badge ${statusClass}">${branch['Delivery status']}</span></td>
           <td>
-            <button class="action-btn" onclick="openBranchForm(${branch.ID})" title="Edit">
+            <button class="action-btn tooltip" onclick="openBranchForm(${branch.ID})" title="Edit">
               <i class="fas fa-edit"></i>
+              <span class="tooltiptext">Edit Branch</span>
             </button>
-            <button class="action-btn delete" onclick="deleteBranch(${branch.ID})" title="Delete">
+            <button class="action-btn delete tooltip" onclick="confirmDeleteBranch(${branch.ID})" title="Delete">
               <i class="fas fa-trash"></i>
+              <span class="tooltiptext">Delete Branch</span>
             </button>
           </td>
         `;
       });
     });
   }
-
+  
   function openBranchForm(id = null) {
     const formPopup = document.getElementById('branch-form-popup');
     formPopup.style.display = 'flex';
+    
+    // Reset form changes tracking
+    formHasChanges['branch-form'] = false;
     
     // Populate manager dropdown
     const managerSelect = document.getElementById('branch-manager');
@@ -1799,10 +2274,21 @@
       document.getElementById('branch-delete-btn').style.display = 'none';
       document.getElementById('branch-form').reset();
     }
+    
+    // Track form changes
+    trackFormChanges('branch-form');
   }
-
+  
   function submitBranchForm(e) {
     e.preventDefault();
+    
+    // Validate form
+    if (!validateForm('branch-form')) {
+      showToast('Please fix the errors in the form', 'error');
+      return;
+    }
+    
+    showLoadingOverlay();
     
     const branchId = document.getElementById('branch-edit-id').value;
     const branchData = {
@@ -1827,36 +2313,67 @@
       'Talabana device': document.getElementById('branch-talabana-device').value
     };
     
-    if (branchId) {
-      // Update existing branch
-      const index = sampleData.branches.findIndex(b => b.ID == branchId);
-      if (index !== -1) {
-        sampleData.branches[index] = { ...sampleData.branches[index], ...branchData };
-        showNotification('Branch updated successfully', 'success');
+    try {
+      if (branchId) {
+        // Update existing branch
+        const index = sampleData.branches.findIndex(b => b.ID == branchId);
+        if (index !== -1) {
+          sampleData.branches[index] = { ...sampleData.branches[index], ...branchData };
+          showToast('Branch updated successfully', 'success');
+        }
+      } else {
+        // Add new branch
+        const newId = Math.max(...sampleData.branches.map(b => b.ID), 0) + 1;
+        sampleData.branches.push({ ID: newId, ...branchData });
+        showToast('Branch added successfully', 'success');
       }
-    } else {
-      // Add new branch
-      const newId = Math.max(...sampleData.branches.map(b => b.ID), 0) + 1;
-      sampleData.branches.push({ ID: newId, ...branchData });
-      showNotification('Branch added successfully', 'success');
-    }
-    
-    closeForm('branch-form-popup');
-    renderBranches();
-    updateDashboardCounters();
-    updateBranchMarkers();
-  }
-
-  function deleteBranch(id) {
-    if (confirm('Are you sure you want to delete this branch?')) {
-      sampleData.branches = sampleData.branches.filter(b => b.ID !== id);
-      showNotification('Branch deleted successfully', 'success');
+      
+      // Update timestamp and save data
+      updateTimestamp('branches');
+      saveDataToStorage();
+      
+      closeForm('branch-form-popup');
       renderBranches();
       updateDashboardCounters();
       updateBranchMarkers();
+    } catch (error) {
+      console.error('Error saving branch:', error);
+      showToast('Error saving branch. Please try again.', 'error');
+    } finally {
+      hideLoadingOverlay();
     }
   }
-
+  
+  function confirmDeleteBranch(id) {
+    showConfirmDialog(
+      'Delete Branch',
+      'Are you sure you want to delete this branch? This action cannot be undone.',
+      function() {
+        deleteBranch(id);
+      }
+    );
+  }
+  
+  function deleteBranch(id) {
+    showLoadingOverlay();
+    
+    try {
+      sampleData.branches = sampleData.branches.filter(b => b.ID !== id);
+      updateTimestamp('branches');
+      saveDataToStorage();
+      
+      showToast('Branch deleted successfully', 'success');
+      renderBranches();
+      updateDashboardCounters();
+      updateBranchMarkers();
+    } catch (error) {
+      console.error('Error deleting branch:', error);
+      showToast('Error deleting branch. Please try again.', 'error');
+    } finally {
+      hideLoadingOverlay();
+    }
+  }
+  
   // --- DRIVER MANAGEMENT ---
   function renderDrivers() {
     const tbody = document.getElementById('driver-table-body');
@@ -1884,11 +2401,13 @@
         <td style="color: ${isExpired ? 'var(--danger-red)' : ''}">${driver.LicenseExpiry}</td>
         <td><span class="status-badge ${statusClass}">${driver.Status}</span></td>
         <td>
-          <button class="action-btn" onclick="openDriverForm(${driver.ID})" title="Edit">
+          <button class="action-btn tooltip" onclick="openDriverForm(${driver.ID})" title="Edit">
             <i class="fas fa-edit"></i>
+            <span class="tooltiptext">Edit Driver</span>
           </button>
-          <button class="action-btn delete" onclick="deleteDriver(${driver.ID})" title="Delete">
+          <button class="action-btn delete tooltip" onclick="confirmDeleteDriver(${driver.ID})" title="Delete">
             <i class="fas fa-trash"></i>
+            <span class="tooltiptext">Delete Driver</span>
           </button>
         </td>
       `;
@@ -1925,18 +2444,20 @@
           <td style="color: ${isExpired ? 'var(--danger-red)' : ''}">${driver.LicenseExpiry}</td>
           <td><span class="status-badge ${statusClass}">${driver.Status}</span></td>
           <td>
-            <button class="action-btn" onclick="openDriverForm(${driver.ID})" title="Edit">
+            <button class="action-btn tooltip" onclick="openDriverForm(${driver.ID})" title="Edit">
               <i class="fas fa-edit"></i>
+              <span class="tooltiptext">Edit Driver</span>
             </button>
-            <button class="action-btn delete" onclick="deleteDriver(${driver.ID})" title="Delete">
+            <button class="action-btn delete tooltip" onclick="confirmDeleteDriver(${driver.ID})" title="Delete">
               <i class="fas fa-trash"></i>
+              <span class="tooltiptext">Delete Driver</span>
             </button>
           </td>
         `;
       });
     });
   }
-
+  
   function updateDriverStatistics() {
     const totalDrivers = sampleData.drivers.length;
     const activeDrivers = sampleData.drivers.filter(d => d.Status === 'Active').length;
@@ -1959,10 +2480,13 @@
     document.getElementById('driver-inactive-count').textContent = inactiveDrivers;
     document.getElementById('driver-expired-count').textContent = expiredLicenses;
   }
-
+  
   function openDriverForm(id = null) {
     const formPopup = document.getElementById('driver-form-popup');
     formPopup.style.display = 'flex';
+    
+    // Reset form changes tracking
+    formHasChanges['driver-form'] = false;
     
     // Populate outlet dropdown
     const outletSelect = document.getElementById('driver-outlet');
@@ -2007,10 +2531,21 @@
       document.getElementById('driver-delete-btn').style.display = 'none';
       document.getElementById('driver-form').reset();
     }
+    
+    // Track form changes
+    trackFormChanges('driver-form');
   }
-
+  
   function submitDriverForm(e) {
     e.preventDefault();
+    
+    // Validate form
+    if (!validateForm('driver-form')) {
+      showToast('Please fix the errors in the form', 'error');
+      return;
+    }
+    
+    showLoadingOverlay();
     
     const driverId = document.getElementById('driver-edit-id').value;
     const driverData = {
@@ -2030,34 +2565,65 @@
       Status: document.getElementById('driver-status').value
     };
     
-    if (driverId) {
-      // Update existing driver
-      const index = sampleData.drivers.findIndex(d => d.ID == driverId);
-      if (index !== -1) {
-        sampleData.drivers[index] = { ...sampleData.drivers[index], ...driverData };
-        showNotification('Driver updated successfully', 'success');
+    try {
+      if (driverId) {
+        // Update existing driver
+        const index = sampleData.drivers.findIndex(d => d.ID == driverId);
+        if (index !== -1) {
+          sampleData.drivers[index] = { ...sampleData.drivers[index], ...driverData };
+          showToast('Driver updated successfully', 'success');
+        }
+      } else {
+        // Add new driver
+        const newId = Math.max(...sampleData.drivers.map(d => d.ID), 0) + 1;
+        sampleData.drivers.push({ ID: newId, ...driverData });
+        showToast('Driver added successfully', 'success');
       }
-    } else {
-      // Add new driver
-      const newId = Math.max(...sampleData.drivers.map(d => d.ID), 0) + 1;
-      sampleData.drivers.push({ ID: newId, ...driverData });
-      showNotification('Driver added successfully', 'success');
-    }
-    
-    closeForm('driver-form-popup');
-    renderDrivers();
-    updateDashboardCounters();
-  }
-
-  function deleteDriver(id) {
-    if (confirm('Are you sure you want to delete this driver?')) {
-      sampleData.drivers = sampleData.drivers.filter(d => d.ID !== id);
-      showNotification('Driver deleted successfully', 'success');
+      
+      // Update timestamp and save data
+      updateTimestamp('drivers');
+      saveDataToStorage();
+      
+      closeForm('driver-form-popup');
       renderDrivers();
       updateDashboardCounters();
+    } catch (error) {
+      console.error('Error saving driver:', error);
+      showToast('Error saving driver. Please try again.', 'error');
+    } finally {
+      hideLoadingOverlay();
     }
   }
-
+  
+  function confirmDeleteDriver(id) {
+    showConfirmDialog(
+      'Delete Driver',
+      'Are you sure you want to delete this driver? This action cannot be undone.',
+      function() {
+        deleteDriver(id);
+      }
+    );
+  }
+  
+  function deleteDriver(id) {
+    showLoadingOverlay();
+    
+    try {
+      sampleData.drivers = sampleData.drivers.filter(d => d.ID !== id);
+      updateTimestamp('drivers');
+      saveDataToStorage();
+      
+      showToast('Driver deleted successfully', 'success');
+      renderDrivers();
+      updateDashboardCounters();
+    } catch (error) {
+      console.error('Error deleting driver:', error);
+      showToast('Error deleting driver. Please try again.', 'error');
+    } finally {
+      hideLoadingOverlay();
+    }
+  }
+  
   // --- MANAGER MANAGEMENT ---
   function renderManagers() {
     const tbody = document.getElementById('manager-table-body');
@@ -2075,11 +2641,13 @@
         <td>${manager.Branch}</td>
         <td><span class="status-badge ${statusClass}">${manager.Status}</span></td>
         <td>
-          <button class="action-btn" onclick="openManagerForm(${manager.ID})" title="Edit">
+          <button class="action-btn tooltip" onclick="openManagerForm(${manager.ID})" title="Edit">
             <i class="fas fa-edit"></i>
+            <span class="tooltiptext">Edit Manager</span>
           </button>
-          <button class="action-btn delete" onclick="deleteManager(${manager.ID})" title="Delete">
+          <button class="action-btn delete tooltip" onclick="confirmDeleteManager(${manager.ID})" title="Delete">
             <i class="fas fa-trash"></i>
+            <span class="tooltiptext">Delete Manager</span>
           </button>
         </td>
       `;
@@ -2109,21 +2677,26 @@
           <td>${manager.Branch}</td>
           <td><span class="status-badge ${statusClass}">${manager.Status}</span></td>
           <td>
-            <button class="action-btn" onclick="openManagerForm(${manager.ID})" title="Edit">
+            <button class="action-btn tooltip" onclick="openManagerForm(${manager.ID})" title="Edit">
               <i class="fas fa-edit"></i>
+              <span class="tooltiptext">Edit Manager</span>
             </button>
-            <button class="action-btn delete" onclick="deleteManager(${manager.ID})" title="Delete">
+            <button class="action-btn delete tooltip" onclick="confirmDeleteManager(${manager.ID})" title="Delete">
               <i class="fas fa-trash"></i>
+              <span class="tooltiptext">Delete Manager</span>
             </button>
           </td>
         `;
       });
     });
   }
-
+  
   function openManagerForm(id = null) {
     const formPopup = document.getElementById('manager-form-popup');
     formPopup.style.display = 'flex';
+    
+    // Reset form changes tracking
+    formHasChanges['manager-form'] = false;
     
     // Populate branch dropdown
     const branchSelect = document.getElementById('manager-branch');
@@ -2161,10 +2734,21 @@
       document.getElementById('manager-delete-btn').style.display = 'none';
       document.getElementById('manager-form').reset();
     }
+    
+    // Track form changes
+    trackFormChanges('manager-form');
   }
-
+  
   function submitManagerForm(e) {
     e.preventDefault();
+    
+    // Validate form
+    if (!validateForm('manager-form')) {
+      showToast('Please fix the errors in the form', 'error');
+      return;
+    }
+    
+    showLoadingOverlay();
     
     const managerId = document.getElementById('manager-edit-id').value;
     const managerData = {
@@ -2177,34 +2761,65 @@
       Status: document.getElementById('manager-status').value
     };
     
-    if (managerId) {
-      // Update existing manager
-      const index = sampleData.managers.findIndex(m => m.ID == managerId);
-      if (index !== -1) {
-        sampleData.managers[index] = { ...sampleData.managers[index], ...managerData };
-        showNotification('Manager updated successfully', 'success');
+    try {
+      if (managerId) {
+        // Update existing manager
+        const index = sampleData.managers.findIndex(m => m.ID == managerId);
+        if (index !== -1) {
+          sampleData.managers[index] = { ...sampleData.managers[index], ...managerData };
+          showToast('Manager updated successfully', 'success');
+        }
+      } else {
+        // Add new manager
+        const newId = Math.max(...sampleData.managers.map(m => m.ID), 0) + 1;
+        sampleData.managers.push({ ID: newId, ...managerData });
+        showToast('Manager added successfully', 'success');
       }
-    } else {
-      // Add new manager
-      const newId = Math.max(...sampleData.managers.map(m => m.ID), 0) + 1;
-      sampleData.managers.push({ ID: newId, ...managerData });
-      showNotification('Manager added successfully', 'success');
-    }
-    
-    closeForm('manager-form-popup');
-    renderManagers();
-    updateDashboardCounters();
-  }
-
-  function deleteManager(id) {
-    if (confirm('Are you sure you want to delete this manager?')) {
-      sampleData.managers = sampleData.managers.filter(m => m.ID !== id);
-      showNotification('Manager deleted successfully', 'success');
+      
+      // Update timestamp and save data
+      updateTimestamp('managers');
+      saveDataToStorage();
+      
+      closeForm('manager-form-popup');
       renderManagers();
       updateDashboardCounters();
+    } catch (error) {
+      console.error('Error saving manager:', error);
+      showToast('Error saving manager. Please try again.', 'error');
+    } finally {
+      hideLoadingOverlay();
     }
   }
-
+  
+  function confirmDeleteManager(id) {
+    showConfirmDialog(
+      'Delete Manager',
+      'Are you sure you want to delete this manager? This action cannot be undone.',
+      function() {
+        deleteManager(id);
+      }
+    );
+  }
+  
+  function deleteManager(id) {
+    showLoadingOverlay();
+    
+    try {
+      sampleData.managers = sampleData.managers.filter(m => m.ID !== id);
+      updateTimestamp('managers');
+      saveDataToStorage();
+      
+      showToast('Manager deleted successfully', 'success');
+      renderManagers();
+      updateDashboardCounters();
+    } catch (error) {
+      console.error('Error deleting manager:', error);
+      showToast('Error deleting manager. Please try again.', 'error');
+    } finally {
+      hideLoadingOverlay();
+    }
+  }
+  
   // --- AGENT MANAGEMENT ---
   function renderAgents() {
     const tbody = document.getElementById('agent-table-body');
@@ -2246,11 +2861,13 @@
         <td>${agent.TotalTalkTime}</td>
         <td><span class="agent-performance-value ${missedRateClass}">${agent.MissedRate}%</span></td>
         <td>
-          <button class="action-btn" onclick="openAgentForm(${agent.ID})" title="Edit">
+          <button class="action-btn tooltip" onclick="openAgentForm(${agent.ID})" title="Edit">
             <i class="fas fa-edit"></i>
+            <span class="tooltiptext">Edit Agent</span>
           </button>
-          <button class="action-btn delete" onclick="deleteAgent(${agent.ID})" title="Delete">
+          <button class="action-btn delete tooltip" onclick="confirmDeleteAgent(${agent.ID})" title="Delete">
             <i class="fas fa-trash"></i>
+            <span class="tooltiptext">Delete Agent</span>
           </button>
         </td>
       `;
@@ -2307,11 +2924,13 @@
           <td>${agent.TotalTalkTime}</td>
           <td><span class="agent-performance-value ${missedRateClass}">${agent.MissedRate}%</span></td>
           <td>
-            <button class="action-btn" onclick="openAgentForm(${agent.ID})" title="Edit">
+            <button class="action-btn tooltip" onclick="openAgentForm(${agent.ID})" title="Edit">
               <i class="fas fa-edit"></i>
+              <span class="tooltiptext">Edit Agent</span>
             </button>
-            <button class="action-btn delete" onclick="deleteAgent(${agent.ID})" title="Delete">
+            <button class="action-btn delete tooltip" onclick="confirmDeleteAgent(${agent.ID})" title="Delete">
               <i class="fas fa-trash"></i>
+              <span class="tooltiptext">Delete Agent</span>
             </button>
           </td>
         `;
@@ -2324,10 +2943,25 @@
     // Initialize month filter
     const monthFilterSelect = document.getElementById('month-filter');
     monthFilterSelect.addEventListener('change', function() {
-      renderAgents();
+      if (this.value) {
+        showConfirmDialog(
+          'Apply Filter',
+          `Are you sure you want to filter agents by ${this.value}?`,
+          function() {
+            renderAgents();
+          },
+          function() {
+            // Reset filter if cancelled
+            monthFilterSelect.value = '';
+            renderAgents();
+          }
+        );
+      } else {
+        renderAgents();
+      }
     });
   }
-
+  
   function updateAgentPerformanceSummary(agents, monthFilter) {
     // Calculate totals for the provided agents
     let totalRings = 0;
@@ -2386,10 +3020,13 @@
     const periodElement = document.getElementById('agent-summary-period');
     periodElement.textContent = monthFilter ? monthFilter : 'All Months';
   }
-
+  
   function openAgentForm(id = null) {
     const formPopup = document.getElementById('agent-form-popup');
     formPopup.style.display = 'flex';
+    
+    // Reset form changes tracking
+    formHasChanges['agent-form'] = false;
     
     if (id) {
       // Edit existing agent
@@ -2448,10 +3085,21 @@
     
     totalRingsInput.addEventListener('input', calculateMissedRate);
     missedInput.addEventListener('input', calculateMissedRate);
+    
+    // Track form changes
+    trackFormChanges('agent-form');
   }
-
+  
   function submitAgentForm(e) {
     e.preventDefault();
+    
+    // Validate form
+    if (!validateForm('agent-form')) {
+      showToast('Please fix the errors in the form', 'error');
+      return;
+    }
+    
+    showLoadingOverlay();
     
     const agentId = document.getElementById('agent-edit-id').value;
     const agentData = {
@@ -2473,34 +3121,65 @@
       MissedRate: parseFloat(document.getElementById('agent-missed-rate').value) || 0
     };
     
-    if (agentId) {
-      // Update existing agent
-      const index = sampleData.agents.findIndex(a => a.ID == agentId);
-      if (index !== -1) {
-        sampleData.agents[index] = { ...sampleData.agents[index], ...agentData };
-        showNotification('Agent updated successfully', 'success');
+    try {
+      if (agentId) {
+        // Update existing agent
+        const index = sampleData.agents.findIndex(a => a.ID == agentId);
+        if (index !== -1) {
+          sampleData.agents[index] = { ...sampleData.agents[index], ...agentData };
+          showToast('Agent updated successfully', 'success');
+        }
+      } else {
+        // Add new agent
+        const newId = Math.max(...sampleData.agents.map(a => a.ID), 0) + 1;
+        sampleData.agents.push({ ID: newId, ...agentData });
+        showToast('Agent added successfully', 'success');
       }
-    } else {
-      // Add new agent
-      const newId = Math.max(...sampleData.agents.map(a => a.ID), 0) + 1;
-      sampleData.agents.push({ ID: newId, ...agentData });
-      showNotification('Agent added successfully', 'success');
-    }
-    
-    closeForm('agent-form-popup');
-    renderAgents();
-    updateDashboardCounters();
-  }
-
-  function deleteAgent(id) {
-    if (confirm('Are you sure you want to delete this agent?')) {
-      sampleData.agents = sampleData.agents.filter(a => a.ID !== id);
-      showNotification('Agent deleted successfully', 'success');
+      
+      // Update timestamp and save data
+      updateTimestamp('agents');
+      saveDataToStorage();
+      
+      closeForm('agent-form-popup');
       renderAgents();
       updateDashboardCounters();
+    } catch (error) {
+      console.error('Error saving agent:', error);
+      showToast('Error saving agent. Please try again.', 'error');
+    } finally {
+      hideLoadingOverlay();
     }
   }
-
+  
+  function confirmDeleteAgent(id) {
+    showConfirmDialog(
+      'Delete Agent',
+      'Are you sure you want to delete this agent? This action cannot be undone.',
+      function() {
+        deleteAgent(id);
+      }
+    );
+  }
+  
+  function deleteAgent(id) {
+    showLoadingOverlay();
+    
+    try {
+      sampleData.agents = sampleData.agents.filter(a => a.ID !== id);
+      updateTimestamp('agents');
+      saveDataToStorage();
+      
+      showToast('Agent deleted successfully', 'success');
+      renderAgents();
+      updateDashboardCounters();
+    } catch (error) {
+      console.error('Error deleting agent:', error);
+      showToast('Error deleting agent. Please try again.', 'error');
+    } finally {
+      hideLoadingOverlay();
+    }
+  }
+  
   // --- MONTHLY SALES MANAGEMENT ---
   function renderMonthlySales() {
     const tbody = document.getElementById('monthly-sales-table-body');
@@ -2548,11 +3227,13 @@
         <td><span class="agent-performance-value ${percentageClass}">${sale.Percentage}%</span></td>
         <td>AED ${sale.Amount.toLocaleString()}</td>
         <td>
-          <button class="action-btn" onclick="openMonthlySalesForm(${sale.ID})" title="Edit">
+          <button class="action-btn tooltip" onclick="openMonthlySalesForm(${sale.ID})" title="Edit">
             <i class="fas fa-edit"></i>
+            <span class="tooltiptext">Edit Sales</span>
           </button>
-          <button class="action-btn delete" onclick="deleteMonthlySales(${sale.ID})" title="Delete">
+          <button class="action-btn delete tooltip" onclick="confirmDeleteMonthlySales(${sale.ID})" title="Delete">
             <i class="fas fa-trash"></i>
+            <span class="tooltiptext">Delete Sales</span>
           </button>
         </td>
       `;
@@ -2611,11 +3292,13 @@
           <td><span class="agent-performance-value ${percentageClass}">${sale.Percentage}%</span></td>
           <td>AED ${sale.Amount.toLocaleString()}</td>
           <td>
-            <button class="action-btn" onclick="openMonthlySalesForm(${sale.ID})" title="Edit">
+            <button class="action-btn tooltip" onclick="openMonthlySalesForm(${sale.ID})" title="Edit">
               <i class="fas fa-edit"></i>
+              <span class="tooltiptext">Edit Sales</span>
             </button>
-            <button class="action-btn delete" onclick="deleteMonthlySales(${sale.ID})" title="Delete">
+            <button class="action-btn delete tooltip" onclick="confirmDeleteMonthlySales(${sale.ID})" title="Delete">
               <i class="fas fa-trash"></i>
+              <span class="tooltiptext">Delete Sales</span>
             </button>
           </td>
         `;
@@ -2625,16 +3308,48 @@
     // Initialize year filter
     const yearFilterSelect = document.getElementById('year-filter');
     yearFilterSelect.addEventListener('change', function() {
-      renderMonthlySales();
+      if (this.value || document.getElementById('sales-month-filter').value) {
+        showConfirmDialog(
+          'Apply Filter',
+          'Are you sure you want to apply these filters?',
+          function() {
+            renderMonthlySales();
+          },
+          function() {
+            // Reset filters if cancelled
+            yearFilterSelect.value = '';
+            document.getElementById('sales-month-filter').value = '';
+            renderMonthlySales();
+          }
+        );
+      } else {
+        renderMonthlySales();
+      }
     });
     
     // Initialize month filter
     const monthFilterSelect = document.getElementById('sales-month-filter');
     monthFilterSelect.addEventListener('change', function() {
-      renderMonthlySales();
+      if (this.value || document.getElementById('year-filter').value) {
+        showConfirmDialog(
+          'Apply Filter',
+          'Are you sure you want to apply these filters?',
+          function() {
+            renderMonthlySales();
+          },
+          function() {
+            // Reset filters if cancelled
+            monthFilterSelect.value = '';
+            document.getElementById('year-filter').value = '';
+            renderMonthlySales();
+          }
+        );
+      } else {
+        renderMonthlySales();
+      }
     });
   }
-
+  
   function updateMonthlySalesSummary(salesData) {
     const summaryContainer = document.getElementById('monthly-sales-summary');
     summaryContainer.innerHTML = '';
@@ -2690,10 +3405,13 @@
       summaryContainer.appendChild(card);
     });
   }
-
+  
   function openMonthlySalesForm(id = null) {
     const formPopup = document.getElementById('monthly-sales-form-popup');
     formPopup.style.display = 'flex';
+    
+    // Reset form changes tracking
+    formHasChanges['monthly-sales-form'] = false;
     
     // Populate branch dropdown
     const branchSelect = document.getElementById('monthly-sales-branch');
@@ -2756,10 +3474,21 @@
       document.getElementById('monthly-sales-year').value = currentYear;
       document.getElementById('monthly-sales-month').value = new Date().getMonth() + 1;
     }
+    
+    // Track form changes
+    trackFormChanges('monthly-sales-form');
   }
-
+  
   function submitMonthlySalesForm(e) {
     e.preventDefault();
+    
+    // Validate form
+    if (!validateForm('monthly-sales-form')) {
+      showToast('Please fix the errors in the form', 'error');
+      return;
+    }
+    
+    showLoadingOverlay();
     
     const salesId = document.getElementById('monthly-sales-edit-id').value;
     const salesData = {
@@ -2771,149 +3500,266 @@
       Amount: parseFloat(document.getElementById('monthly-sales-amount').value) || 0
     };
     
-    if (salesId) {
-      // Update existing monthly sales
-      const index = sampleData.monthlySales.findIndex(s => s.ID == salesId);
-      if (index !== -1) {
-        sampleData.monthlySales[index] = { ...sampleData.monthlySales[index], ...salesData };
-        showNotification('Monthly sales updated successfully', 'success');
+    try {
+      if (salesId) {
+        // Update existing monthly sales
+        const index = sampleData.monthlySales.findIndex(s => s.ID == salesId);
+        if (index !== -1) {
+          sampleData.monthlySales[index] = { ...sampleData.monthlySales[index], ...salesData };
+          showToast('Monthly sales updated successfully', 'success');
+        }
+      } else {
+        // Add new monthly sales
+        const newId = Math.max(...sampleData.monthlySales.map(s => s.ID), 0) + 1;
+        sampleData.monthlySales.push({ ID: newId, ...salesData });
+        showToast('Monthly sales added successfully', 'success');
       }
-    } else {
-      // Add new monthly sales
-      const newId = Math.max(...sampleData.monthlySales.map(s => s.ID), 0) + 1;
-      sampleData.monthlySales.push({ ID: newId, ...salesData });
-      showNotification('Monthly sales added successfully', 'success');
-    }
-    
-    closeForm('monthly-sales-form-popup');
-    renderMonthlySales();
-    updateDashboardCounters();
-  }
-
-  function deleteMonthlySales(id) {
-    if (confirm('Are you sure you want to delete this monthly sales record?')) {
-      sampleData.monthlySales = sampleData.monthlySales.filter(s => s.ID !== id);
-      showNotification('Monthly sales deleted successfully', 'success');
+      
+      // Update timestamp and save data
+      updateTimestamp('sales');
+      saveDataToStorage();
+      
+      closeForm('monthly-sales-form-popup');
       renderMonthlySales();
       updateDashboardCounters();
+    } catch (error) {
+      console.error('Error saving monthly sales:', error);
+      showToast('Error saving monthly sales. Please try again.', 'error');
+    } finally {
+      hideLoadingOverlay();
     }
   }
-
+  
+  function confirmDeleteMonthlySales(id) {
+    showConfirmDialog(
+      'Delete Monthly Sales',
+      'Are you sure you want to delete this monthly sales record? This action cannot be undone.',
+      function() {
+        deleteMonthlySales(id);
+      }
+    );
+  }
+  
+  function deleteMonthlySales(id) {
+    showLoadingOverlay();
+    
+    try {
+      sampleData.monthlySales = sampleData.monthlySales.filter(s => s.ID !== id);
+      updateTimestamp('sales');
+      saveDataToStorage();
+      
+      showToast('Monthly sales deleted successfully', 'success');
+      renderMonthlySales();
+      updateDashboardCounters();
+    } catch (error) {
+      console.error('Error deleting monthly sales:', error);
+      showToast('Error deleting monthly sales. Please try again.', 'error');
+    } finally {
+      hideLoadingOverlay();
+    }
+  }
+  
   // --- EXPORT FUNCTIONS ---
   function exportData(dataType) {
-    let data = [];
-    let headers = [];
-    let filename = '';
+    showLoadingOverlay();
     
-    switch (dataType) {
-      case 'branches':
-        data = sampleData.branches;
-        headers = ['ID', 'Branch Name', 'City', 'Area', 'Manager', 'Delivery Status'];
-        filename = 'branches_export';
-        break;
-      case 'drivers':
-        data = sampleData.drivers;
-        headers = ['ID', 'Name', 'Mobile Number', 'Bike Number', 'Outlet', 'Plate Number', 'License Expiry', 'Status'];
-        filename = 'drivers_export';
-        break;
-      case 'managers':
-        data = sampleData.managers;
-        headers = ['ID', 'Name', 'Phone', 'Email', 'Branch', 'Status'];
-        filename = 'managers_export';
-        break;
-      case 'agents':
-        data = sampleData.agents;
-        headers = ['ID', 'Name', 'Phone', 'Email', 'Area', 'Commission', 'Status', 'Month', 'Total Rings', 'Answered', 'Missed', 'Avg. Wait Time', 'Max Wait Time', 'Avg. Talk Time', 'Total Talk Time', 'Missed Rate'];
-        filename = 'agents_export';
-        break;
-      case 'monthly-sales':
-        data = sampleData.monthlySales;
-        headers = ['ID', 'Branch', 'Year', 'Month', 'Delivery Count', 'Percentage', 'Amount'];
-        filename = 'monthly_sales_export';
-        break;
-      default:
-        return;
-    }
-    
-    // Create CSV content
-    let csvContent = headers.join(',') + '\n';
-    
-    data.forEach(item => {
-      const row = headers.map(header => {
-        // Handle nested objects and special formatting
-        let value = item[header.replace(/\s/g, '')] || '';
+    try {
+      let data = [];
+      let headers = [];
+      let filename = '';
+      
+      switch (dataType) {
+        case 'branches':
+          data = sampleData.branches;
+          headers = ['ID', 'Branch Name', 'City', 'Area', 'Manager', 'Delivery Status'];
+          filename = 'branches_export';
+          break;
+        case 'drivers':
+          data = sampleData.drivers;
+          headers = ['ID', 'Name', 'Mobile Number', 'Bike Number', 'Outlet', 'Plate Number', 'License Expiry', 'Status'];
+          filename = 'drivers_export';
+          break;
+        case 'managers':
+          data = sampleData.managers;
+          headers = ['ID', 'Name', 'Phone', 'Email', 'Branch', 'Status'];
+          filename = 'managers_export';
+          break;
+        case 'agents':
+          data = sampleData.agents;
+          headers = ['ID', 'Name', 'Phone', 'Email', 'Area', 'Commission', 'Status', 'Month', 'Total Rings', 'Answered', 'Missed', 'Avg. Wait Time', 'Max Wait Time', 'Avg. Talk Time', 'Total Talk Time', 'Missed Rate'];
+          filename = 'agents_export';
+          break;
+        case 'monthly-sales':
+          data = sampleData.monthlySales;
+          headers = ['ID', 'Branch', 'Year', 'Month', 'Delivery Count', 'Percentage', 'Amount'];
+          filename = 'monthly_sales_export';
+          break;
+        default:
+          hideLoadingOverlay();
+          return;
+      }
+      
+      // Create CSV content
+      let csvContent = headers.join(',') + '\n';
+      
+      data.forEach(item => {
+        const row = headers.map(header => {
+          // Handle nested objects and special formatting
+          let value = item[header.replace(/\s/g, '')] || '';
+          
+          // Format dates
+          if (header.includes('Date') || header.includes('Expiry')) {
+            value = formatDateForStorage(value);
+          }
+          
+          // Escape commas and quotes
+          if (typeof value === 'string' && (value.includes(',') || value.includes('"'))) {
+            value = '"' + value.replace(/"/g, '""') + '"';
+          }
+          
+          return value;
+        });
         
-        // Format dates
-        if (header.includes('Date') || header.includes('Expiry')) {
-          value = formatDateForStorage(value);
-        }
-        
-        // Escape commas and quotes
-        if (typeof value === 'string' && (value.includes(',') || value.includes('"'))) {
-          value = '"' + value.replace(/"/g, '""') + '"';
-        }
-        
-        return value;
+        csvContent += row.join(',') + '\n';
       });
       
-      csvContent += row.join(',') + '\n';
-    });
-    
-    // Create download link
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.setAttribute('href', url);
-    link.setAttribute('download', filename + '.csv');
-    link.style.visibility = 'hidden';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    
-    showNotification(`${filename} exported successfully`, 'success');
+      // Create download link
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', filename + '.csv');
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      showToast(`${filename} exported successfully`, 'success');
+    } catch (error) {
+      console.error('Error exporting data:', error);
+      showToast('Error exporting data. Please try again.', 'error');
+    } finally {
+      hideLoadingOverlay();
+    }
   }
-
+  
   function exportAllData() {
-    // Create a combined export of all data
-    const allData = {
-      branches: sampleData.branches,
-      drivers: sampleData.drivers,
-      managers: sampleData.managers,
-      agents: sampleData.agents,
-      monthlySales: sampleData.monthlySales
-    };
+    showLoadingOverlay();
     
-    // Convert to JSON and download
-    const jsonStr = JSON.stringify(allData, null, 2);
-    const blob = new Blob([jsonStr], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.setAttribute('href', url);
-    link.setAttribute('download', 'crispy_chicken_data_export.json');
-    link.style.visibility = 'hidden';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    
-    showNotification('All data exported successfully', 'success');
+    try {
+      // Create a combined export of all data
+      const allData = {
+        branches: sampleData.branches,
+        drivers: sampleData.drivers,
+        managers: sampleData.managers,
+        agents: sampleData.agents,
+        monthlySales: sampleData.monthlySales
+      };
+      
+      // Convert to JSON and download
+      const jsonStr = JSON.stringify(allData, null, 2);
+      const blob = new Blob([jsonStr], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', 'crispy_chicken_data_export.json');
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      showToast('All data exported successfully', 'success');
+    } catch (error) {
+      console.error('Error exporting all data:', error);
+      showToast('Error exporting data. Please try again.', 'error');
+    } finally {
+      hideLoadingOverlay();
+    }
   }
-
+  
   // --- UTILITY FUNCTIONS ---
   function closeForm(formId) {
     document.getElementById(formId).style.display = 'none';
+    formHasChanges[formId.replace('-popup', '')] = false;
   }
-
-  function showNotification(message, type) {
-    const notification = document.getElementById('notification');
-    notification.textContent = message;
-    notification.className = 'notification ' + type;
-    notification.style.display = 'block';
+  
+  function confirmCloseForm(formId) {
+    const formName = formId.replace('-popup', '');
     
-    setTimeout(() => {
-      notification.style.display = 'none';
-    }, 3000);
+    if (formHasChanges[formName]) {
+      showConfirmDialog(
+        'Unsaved Changes',
+        'You have unsaved changes. Are you sure you want to close this form?',
+        function() {
+          closeForm(formId);
+        }
+      );
+    } else {
+      closeForm(formId);
+    }
   }
-
+  
+  function clearForm(formId) {
+    showConfirmDialog(
+      'Clear Form',
+      'Are you sure you want to clear all form data?',
+      function() {
+        document.getElementById(formId).reset();
+        formHasChanges[formId] = false;
+      }
+    );
+  }
+  
+  function trackFormChanges(formId) {
+    const form = document.getElementById(formId);
+    const inputs = form.querySelectorAll('input, select, textarea');
+    
+    inputs.forEach(input => {
+      input.addEventListener('input', function() {
+        formHasChanges[formId] = true;
+      });
+      
+      input.addEventListener('change', function() {
+        formHasChanges[formId] = true;
+      });
+    });
+  }
+  
+  function validateForm(formId) {
+    const form = document.getElementById(formId);
+    const inputs = form.querySelectorAll('[required]');
+    let isValid = true;
+    
+    inputs.forEach(input => {
+      const formGroup = input.closest('.form-group');
+      
+      if (!input.value.trim()) {
+        formGroup.classList.add('error');
+        isValid = false;
+      } else {
+        formGroup.classList.remove('error');
+      }
+      
+      // Additional validation for specific input types
+      if (input.type === 'email' && input.value) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(input.value)) {
+          formGroup.classList.add('error');
+          isValid = false;
+        }
+      }
+      
+      if (input.type === 'number' && input.value) {
+        if (isNaN(input.value) || parseFloat(input.value) < 0) {
+          formGroup.classList.add('error');
+          isValid = false;
+        }
+      }
+    });
+    
+    return isValid;
+  }
+  
   function formatDateForInput(dateStr) {
     if (!dateStr) return '';
     
@@ -2926,7 +3772,7 @@
     // If already in YYYY-MM-DD format, return as is
     return dateStr;
   }
-
+  
   function formatDateForStorage(dateStr) {
     if (!dateStr) return '';
     
@@ -2939,7 +3785,154 @@
     // If already in DD/MM/YYYY format, return as is
     return dateStr;
   }
-
+  
+  // --- NOTIFICATION SYSTEM ---
+  function showToast(message, type = 'info') {
+    const toastContainer = document.getElementById('toast-container');
+    
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    
+    let icon = '';
+    switch (type) {
+      case 'success':
+        icon = 'fa-check-circle';
+        break;
+      case 'error':
+        icon = 'fa-exclamation-circle';
+        break;
+      case 'warning':
+        icon = 'fa-exclamation-triangle';
+        break;
+      case 'info':
+      default:
+        icon = 'fa-info-circle';
+        break;
+    }
+    
+    toast.innerHTML = `
+      <i class="fas ${icon} toast-icon"></i>
+      <span>${message}</span>
+      <button class="toast-close">&times;</button>
+      <div class="toast-progress"></div>
+    `;
+    
+    toastContainer.appendChild(toast);
+    
+    // Add event listener to close button
+    toast.querySelector('.toast-close').addEventListener('click', function() {
+      toast.classList.add('hiding');
+      setTimeout(() => {
+        toastContainer.removeChild(toast);
+      }, 300);
+    });
+    
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+      if (toast.parentNode) {
+        toast.classList.add('hiding');
+        setTimeout(() => {
+          if (toast.parentNode) {
+            toastContainer.removeChild(toast);
+          }
+        }, 300);
+      }
+    }, 5000);
+  }
+  
+  // --- LOADING OVERLAY ---
+  function showLoadingOverlay() {
+    document.getElementById('loading-overlay').classList.add('active');
+  }
+  
+  function hideLoadingOverlay() {
+    document.getElementById('loading-overlay').classList.remove('active');
+  }
+  
+  // --- CONFIRMATION DIALOG ---
+  function showConfirmDialog(title, message, onConfirm, onCancel) {
+    const dialog = document.getElementById('confirm-dialog');
+    const titleElement = document.getElementById('confirm-title');
+    const messageElement = document.getElementById('confirm-message');
+    const okButton = document.getElementById('confirm-ok');
+    const cancelButton = document.getElementById('confirm-cancel');
+    
+    titleElement.textContent = title;
+    messageElement.textContent = message;
+    
+    dialog.classList.add('active');
+    
+    // Remove previous event listeners
+    const newOkButton = okButton.cloneNode(true);
+    const newCancelButton = cancelButton.cloneNode(true);
+    okButton.parentNode.replaceChild(newOkButton, okButton);
+    cancelButton.parentNode.replaceChild(newCancelButton, cancelButton);
+    
+    // Add new event listeners
+    newOkButton.addEventListener('click', function() {
+      dialog.classList.remove('active');
+      if (onConfirm) onConfirm();
+    });
+    
+    newCancelButton.addEventListener('click', function() {
+      dialog.classList.remove('active');
+      if (onCancel) onCancel();
+    });
+  }
+  
+  // --- KEYBOARD SHORTCUTS ---
+  function initializeKeyboardShortcuts() {
+    document.addEventListener('keydown', function(e) {
+      // Ctrl+S: Save form
+      if (e.ctrlKey && e.key === 's') {
+        e.preventDefault();
+        const activeForm = document.querySelector('.form-popup[style*="flex"]');
+        if (activeForm) {
+          const formId = activeForm.id.replace('-popup', '');
+          const submitButton = document.getElementById(`${formId}-submit-btn`);
+          if (submitButton) {
+            submitButton.click();
+          }
+        }
+      }
+      
+      // Esc: Close form
+      if (e.key === 'Escape') {
+        const activeForm = document.querySelector('.form-popup[style*="flex"]');
+        if (activeForm) {
+          confirmCloseForm(activeForm.id);
+        }
+        
+        const activeDialog = document.querySelector('.confirm-dialog.active');
+        if (activeDialog) {
+          document.getElementById('confirm-cancel').click();
+        }
+        
+        const activeHelp = document.querySelector('.shortcuts-help.active');
+        if (activeHelp) {
+          activeHelp.classList.remove('active');
+        }
+      }
+      
+      // Ctrl+E: Export data
+      if (e.ctrlKey && e.key === 'e') {
+        e.preventDefault();
+        if (activeSection === 'dashboard') {
+          exportAllData();
+        } else {
+          exportData(activeSection);
+        }
+      }
+      
+      // Ctrl+?: Show keyboard shortcuts help
+      if (e.ctrlKey && e.key === '?') {
+        e.preventDefault();
+        const helpPanel = document.getElementById('shortcuts-help');
+        helpPanel.classList.toggle('active');
+      }
+    });
+  }
+  
   // --- FORM SUBMISSION HANDLERS ---
   document.getElementById('branch-form').addEventListener('submit', submitBranchForm);
   document.getElementById('driver-form').addEventListener('submit', submitDriverForm);
